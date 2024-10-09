@@ -46,13 +46,6 @@ public class TrenoApplication {
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 		
-		AnnotationConfigApplicationContext ctx1 = new AnnotationConfigApplicationContext(AppConfiguration.class);
-
-		TrenoDao t = ctx1.getBean(TrenoDao.class);
-		Treno treno = new Treno();
-		treno.setSigla("HPPPPPPH");
-		t.save(treno);
-		
 		for (String beanName : ctx.getBeanDefinitionNames()) {
 			System.out.println("Bean --->" + beanName);
 		}
