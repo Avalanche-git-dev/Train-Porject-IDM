@@ -16,17 +16,17 @@ public class FactoryConfiguration implements Factory {
 	private ApplicationContext context;
 	// La marca scelta dall'utente
 	private String marca;
-
+   
 	public void setMarca(String marca) {
 		this.marca = marca.toLowerCase(); // meglio stabilire direttamente come deve essere la marca in input, anche se
 											// arriva da un button. se la gestisco qui fose posso evitare il controllo
 											// qui.
 	}
-
+    
 	public Cargo creaCargo() {
 		// Restituisce il bean cargo configurato per la marca selezionata, sperando che
 		// basti un semplice concat
-		return context.getBean(marca + "Cargo", Cargo.class);
+		return (Cargo) context.getBean(marca + "Cargo", Cargo.class);
 	}
 
 	// Funzionerà ? vediamo vorrei evitare strutture dati e iterazioni ci sarà

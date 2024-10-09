@@ -44,9 +44,9 @@ public class Treno {
 	private String immagine;
 
     // Relazione Many-to-One con Market
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_market") // Chiave esterna che collega Treno con Market
-    private Market market; 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_market") // Chiave esterna che collega Treno con Market
+//    private Market market; 
 
 	
 	/* La relazione tra treni e vagoni è 1:N, perciò usiamo l'annotazione @OneToMany.
@@ -100,14 +100,6 @@ public class Treno {
 	public void setImmagine(String immagine) {
 		this.immagine = immagine;
 	}
-
-    public Market getMarket() {
-        return market;
-    }
-
-    public void setMarket(Market market) {
-        this.market = market;
-    }
 
 	public List<Vagone> getVagoni() {
 		return vagoni;

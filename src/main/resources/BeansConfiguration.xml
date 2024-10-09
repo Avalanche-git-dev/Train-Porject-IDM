@@ -22,7 +22,7 @@
 	
 	
 
-	<bean name="deMotrice" class="com.treno.application.model.Motrice">
+	<bean name="deMotrice" class="com.treno.application.model.Motrice" scope= "prototype">
 		<property name="costo" value="50.0000"></property>
 		<property name="peso" value="5.000"></property>
 		<property name="pesoTrainabile" value="220.000"></property>
@@ -30,14 +30,14 @@
 	</bean>
 
 
-	<bean name="deCargo" class="com.treno.application.model.Cargo" scope="prototype">
+	<bean name="deCargo" class="com.treno.application.model.Cargo" scope= "prototype">
 		<property name="costo" value="80.000" />
 		<property name="peso" value="7.000" />
 		<property name="volumeCargo" value="20.000" />
 	</bean>
 
 
-	<bean name="dePasseggero" class="com.treno.application.model.Passeggero">
+	<bean name="dePasseggero" class="com.treno.application.model.Passeggero" scope= "prototype">
 		<property name="costo" value="100.000" />
 		<property name="peso" value="20.000" />
 		<property name="numeroPosti" value="120" />
@@ -45,8 +45,7 @@
 	</bean>
 
 
-	<bean name="deRistorante" class="com.treno.application.model.Ristorante"
-		scope="prototype">
+	<bean name="deRistorante" class="com.treno.application.model.Ristorante" scope= "prototype">
 		<property name="costo" value="120.000" />
 		<property name="peso" value="12.000" />
 		<property name="numeroPostiRistorante" value="110" />

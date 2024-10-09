@@ -1,16 +1,11 @@
 package com.treno.application;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.treno.application.configuration.AppConfiguration;
 import com.treno.application.configuration.FactoryConfiguration;
-import com.treno.application.dao.Dao;
-import com.treno.application.dao.TrenoDao;
 import com.treno.application.model.Motrice;
-import com.treno.application.model.Treno;
 
 //@Configuration
 //@ComponentScan

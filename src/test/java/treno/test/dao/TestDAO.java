@@ -17,6 +17,7 @@ public class TestDAO {
 		//MotriceDao  mDao = (MotriceDao) ctx.getBean("motriceDao");
 		//Allora o la finisci o la finisci, o ti metti a cambiare il sistema di generazione di proxy di spring, oppure quando io istanzio un oggetto che implementa dao, che allo stesso momento gestisce un em, non viene restituita una istanza 
 		//bensi vieen restuituito un proxy, giustamente. Come faccio ad accedere all'istanza però se voglio ? uso l'interfaccia o uso autowired.
+		@SuppressWarnings("unchecked")
 		Dao<Motrice> mDao = (Dao<Motrice>) ctx.getBean("motriceDao");
 		
 		Motrice m =  (Motrice) ctx.getBean("deMotrice");

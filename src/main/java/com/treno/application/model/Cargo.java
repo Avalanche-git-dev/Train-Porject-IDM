@@ -1,18 +1,13 @@
 package com.treno.application.model;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-@Component
-@Scope("prototype")
 @Entity
 @Table(name = "cargo")
 public class Cargo extends Vagone {
-	
+
 	@Column(name = "volume_cargo")
 	private double volumeCargo;
 
@@ -20,12 +15,10 @@ public class Cargo extends Vagone {
 		super();
 	}
 
-
 	public Cargo(int idVagone, double peso, double costo, double lunghezza, double volumeCargo) {
 		super(idVagone, peso, costo, lunghezza);
 		this.volumeCargo = volumeCargo;
 	}
-
 
 	public double getVolumeCargo() {
 		return volumeCargo;

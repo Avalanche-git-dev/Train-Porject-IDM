@@ -1,49 +1,109 @@
 package com.treno.application.model;
 
-import jakarta.persistence.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Market")
+@Table(name = "markets")
 public class Market {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id_market")
-    private Integer idMarket;
+	private Double amount;
 
-    @OneToMany(mappedBy="market", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
-    private List<Treno> treniInVendita;
+	private LocalDateTime transactionDate;
 
-    public Market() {
-        this.treniInVendita = new LinkedList<>();
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_market")
+	private Integer idMarket;
 
-    public Integer getIdMarket() {
-        return idMarket;
-    }
+	// @OneToMany(mappedBy="market", cascade=CascadeType.ALL, orphanRemoval=true,
+	// fetch=FetchType.LAZY)
+	@OneToOne
+	@JoinColumn(name = "id_treno")
+	private Treno treniInVendita;
 
-    public void setIdMarket(Integer idMarket) {
-        this.idMarket = idMarket;
-    }
+	@ManyToOne
+	@JoinColumn(name = "buyer_id")
+	private User acquirente;
 
-    public List<Treno> getTreniInVendita() {
-        return treniInVendita;
-    }
+	@ManyToOne
+	@JoinColumn(name = "seller_id")
+	private User venditore;
 
-    public void setTreniInVendita(List<Treno> treniInVendita) {
-        this.treniInVendita = treniInVendita;
-    }
+	public Integer getIdMarket() {
+		return idMarket;
+	}
 
-    public void addTrenoInVendita(Treno treno) {
-        treniInVendita.add(treno);
-        treno.setMarket(this); // Associa il treno a questo mercato
-    }
+	public Market(Double amount, LocalDateTime transactionDate, Integer idMarket, Treno treniInVendita, User acquirente,
+			User venditore) {
+		super();
+		this.amount = amount;
+		this.transactionDate = transactionDate;
+		this.idMarket = idMarket;
+		this.treniInVendita = treniInVendita;
+		this.acquirente = acquirente;
+		this.venditore = venditore;
+	}
 
-    public void removeDaTreniInVendita(Treno treno) {
-        treniInVendita.remove(treno);
-        treno.setMarket(null); // Rimuove l'associazione
-    }
-    
+	public Market() {
+		super();
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public LocalDateTime getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(LocalDateTime transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	public Treno getTreniInVendita() {
+		return treniInVendita;
+	}
+
+	public void setTreniInVendita(Treno treniInVendita) {
+		this.treniInVendita = treniInVendita;
+	}
+
+	public User getAcquirente() {
+		return acquirente;
+	}
+
+	public void setAcquirente(User acquirente) {
+		this.acquirente = acquirente;
+	}
+
+	public User getVenditore() {
+		return venditore;
+	}
+
+	public void setVenditore(User venditore) {
+		this.venditore = venditore;
+	}
+
+	public void setIdMarket(Integer idMarket) {
+		this.idMarket = idMarket;
+	}
+
+
+
+
 }
-

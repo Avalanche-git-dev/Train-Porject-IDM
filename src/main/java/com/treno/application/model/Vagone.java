@@ -64,4 +64,12 @@ public abstract class Vagone {
 		this.treno = treno;
 	}
 
+	@Override
+	public String toString() {
+		return "Vagone [idVagone=" + idVagone + ", peso=" + peso + ", costo=" + costo + ", lunghezza=" + lunghezza
+				+ ", treno=" + treno + "]";
+	}
+
+	
+
 }

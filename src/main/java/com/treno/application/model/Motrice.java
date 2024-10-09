@@ -9,13 +9,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "motrici") // Nome della tabella specifica per la motrice
 public class Motrice extends Vagone {
-	
+
 	@Column(name = "peso_trainabile")
 	private double pesoTrainabile;
-	
+
 	@Column(name = "tipo_motore")
 	private String tipoMotore;
-
 
 	public Motrice(int idVagone, double peso, double costo, double lunghezza, double pesoTrainabile,
 			String tipoMotore) {
