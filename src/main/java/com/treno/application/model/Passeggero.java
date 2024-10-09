@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 //@Scope("prototype")
 @Entity
 @Table(name= "passeggeri")
-public class Passeggeri extends Vagone {
+public class Passeggero extends Vagone {
 	
     @Column (name= "numero_posti")
 	private int numeroPosti;
@@ -16,13 +16,13 @@ public class Passeggeri extends Vagone {
 	private String classe;
 
 
-	public Passeggeri(int idVagone, double peso, double costo, double lunghezza, int numeroPosti, String classe) {
+	public Passeggero(int idVagone, double peso, double costo, double lunghezza, int numeroPosti, String classe) {
 		super(idVagone, peso, costo, lunghezza);
 		this.numeroPosti = numeroPosti;
 		this.classe = classe;
 	}
 
-	public Passeggeri() {
+	public Passeggero() {
 		super();
 	}
 

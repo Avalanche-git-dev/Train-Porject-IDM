@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -58,6 +56,8 @@ public class Treno {
 	   l'effettivo bisogno. */
     @OneToMany(mappedBy="treno", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private List<Vagone> vagoni = new LinkedList<Vagone>();
+    
+    // questo rimane treno perchè è il nome della chiave esterna che abbiamo dato al riferimento nella classe vagoni.
 	
 	@ElementCollection(targetClass=Valutazione.class)
 	/* Si usa per mappare una collezione di valori base o tipi enum senza creare un'entità separata.
@@ -72,8 +72,10 @@ public class Treno {
 	@Column(name="valutazioni")
 	private List<Valutazione> valutazioni;
 	
-	private Treno() {}
-	@Autowired
+	private Treno() {
+		super();
+	}
+	
 	public static Treno build() {
 		return new Treno();
 	}
@@ -155,7 +157,11 @@ public class Treno {
 
     public void add(Vagone vagone) {
 		vagoni.add(vagone);
-		vagone.setTreno(this);
+		vagone.setTreno(this);// antilogica oop
+	}
+    public void remove(Vagone vagone) {
+		vagoni.remove(vagone);
+		vagone.setTreno(null);// antilogica oop
 	}
 	
 	public final void addValutazione(Valutazione valutazione) {
@@ -177,8 +183,8 @@ public class Treno {
 		double postiTotali = 0;
 		while(it.hasNext()) {
 			Vagone vagone = it.next();
-			if(vagone instanceof Passeggeri) {
-				Passeggeri passeggeri = (Passeggeri) vagone;
+			if(vagone instanceof Passeggero) {
+				Passeggero passeggeri = (Passeggero) vagone;
 				postiTotali += passeggeri.getNumeroPosti();
 			}	
 		}

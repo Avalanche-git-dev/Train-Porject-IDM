@@ -1,11 +1,14 @@
 package com.treno.application.model;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-//@Component
-//@Scope("prototype")
+@Component
+@Scope("prototype")
 @Entity
 @Table(name = "cargo")
 public class Cargo extends Vagone {

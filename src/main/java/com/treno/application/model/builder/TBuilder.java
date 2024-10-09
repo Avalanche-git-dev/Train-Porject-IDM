@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.treno.application.configuration.FactoryConfiguration;
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
-import com.treno.application.model.Passeggeri;
+import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 @Component
 public class TBuilder extends TrenoBuilder {
@@ -34,7 +34,7 @@ public class TBuilder extends TrenoBuilder {
 	}
 
 	@Override
-	protected Passeggeri addPasseggeri() {
+	protected Passeggero addPasseggeri() {
 		return factory.creaPasseggeri();
 	}
 

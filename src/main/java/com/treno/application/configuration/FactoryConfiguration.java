@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
-import com.treno.application.model.Passeggeri;
+import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 
 @Component
@@ -31,8 +31,8 @@ public class FactoryConfiguration implements Factory {
 
 	// Funzionerà ? vediamo vorrei evitare strutture dati e iterazioni ci sarà
 	// sicuramente un modo piu elegante di svolgere la cosa
-	public Passeggeri creaPasseggeri() {
-		return context.getBean(marca + "Passeggeri", Passeggeri.class);
+	public Passeggero creaPasseggeri() {
+		return context.getBean(marca + "Passeggero", Passeggero.class);
 	}
 
 	public Ristorante creaRistorante() {

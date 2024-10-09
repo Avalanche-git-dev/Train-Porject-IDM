@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 //@Component
 //@Scope("prototype")
 @Entity
-@Table(name = "ristorante")
+@Table(name = "ristoranti")
 public class Ristorante extends Vagone {
 	@Column(name = " numero_posti_ristorante ")
 	private int numeroPostiRistorante;

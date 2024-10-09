@@ -20,7 +20,7 @@ public abstract class Vagone {
     private double lunghezza;
 
     @ManyToOne/*(fetch = FetchType.LAZY)*/
-    @JoinColumn/*(name = "treno_id")*/ // La chiave esterna per collegare i vagoni al treno
+    @JoinColumn(name = "id_treno") // La chiave esterna per collegare i vagoni al treno + nome della chiave esterna con la convenzione.
     private Treno treno;
    
     public Vagone(int idVagone, double peso, double costo, double lunghezza) {
