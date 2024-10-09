@@ -1,11 +1,15 @@
 package com.treno.application;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.treno.application.configuration.AppConfiguration;
 import com.treno.application.configuration.FactoryConfiguration;
+import com.treno.application.dao.TrenoDao;
 import com.treno.application.model.Motrice;
+import com.treno.application.model.Treno;
 
 //@Configuration
 //@ComponentScan
@@ -41,7 +45,14 @@ public class TrenoApplication {
 //	TrenoApp.close();
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
+		
+		AnnotationConfigApplicationContext ctx1 = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
+		TrenoDao t = ctx1.getBean(TrenoDao.class);
+		Treno treno = new Treno();
+		treno.setSigla("HPPPPPPH");
+		t.save(treno);
+		
 		for (String beanName : ctx.getBeanDefinitionNames()) {
 			System.out.println("Bean --->" + beanName);
 		}

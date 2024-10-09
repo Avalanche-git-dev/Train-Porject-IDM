@@ -7,40 +7,43 @@ import java.util.*;
 @Table(name="Market")
 public class Market {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_market")
-	private Integer idMarket;
-	
-	@OneToMany(mappedBy="treno", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
-	private List<Treno> treniInVendita;
-	
-	public Market(List<Treno> treniInVendita) {
-		this.treniInVendita = new LinkedList<>();
-	}
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id_market")
+    private Integer idMarket;
 
-	public Integer getIdMarket() {
-		return idMarket;
-	}
+    @OneToMany(mappedBy="market", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+    private List<Treno> treniInVendita;
 
-	public void setIdMarket(Integer idMarket) {
-		this.idMarket = idMarket;
-	}
+    public Market() {
+        this.treniInVendita = new LinkedList<>();
+    }
 
-	public List<Treno> getTreniInVendita() {
-		return treniInVendita;
-	}
+    public Integer getIdMarket() {
+        return idMarket;
+    }
 
-	public void setTreniInVendita(List<Treno> treniInVendita) {
-		this.treniInVendita = treniInVendita;
-	}
-	
-	public void addTrenoInVendita(Treno treno) {
-		treniInVendita.add(treno);
-	}
-	
-	public void removeDaTreniInVendita(Treno treno) {
-		treniInVendita.remove(treno);
-	}
-	
+    public void setIdMarket(Integer idMarket) {
+        this.idMarket = idMarket;
+    }
+
+    public List<Treno> getTreniInVendita() {
+        return treniInVendita;
+    }
+
+    public void setTreniInVendita(List<Treno> treniInVendita) {
+        this.treniInVendita = treniInVendita;
+    }
+
+    public void addTrenoInVendita(Treno treno) {
+        treniInVendita.add(treno);
+        treno.setMarket(this); // Associa il treno a questo mercato
+    }
+
+    public void removeDaTreniInVendita(Treno treno) {
+        treniInVendita.remove(treno);
+        treno.setMarket(null); // Rimuove l'associazione
+    }
+    
 }
+

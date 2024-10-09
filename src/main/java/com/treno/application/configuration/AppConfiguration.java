@@ -1,5 +1,7 @@
 package com.treno.application.configuration;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -42,6 +44,13 @@ public class AppConfiguration {
 		factory.setPackagesToScan("com.treno.application"); // "com.corso.spring"
 		// oppure "com.corso.spring...." al posto di
 		// this.getClass().getPackage().getName()
+		
+		Properties properties = new Properties();
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // Specifica il dialect
+        properties.put("hibernate.hbm2ddl.auto", "update"); // Crea o aggiorna il database
+        properties.put("hibernate.show_sql", "true"); // Mostra le query SQL
+        factory.setJpaProperties(properties);
+		
 		return factory;
 	}
 

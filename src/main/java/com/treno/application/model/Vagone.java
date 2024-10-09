@@ -1,47 +1,36 @@
 package com.treno.application.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-@Entity // Specfica entity, puo essere gestita tramite entity manager
-@Table(name = "vagone") // Dai un nome alla tabella
-@Inheritance(strategy = InheritanceType.JOINED) // proviamo un po a vedere la joined.
+@Entity
+@Table(name = "vagone")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Vagone {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idVagone;
-	@Column(name = "peso")
-	private double peso;
-	@Column(name = "costo")
-	private double costo;
-	@Column(name = "lunghezza")
-	private double lunghezza;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idVagone;
 
-	public Vagone(int idVagone, double peso, double costo, double lunghezza) {
-		super();
-		this.idVagone = idVagone;
-		this.peso = peso;
-		this.costo = costo;
-		this.lunghezza = lunghezza;
-	}
+    @Column(name = "peso")
+    private double peso;
 
-	public Vagone() {
-		super();
-	}
+    @Column(name = "costo")
+    private double costo;
 
-	public int getIdVagone() {
-		return idVagone;
-	}
+    @Column(name = "lunghezza")
+    private double lunghezza;
 
-	public void setIdVagone(int idVagone) {
-		this.idVagone = idVagone;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "treno_id") // La chiave esterna per collegare i vagoni al treno
+    private Treno treno;
+
+    public Vagone(int idVagone, double peso, double costo, double lunghezza) {
+        this.idVagone = idVagone;
+        this.peso = peso;
+        this.costo = costo;
+        this.lunghezza = lunghezza;
+    }
+
+    public Vagone() {}
 
 	public double getPeso() {
 		return peso;
@@ -67,10 +56,12 @@ public abstract class Vagone {
 		this.lunghezza = lunghezza;
 	}
 
-	@Override
-	public String toString() {
-		return "Vagone [idVagone=" + idVagone + ", peso=" + peso + ", costo=" + costo + ", lunghezza=" + lunghezza
-				+ "]";
+	public Treno getTreno() {
+		return treno;
+	}
+
+	public void setTreno(Treno treno) {
+		this.treno = treno;
 	}
 
 }
