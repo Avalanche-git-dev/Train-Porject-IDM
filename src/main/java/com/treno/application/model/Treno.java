@@ -155,6 +155,7 @@ public class Treno {
 
     public void add(Vagone vagone) {
 		vagoni.add(vagone);
+		vagone.setTreno(this);
 	}
 	
 	public final void addValutazione(Valutazione valutazione) {
