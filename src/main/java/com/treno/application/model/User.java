@@ -1,65 +1,111 @@
 package com.treno.application.model;
 
-import java.util.LinkedList;
-import java.util.List;
+import jakarta.persistence.*;
 
-import com.treno.application.model.builder.TBuilder;
-import com.treno.application.model.builder.TrenoBuilder;
-
+@Entity
+@Table(name = "users")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class User {
 
-	private int idUser;
-	private List<Treno> l = new LinkedList<Treno>();
-	private boolean stato;
-	private double portafoglio;
-    // Da Testare bene, costruisce un treno tramite il trenoBuilder passando la stringa
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer userId;
 
-	public void creaTreno(String input) {
-		TrenoBuilder b = new TBuilder();
-		Treno t = b.crealoRapido();//Immaginiamo creaTrenoDaStringa(input) 
-		l.add(t);
+    @Column(name = "username", nullable = false, unique = true, length = 50)
+    private String username;
+
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
+
+    @Column(name = "email", nullable = false, unique = true, length = 100)
+    private String email;
+
+    // Definiamo ruolo come enum
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ruolo", nullable = false)
+    private Ruolo ruolo;
+    
+    // if ruolo == "ADMIN" userId = "ADMINn" else userID = "USERn"
+
+    // @Column(name = "stato", nullable = false, length = 10)
+    // private boolean stato;
+
+    @Column(name = "nome", length = 50)
+    private String nome;
+
+    @Column(name = "cognome", length = 50)
+    private String cognome;
+
+    @Column(name = "numero_telefono", length = 20)
+    private String numeroTelefono;
+
+    public User() {}
+
+    public User(String username, String password, String email, Ruolo ruolo, String nome, String cognome, String numeroTelefono) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.ruolo = ruolo;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.numeroTelefono = numeroTelefono;
+    }
+
+	public String getUsername() {
+		return username;
 	}
 
-	public int getIdUser() {
-		return idUser;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public String getPassword() {
+		return password;
 	}
 
-	public List<Treno> getL() {
-		return l;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setL(List<Treno> l) {
-		this.l = l;
+	public String getEmail() {
+		return email;
 	}
 
-	public boolean isStato() {
-		return stato;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public void setStato(boolean stato) {
-		this.stato = stato;
+	public Ruolo getRuolo() {
+		return ruolo;
 	}
 
-	public double getPortafoglio() {
-		return portafoglio;
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
 	}
 
-	public void setPortafoglio(double portafoglio) {
-		this.portafoglio = portafoglio;
+	public String getNome() {
+		return nome;
 	}
-    // Duplica Treno tramite getTreno.
-	public Treno duplicaTreno (Treno t) {
-		Treno copia = Treno.build();
-	    copia=t.getTreno();
-	    return copia;
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-	
-	
-	
-	
+
+	public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+	public String getNumeroTelefono() {
+		return numeroTelefono;
+	}
+
+	public void setNumeroTelefono(String numeroTelefono) {
+		this.numeroTelefono = numeroTelefono;
+	}
 
 }
