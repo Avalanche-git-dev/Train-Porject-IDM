@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.treno.application.configuration.AppConfiguration;
 import com.treno.application.configuration.FactoryConfiguration;
+import com.treno.application.dao.Dao;
 import com.treno.application.dao.TrenoDao;
 import com.treno.application.model.Motrice;
 import com.treno.application.model.Treno;
