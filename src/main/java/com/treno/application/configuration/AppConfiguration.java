@@ -19,16 +19,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@ComponentScan(basePackages="com.treno")
 public class AppConfiguration {
 
-	@Bean /* (name="dataSource") */
-	public DataSource getDataSource() {
-
-		DriverManagerDataSource ds = new DriverManagerDataSource();
+	@Bean(name="dataSource")
+	public DataSource getDataSource () {
+		
+		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("Giorick1997.");
-		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
-		return ds;
-	}
+		ds.setPassword("momo");
+		ds.setUrl("jdbc:mysql://localhost:3307/trenodb");
+		return ds; 
+	} 
 
 	// E' come se fosse un context per l'entity manager.
 	@Bean

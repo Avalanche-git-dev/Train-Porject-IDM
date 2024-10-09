@@ -3,7 +3,7 @@ package com.treno.application.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "vagone")
+@Table(name = "vagoni")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Vagone {
     @Id
@@ -19,17 +19,17 @@ public abstract class Vagone {
     @Column(name = "lunghezza")
     private double lunghezza;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "treno_id") // La chiave esterna per collegare i vagoni al treno
+    @ManyToOne/*(fetch = FetchType.LAZY)*/
+    @JoinColumn/*(name = "treno_id")*/ // La chiave esterna per collegare i vagoni al treno
     private Treno treno;
-
+   
     public Vagone(int idVagone, double peso, double costo, double lunghezza) {
         this.idVagone = idVagone;
         this.peso = peso;
         this.costo = costo;
         this.lunghezza = lunghezza;
     }
-
+    
     public Vagone() {}
 
 	public double getPeso() {

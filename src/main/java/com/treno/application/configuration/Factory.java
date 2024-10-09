@@ -6,6 +6,8 @@ import com.treno.application.model.Passeggeri;
 import com.treno.application.model.Ristorante;
 
 public interface Factory {
+	abstract public void setMarca(String marca);
+	
 	abstract public Cargo creaCargo();
 
 	abstract public Passeggeri creaPasseggeri();

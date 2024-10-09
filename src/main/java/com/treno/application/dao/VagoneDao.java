@@ -21,7 +21,7 @@ public class VagoneDao implements Dao<Vagone> {
 
 	    @Override
 	    public List<Vagone> findAll() {
-	        return entityManager.createQuery("from Vagone", Vagone.class).getResultList();
+	        return entityManager.createQuery("from vagoni", Vagone.class).getResultList();
 	    }
 
 	    @Override

@@ -1,5 +1,6 @@
 package com.treno.application.model.builder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.treno.application.model.Cargo;

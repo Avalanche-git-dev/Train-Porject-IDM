@@ -2,6 +2,7 @@ package com.treno.application.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.filter.TrenoFilter;
@@ -14,7 +15,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-
+@Component
 public class TrenoDao implements Dao<Treno> {
 	
 	/*
@@ -46,7 +47,7 @@ public class TrenoDao implements Dao<Treno> {
 
 	@Override
     public List<Treno> findAll() {
-        return entityManager.createQuery("from Treno", Treno.class).getResultList();
+        return entityManager.createQuery("from treni", Treno.class).getResultList();
     }
 
 	@Override

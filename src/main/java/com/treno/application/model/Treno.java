@@ -1,7 +1,11 @@
 package com.treno.application.model;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -13,18 +17,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name="Treni")
-@Inheritance(strategy = InheritanceType.JOINED) 
+
+
 /* InheritanceType.JOINED crea una tabella separata per TreniInVendita 
    che è collegata alla tabella "Treni" tramite chiave esterna */
+//@Component
+@Entity
+@Table(name="treni")
 public class Treno {
 	
 	@Id // Chiave primaria dell'entità
@@ -46,13 +50,14 @@ public class Treno {
     @JoinColumn(name = "id_market") // Chiave esterna che collega Treno con Market
     private Market market; 
 
-	@OneToMany(mappedBy="treno", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+	
 	/* La relazione tra treni e vagoni è 1:N, perciò usiamo l'annotazione @OneToMany.
 	   mappedBy indica che la relazione è gestita dal campo treno in Vagone.
 	   cascade indica che ogni operazione fatta sul treno (persist, save, delete) viene propagata sul vagone.
 	   fetch indica che i vagoni associati al treno non verranno caricati subito, ma solo quando ce ne sarà 
 	   l'effettivo bisogno. */
-	private List<Vagone> vagoni;
+    @OneToMany(mappedBy="treno", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+	private List<Vagone> vagoni = new LinkedList<Vagone>();
 	
 	@ElementCollection(targetClass=Valutazione.class)
 	/* Si usa per mappare una collezione di valori base o tipi enum senza creare un'entità separata.
@@ -67,8 +72,8 @@ public class Treno {
 	@Column(name="valutazioni")
 	private List<Valutazione> valutazioni;
 	
-	public Treno() {}
-	
+	private Treno() {}
+	@Autowired
 	public static Treno build() {
 		return new Treno();
 	}
