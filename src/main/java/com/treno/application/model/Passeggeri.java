@@ -1,0 +1,50 @@
+package com.treno.application.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+//@Component
+//@Scope("prototype")
+@Entity
+@Table(name= "passeggeri")
+public class Passeggeri extends Vagone {
+	
+    @Column (name= "numero_posti")
+	private int numeroPosti;
+    @Column (name = "classe")
+	private String classe;
+
+
+	public Passeggeri(int idVagone, double peso, double costo, double lunghezza, int numeroPosti, String classe) {
+		super(idVagone, peso, costo, lunghezza);
+		this.numeroPosti = numeroPosti;
+		this.classe = classe;
+	}
+
+	public Passeggeri() {
+		super();
+	}
+
+	public int getNumeroPosti() {
+		return numeroPosti;
+	}
+
+	public void setNumeroPosti(int numeroPosti) {
+		this.numeroPosti = numeroPosti;
+	}
+
+	public String getClasse() {
+		return classe;
+	}
+
+	public void setClasse(String classe) {
+		this.classe = classe;
+	}
+
+	@Override
+	public String toString() {
+		return "Passeggeri [numeroPosti =" + numeroPosti + ", classe =" + classe + ", = " + super.toString() + "]";
+	}
+
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+
+	<!-- Abilitare Component Scanning -->
+	<!-- context:component-scan base-package="com.treno"/ -->
+	<!-- context:component-scan base-package="test.treno" / -->
+	
+	
+	<context:component-scan
+		base-package="com.treno.application">
+	</context:component-scan>
+	
+	
+
+	<bean name="deMotrice" class="com.treno.application.model.Motrice">
+		<property name="costo" value="50.0000"></property>
+		<property name="peso" value="5.000"></property>
+		<property name="pesoTrainabile" value="220.000"></property>
+		<property name="tipoMotore" value="tedesco"></property>
+	</bean>
+
+
+	<bean name="deCargo" class="com.treno.application.model.Cargo">
+		<property name="costo" value="80.000" />
+		<property name="peso" value="7.000" />
+		<property name="volumeCargo" value="20.000" />
+	</bean>
+
+
+	<bean name="dePasseggeri" class="com.treno.application.model.Passeggeri">
+		<property name="costo" value="100.000" />
+		<property name="peso" value="20.000" />
+		<property name="numeroPosti" value="120" />
+		<property name="classe" value=" A " />
+	</bean>
+
+
+	<bean name="deRistorante" class="com.treno.application.model.Ristorante"
+		scope="prototype">
+		<property name="costo" value="120.000" />
+		<property name="peso" value="12.000" />
+		<property name="numeroPostiRistorante" value="110" />
+		<property name="menu"
+			value="è un ristorante tedesco, il menu è orribile" />
+	</bean>
+	
+
+    <!-- Configurazione per MarcaA -->
+    <bean id="MarcaA" class="com.treno.application.model.Cargo">
+        <property name="peso" value="3000"/>
+        <property name="costo" value="50000"/>
+    </bean>
+
+    <!-- Configurazione per MarcaB -->
+    <bean id="itMotrice" class="com.treno.application.model.Motrice">
+        <property name="peso" value="7000"/>
+        <property name="costo" value="120000"/>
+        <property name="pesoTrainabile" value="20000"/>
+        <property name="tipoMotore" value="Elettrico"/>
+    </bean>
+     
+
+
+
+
+</beans>
