@@ -13,7 +13,7 @@ public class User extends RegisteredUser {
 	@Column(name="stato")
 	private Stato stato;
 	
-	@OneToMany
+	@OneToMany(mappedBy="owner", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
 	private List<Treno> l;
 	
 	@Column(name="portafoglio")

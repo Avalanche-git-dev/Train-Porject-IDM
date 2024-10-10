@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -67,14 +68,24 @@ public class Treno {
 	   Semplicemente crea una tabella secondaria che contiene i valori della lista associandoli
 	   all'entità principale. targetClass specifica il tipo di dati memorizzato nella collezione,
 	   ovvero un enum di tipo Valutazione */
-	@CollectionTable(name="valutazioni_treno", joinColumns=@JoinColumn(name="train_id"))
+	@CollectionTable(name="valutazioni", joinColumns=@JoinColumn(name="id_treno"))
 	/* I dati della collezione verranno salvati in una tabella separata valutazioni_treno.
 	   In questa tabella sarà presente una chiave esterna che fa riferimento alla tabella Treni. */
 	@Enumerated(EnumType.STRING)
 	/* Mappa gli enum nel database. I vari valori verranno memorizzati come stringhe. */
-	@Column(name="valutazioni")
-	private List<Valutazione> valutazioni;
+	//@Column(name="valutazioni") DA RIGUARDARE E STUDIARE QUESTA TIPOLOGIA DI GESTIONE BIAGIO GENIO 
+	private List<Valutazione> valutazioni = new LinkedList<Valutazione>();
 	
+	@ManyToOne
+	@JoinColumn(name = "id_owner")
+	private User owner;
+	
+	public User getOwner() {
+		return owner;
+	}
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
 	private Treno() {
 		super();
 	}
