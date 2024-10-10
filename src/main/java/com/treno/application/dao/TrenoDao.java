@@ -15,7 +15,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-@Component
+@Component("trenoDao")
 public class TrenoDao implements Dao<Treno> {
 	
 	/*

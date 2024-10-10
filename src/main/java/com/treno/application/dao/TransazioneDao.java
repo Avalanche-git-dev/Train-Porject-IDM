@@ -2,6 +2,7 @@ package com.treno.application.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.model.Transazione;
@@ -10,7 +11,7 @@ import com.treno.application.model.Treno;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-
+@Component("transazioneDao")
 public class TransazioneDao implements Dao<Transazione> {
 	@PersistenceContext
 	private EntityManager entityManager;

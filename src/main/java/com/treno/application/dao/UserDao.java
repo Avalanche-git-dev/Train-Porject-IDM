@@ -2,13 +2,14 @@ package com.treno.application.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.model.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
+@Component
 public class UserDao implements Dao<User> {
 
 	@PersistenceContext

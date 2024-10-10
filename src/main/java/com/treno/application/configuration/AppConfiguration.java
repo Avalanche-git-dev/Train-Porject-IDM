@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
+//@EnableAspectJAutoProxy(proxyTargetClass = true)
 //@ComponentScan(basePackages="com.treno")
 public class AppConfiguration {
 
@@ -72,13 +74,6 @@ public class AppConfiguration {
 		return transactionManager;
 	}
 
-	////////// DAO
-//	@Bean(name="motriceDao")
-//	public MotriceDao getMotriceDAO() {
-//		return new MotriceDao();
-//
-//	}
-	
 	
 	
 

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,11 +32,11 @@ public class Transazione {
 
 	// @OneToMany(mappedBy="market", cascade=CascadeType.ALL, orphanRemoval=true,
 	// fetch=FetchType.LAZY)
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_treno")
 	private Treno treniInVendita;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "buyer_id")
 	private User acquirente;
 
@@ -43,11 +44,12 @@ public class Transazione {
 		return treniInVendita;
 	}
 
+	
 	public void setTreniInVendita(Treno treniInVendita) {
 		this.treniInVendita = treniInVendita;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "seller_id")
 	private User venditore;
 
@@ -90,8 +92,9 @@ public class Transazione {
 		return treniInVendita;
 	}
 
-	public void setTrenoInVendita(Treno treniInVendita) {
-		this.treniInVendita = treniInVendita;
+	public void setTrenoInVendita(Treno treno) {
+		this.treniInVendita = treno;
+		
 	}
 
 	public User getAcquirente() {

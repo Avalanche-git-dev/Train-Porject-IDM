@@ -15,33 +15,33 @@ import com.treno.application.model.builder.TrenoBuilder;
 
 public class TestTrenoRiferimentiDB {
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
-		
-		
+
 		System.out.println("Inserisci una Stringa per creare il tuo treno");
-		Scanner scanner = new Scanner (System.in);
+		Scanner scanner = new Scanner(System.in);
 		String input = scanner.nextLine();
-		
+
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 		TrenoBuilder builder = ctx.getBean(TBuilder.class);
-		//System.out.println(builder);
-		
+		// System.out.println(builder);
+
 		Factory f = ctx.getBean(FactoryConfiguration.class);
 		f.setMarca("de");
-		
+
 		Treno treno = builder.creaTrenoDaStringa(input);
-		
+
 		treno.addValutazione(Valutazione.UNO);
 		treno.addValutazione(Valutazione.DUE);
 		treno.addValutazione(Valutazione.TRE);
 		treno.addValutazione(Valutazione.QUATTRO);
 		treno.addValutazione(Valutazione.CINQUE);
-		System.out.println(treno.getSigla()+treno.getValutazioni());
-		
-		
+		System.out.println(treno.getSigla() + treno.getValutazioni());
+
+		@SuppressWarnings("unchecked")
 		Dao<Treno> trenoDao = (Dao<Treno>) ctx.getBean("trenoDao");
 		trenoDao.save(treno);
-		
+		ctx.close();
 
 	}
 

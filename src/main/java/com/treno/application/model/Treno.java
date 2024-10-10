@@ -76,7 +76,7 @@ public class Treno {
 	//@Column(name="valutazioni") DA RIGUARDARE E STUDIARE QUESTA TIPOLOGIA DI GESTIONE BIAGIO GENIO 
 	private List<Valutazione> valutazioni = new LinkedList<Valutazione>();
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_owner")
 	private User owner;
 	

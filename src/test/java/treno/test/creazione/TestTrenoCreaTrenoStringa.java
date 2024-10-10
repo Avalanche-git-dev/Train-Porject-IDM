@@ -14,6 +14,7 @@ import com.treno.application.model.builder.TrenoBuilder;
 
 public class TestTrenoCreaTrenoStringa {
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		System.out.println("Inserisci una Stringa per creare il tuo treno");
 		Scanner scanner = new Scanner (System.in);
@@ -29,8 +30,10 @@ public class TestTrenoCreaTrenoStringa {
 		Treno treno = builder.creaTrenoDaStringa(input);
 		System.out.println(treno.getSigla());
 		
+		@SuppressWarnings("unchecked")
 		Dao<Treno> trenoDao = (Dao<Treno>) ctx.getBean("trenoDao");
 		trenoDao.save(treno);
+		ctx.close();
 
 	}
 
