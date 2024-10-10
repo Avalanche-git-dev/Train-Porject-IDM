@@ -100,5 +100,11 @@ public class RegisteredUser {
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
 	}
+<<<<<<< HEAD
+=======
+	
+	
+	
+>>>>>>> f7cdff025b59878b649888f912365779ab7d2dbc
 	
 }
