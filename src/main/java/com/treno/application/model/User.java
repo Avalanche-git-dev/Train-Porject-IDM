@@ -1,111 +1,68 @@
 package com.treno.application.model;
 
+import java.util.List;
+
+import com.treno.application.model.Treno.Valutazione;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-public class User {
+@Table(name="users")
+public class User extends RegisteredUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Integer userId;
-
-    @Column(name = "username", nullable = false, unique = true, length = 50)
-    private String username;
-
-    @Column(name = "password", nullable = false, length = 100)
-    private String password;
-
-    @Column(name = "email", nullable = false, unique = true, length = 100)
-    private String email;
-
-    // Definiamo ruolo come enum
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ruolo", nullable = false)
-    private Ruolo ruolo;
-    
-    // if ruolo == "ADMIN" userId = "ADMINn" else userID = "USERn"
-
-    // @Column(name = "stato", nullable = false, length = 10)
-    // private boolean stato;
-
-    @Column(name = "nome", length = 50)
-    private String nome;
-
-    @Column(name = "cognome", length = 50)
-    private String cognome;
-
-    @Column(name = "numero_telefono", length = 20)
-    private String numeroTelefono;
-
-    public User() {}
-
-    public User(String username, String password, String email, Ruolo ruolo, String nome, String cognome, String numeroTelefono) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.ruolo = ruolo;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.numeroTelefono = numeroTelefono;
-    }
-
-	public String getUsername() {
-		return username;
+	@Column(name="stato")
+	private Stato stato;
+	
+	@OneToMany
+	private List<Treno> l;
+	
+	@Column(name="portafoglio")
+	private double portafoglio;
+	
+	public User() {}
+	
+	public User(String username, String password, String email, String telefono, 
+			String nome, String cognome, double portafoglio) {
+		super(username, password, email, telefono, nome, cognome);
+		this.stato = Stato.unlocked;
+		this.portafoglio = portafoglio;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public Stato getStato() {
+		return stato;
 	}
 
-	public String getPassword() {
-		return password;
+	public void setStato(Stato stato) {
+		this.stato = stato;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public List<Treno> getL() {
+		return l;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setL(List<Treno> l) {
+		this.l = l;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public double getPortafoglio() {
+		return portafoglio;
 	}
 
-	public Ruolo getRuolo() {
-		return ruolo;
+	public void setPortafoglio(double portafoglio) {
+		this.portafoglio = portafoglio;
 	}
-
-	public void setRuolo(Ruolo ruolo) {
-		this.ruolo = ruolo;
+	
+	public void valutaTreno(Treno treno, Valutazione valutazione) {
+		treno.addValutazione(valutazione);
 	}
-
-	public String getNome() {
-		return nome;
+	
+	@Override
+	public String toString() {
+		return "User [stato=" + stato + ", l=" + l + ", portafoglio=" + portafoglio + "]";
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	
+	public enum Stato {
+		locked, unlocked
 	}
-
-	public String getCognome() {
-		return cognome;
-	}
-
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
-	}
-
-	public String getNumeroTelefono() {
-		return numeroTelefono;
-	}
-
-	public void setNumeroTelefono(String numeroTelefono) {
-		this.numeroTelefono = numeroTelefono;
-	}
-
+	
 }
