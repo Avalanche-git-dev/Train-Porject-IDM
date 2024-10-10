@@ -43,7 +43,7 @@ public abstract class TrenoBuilder {
 				treno.add(addRistorante());
 				break;
 			default:
-				System.out.println("Creazione del treno fallita per ora stampa eccezioni nel vecchio progetto.");
+				System.out.println("Creazione del treno fallita per ora stampa, cerca le eccezioni nel vecchio progetto.");
 			}
 		}
 		treno.setSigla(input);

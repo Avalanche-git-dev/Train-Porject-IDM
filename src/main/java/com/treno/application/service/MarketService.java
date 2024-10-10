@@ -17,14 +17,20 @@ public class MarketService {
 	@Autowired
 	private MarketDao marketDao;
 	
+	
 	@Autowired
 	private TrenoDao trenoDao;
+	
+	
+	@Autowired
+	private Market market;
 
 	public List<Treno> getAllTreniV() {
 		return trenoDao.findAllV();
 	}
 
 	@Transactional
+	
 	public void mettereInVendita(Treno treno, User venditore) {
 		// Controlla se il treno è già in vendita
 		if (treno.getInVendita()) {
@@ -33,7 +39,6 @@ public class MarketService {
 
 		// Crea transazione (transazione in corso) però vorrei gestire con un bean
 		// vedremo.
-		Market market = new Market();
 		market.setTreniInVendita(treno);
 		market.setVenditore(venditore);
 		market.setTransactionDate(LocalDateTime.now()); // Data forse la toglierò ..
