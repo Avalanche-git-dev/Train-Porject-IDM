@@ -2,45 +2,51 @@ package com.treno.application.dao;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.treno.application.model.User;
 
-public class UserDao implements Dao <User>{
-	
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+public class UserDao implements Dao<User> {
+
+	@PersistenceContext
+	private EntityManager entitytManager;
 
 	@Override
 	public User findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return entitytManager.find(User.class, id);
 	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return entitytManager.createQuery("from Utente", User.class).getResultList();
 	}
 
 	@Override
-	public void save(User entity) {
-		// TODO Auto-generated method stub
-		
+	@Transactional
+	public void save(User user) {
+		entitytManager.persist(user);
+
 	}
 
 	@Override
-	public void update(User entity) {
-		// TODO Auto-generated method stub
-		
+	@Transactional
+	public void update(User user) {
+		entitytManager.merge(user);
+
 	}
 
 	@Override
-	public void delete(User entity) {
-		// TODO Auto-generated method stub
-		
+	@Transactional
+	public void delete(User user) {
+		entitytManager.remove(entitytManager.contains(user) ? user : entitytManager.merge(user));
+
 	}
 
 	/*
-	void registration(User u);
-	void login(User u);
-	void logout(User u);
-	*/
-	
+	 * void registration(User u); void login(User u); void logout(User u);
+	 */
+
 }

@@ -15,15 +15,16 @@ public class RegisteredUser {
 	@Column(name="username")
 	private String username;
 	
-	@Pattern(regexp = "[a-zA-Z0-9_.]*")
+	// Almeno 8 caratteri: maiuscola, minuscola, numero e carattere speciale
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$\r\n")
 	@Column(name="password")
 	private String password;
 	
-	@Pattern(regexp = "")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$\r\n")
 	@Column(name="email")
 	private String email;
 	
-	@Pattern(regexp = "")
+	@Pattern(regexp = "^\\+39[-.\\s]?(\\(?\\d{2,4}?\\)?[-.\\s]?)?\\d{3,4}[-.\\s]?\\d{3,4}$\r\n")
 	@Column(name="telefono")
 	private String telefono;
 	
