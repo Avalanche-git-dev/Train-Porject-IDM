@@ -25,10 +25,11 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("Giorick1997.");
-		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
+		ds.setPassword("momo");
+		ds.setUrl("jdbc:mysql://localhost:3307/trenodb");
 		return ds; 
 	} 
+	
 
 	// E' come se fosse un context per l'entity manager.
 	@Bean
