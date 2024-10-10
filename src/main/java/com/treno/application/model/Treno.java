@@ -1,5 +1,6 @@
 package com.treno.application.model;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -47,7 +47,10 @@ public class Treno {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "id_market") // Chiave esterna che collega Treno con Market
 //    private Market market; 
-
+	@Column(name = "in_vendita" )
+    private  boolean InVendita;
+	@Column(name = "prezzo_vendita")
+	private double prezzoVendita;
 	
 	/* La relazione tra treni e vagoni è 1:N, perciò usiamo l'annotazione @OneToMany.
 	   mappedBy indica che la relazione è gestita dal campo treno in Vagone.
@@ -75,11 +78,11 @@ public class Treno {
 	private Treno() {
 		super();
 	}
-	
+	//Static metodo per costruire il treno all'esterno della classe.
 	public static Treno build() {
 		return new Treno();
 	}
-	
+	 // non so lo useremo mai teniamolo 
 	private Treno(List<Vagone> vagoni) {
 		super();
 		this.vagoni = vagoni;
@@ -189,6 +192,34 @@ public class Treno {
 	
 	public enum Valutazione {
 		UNO, DUE, TRE, QUATTRO, CINQUE;
+	}
+
+	public void setInVendita(boolean InVendita) {
+		this.InVendita=InVendita;
+		
+	}
+
+	public boolean getInVendita() {
+		return this.InVendita;
+	}
+
+	public Integer getIdTreno() {
+		return idTreno;
+	}
+
+	public void setIdTreno(Integer idTreno) {
+		this.idTreno = idTreno;
+	}
+
+	public double getPrezzoVendita() {
+		return prezzoVendita;
+	}
+
+	public void setPrezzoVendita(double prezzoVendita) {
+		this.prezzoVendita = prezzoVendita;
+	}
+	public Treno getTreno() {
+		return new Treno(Collections.unmodifiableList(vagoni));  // Restituisce una copia immutabile del treno.
 	}
 
 }
