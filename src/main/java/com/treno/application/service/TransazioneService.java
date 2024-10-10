@@ -6,16 +6,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.treno.application.dao.MarketDao;
+import com.treno.application.dao.TransazioneDao;
 import com.treno.application.dao.TrenoDao;
-import com.treno.application.model.Market;
+import com.treno.application.model.Transazione;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 
-public class MarketService {
+public class TransazioneService {
 
 	@Autowired
-	private MarketDao marketDao;
+	private TransazioneDao marketDao;
 	
 	
 	@Autowired
@@ -23,7 +23,7 @@ public class MarketService {
 	
 	
 	@Autowired
-	private Market market;
+	private Transazione market;
 
 	public List<Treno> getAllTreniV() {
 		return trenoDao.findAllV();
@@ -39,7 +39,7 @@ public class MarketService {
 
 		// Crea transazione (transazione in corso) però vorrei gestire con un bean
 		// vedremo.
-		market.setTreniInVendita(treno);
+		market.setTrenoInVendita(treno);
 		market.setVenditore(venditore);
 		market.setTransactionDate(LocalDateTime.now()); // Data forse la toglierò ..
 
@@ -52,9 +52,9 @@ public class MarketService {
 	}
 
 	@Transactional
-	public void acquistaTreno(Market market, User acquirente, double prezzo) {
+	public void acquistaTreno(Transazione market, User acquirente, double prezzo) {
 		// Controlli di concorrenza e validità
-		if (market == null || market.getTreniInVendita() == null) {
+		if (market == null || market.getTrenoInVendita() == null) {
 			throw new IllegalArgumentException("Transazione non valida. Il treno non esiste.");
 		}
 
@@ -63,7 +63,7 @@ public class MarketService {
 		}
 
 		// Controlla se il treno è ancora in vendita
-		if (!market.getTreniInVendita().getInVendita()) {
+		if (!market.getTrenoInVendita().getInVendita()) {
 			throw new IllegalArgumentException("Il treno non è più disponibile per l'acquisto.");
 		}
 
@@ -71,12 +71,18 @@ public class MarketService {
 		market.setAcquirente(acquirente);
 		market.setAmount(prezzo);
 		market.setTransactionDate(LocalDateTime.now());
+		
+	
 
 		// Rimuove il treno dalla vendita
-		market.getTreniInVendita().setInVendita(false);
-
+		market.getTrenoInVendita().setInVendita(false);
+		//Imposto il riferimento del nuovo propietario
+        Treno t = market.getTrenoInVendita();
+        t.setOwner(acquirente);
+        
+        
 		// Aggiorna il treno e la transazione nel database
-		trenoDao.update(market.getTreniInVendita());
+		trenoDao.update(t);
 		marketDao.update(market);
 
 		// Registra la transazione
@@ -84,13 +90,13 @@ public class MarketService {
 	}
 
 	@Transactional
-	public void registraTransazione(Market market) {
+	public void registraTransazione(Transazione market) {
 		if (market.getAcquirente() == null || market.getAmount() == null) {
 			throw new IllegalArgumentException("Transazione incompleta. Manca l'acquirente o il prezzo.");
 		}
 
 		// Aggiunge il passaggio di proprietà del treno
-		Treno treno = market.getTreniInVendita();
+		Treno treno = market.getTrenoInVendita();
 		User venditore = market.getVenditore();
 		User acquirente = market.getAcquirente();
 
@@ -114,7 +120,7 @@ public class MarketService {
 
 		// controllo se il venditore è lo stesso proprietario che ha messo in vendita il
 		// treno
-		Market market = marketDao.findTransactionByTreno(treno);
+		Transazione market = marketDao.findTransactionByTreno(treno);
 		if (market == null || !market.getVenditore().equals(venditore)) {
 			throw new SecurityException("Non sei autorizzato a rimuovere questo treno dalla vendita.");
 		}

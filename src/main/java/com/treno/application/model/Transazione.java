@@ -18,10 +18,10 @@ import jakarta.persistence.Table;
 @Scope("prototype")
 @Entity
 @Table(name = "markets")
-public class Market {
-
+public class Transazione {
+	@Column(name = "amount")
 	private Double amount;
-
+	@Column(name = "transazione_data")
 	private LocalDateTime transactionDate;
 
 	@Id
@@ -39,6 +39,14 @@ public class Market {
 	@JoinColumn(name = "buyer_id")
 	private User acquirente;
 
+	public Treno getTreniInVendita() {
+		return treniInVendita;
+	}
+
+	public void setTreniInVendita(Treno treniInVendita) {
+		this.treniInVendita = treniInVendita;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "seller_id")
 	private User venditore;
@@ -47,7 +55,7 @@ public class Market {
 		return idMarket;
 	}
 
-	public Market(Double amount, LocalDateTime transactionDate, Integer idMarket, Treno treniInVendita, User acquirente,
+	public Transazione(Double amount, LocalDateTime transactionDate, Integer idMarket, Treno treniInVendita, User acquirente,
 			User venditore) {
 		super();
 		this.amount = amount;
@@ -58,7 +66,7 @@ public class Market {
 		this.venditore = venditore;
 	}
 
-	public Market() {
+	public Transazione() {
 		super();
 	}
 
@@ -78,11 +86,11 @@ public class Market {
 		this.transactionDate = transactionDate;
 	}
 
-	public Treno getTreniInVendita() {
+	public Treno getTrenoInVendita() {
 		return treniInVendita;
 	}
 
-	public void setTreniInVendita(Treno treniInVendita) {
+	public void setTrenoInVendita(Treno treniInVendita) {
 		this.treniInVendita = treniInVendita;
 	}
 
@@ -91,15 +99,20 @@ public class Market {
 	}
 
 	public void setAcquirente(User acquirente) {
-		this.acquirente = acquirente;
+	    this.acquirente = acquirente;
+	    if (acquirente != null) {
+	        acquirente.getTransazioneAcquisto().add(this);
+	    }
 	}
-
 	public User getVenditore() {
 		return venditore;
 	}
 
 	public void setVenditore(User venditore) {
-		this.venditore = venditore;
+	    this.venditore = venditore;
+	    if (venditore != null) {
+	        venditore.getTransazioneVendita().add(this);
+	    }
 	}
 
 	public void setIdMarket(Integer idMarket) {
