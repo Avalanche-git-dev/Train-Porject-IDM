@@ -5,6 +5,7 @@ import java.util.List;
 import com.treno.application.model.User;
 
 public class UserDao implements Dao <User>{
+	
 
 	@Override
 	public User findById(int id) {
