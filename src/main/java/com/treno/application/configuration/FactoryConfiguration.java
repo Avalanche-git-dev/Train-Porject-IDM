@@ -8,6 +8,7 @@ import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
+import com.treno.application.model.User;
 
 @Component
 public class FactoryConfiguration implements Factory {
@@ -41,6 +42,10 @@ public class FactoryConfiguration implements Factory {
 
 	public Motrice creaMotrice() {
 		return context.getBean(marca + "Motrice", Motrice.class);
+	}
+	
+	public User creaUser() {
+		return context.getBean("User", User.class);
 	}
 
 //Balza lo switch, balzano le if .
