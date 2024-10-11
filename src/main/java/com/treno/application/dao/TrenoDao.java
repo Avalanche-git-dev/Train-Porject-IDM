@@ -47,7 +47,7 @@ public class TrenoDao implements Dao<Treno> {
 
 	@Override
     public List<Treno> findAll() {
-        return entityManager.createQuery("from treni", Treno.class).getResultList();
+        return entityManager.createQuery("from Treno", Treno.class).getResultList();
     }
 
 	@Override

@@ -32,7 +32,7 @@ public class TestCreaUtente {
         if(list.size() > 0) System.out.println("Ci sono degli utenti nel db");
         for(int i = list.size(); i < list.size() + 30; i++) {
         	User us = new User();
-        	us.setUsername("user"+i);
+        	us.setUsername("user"+us.getUserId());
         	us.setPassword("Abcde"+i+"!@");
         	us.setEmail("user"+i+"@gmail.com");
         	us.setTelefono("391234567890");

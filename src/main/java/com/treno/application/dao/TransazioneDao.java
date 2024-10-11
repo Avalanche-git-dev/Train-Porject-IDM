@@ -23,7 +23,7 @@ public class TransazioneDao implements Dao<Transazione> {
 
 	@Override
 	public List<Transazione> findAll() {
-		return entityManager.createQuery("from Market", Transazione.class).getResultList();
+		return entityManager.createQuery("from Transazione", Transazione.class).getResultList();
 	}
 
 	@Transactional

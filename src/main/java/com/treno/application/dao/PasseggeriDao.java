@@ -22,7 +22,7 @@ public class PasseggeriDao implements Dao<Passeggero> {
 
 	@Override
     public List<Passeggero> findAll() {
-        return entityManager.createQuery("from Passeggeri", Passeggero.class).getResultList();
+        return entityManager.createQuery("from Passeggero", Passeggero.class).getResultList();
     }
 
 	@Override
