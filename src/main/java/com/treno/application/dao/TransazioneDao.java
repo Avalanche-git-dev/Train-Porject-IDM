@@ -53,13 +53,11 @@ public class TransazioneDao implements Dao<Transazione> {
 	
 	public Transazione findTransactionByTreno(Treno treno) {
         try {
-            // Query JPQL per cercare il Market associato a questo treno
             return entityManager.createQuery(
                 "SELECT m FROM Market m WHERE m.treniInVendita = :treno", Transazione.class)
                 .setParameter("treno", treno)
                 .getSingleResult();
         } catch (NoResultException e) {
-            // Restituisce null se nessun market viene trovato per quel treno
             return null;
         }
     }

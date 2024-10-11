@@ -14,7 +14,7 @@ import com.treno.application.service.TransazioneService;
 
 public class TestTransazioni00 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 		TrenoBuilder builder = ctx.getBean(TBuilder.class);
@@ -24,10 +24,13 @@ public class TestTransazioni00 {
 		f.setMarca("de");
 
 		Treno treno = builder.crealoRapido();
+		
+		treno.setIdTreno(30);
 
 		User marco = new User();
 		marco.setNome("marco");
 		treno.setOwner(marco);
+		marco.setUserId(25);
 
 		System.out.println(treno.getOwner().getNome());
 
@@ -43,22 +46,29 @@ public class TestTransazioni00 {
 		// TransazioneService transazione = new TransazioneService();
 
 		TransazioneService transazione = ctx.getBean(TransazioneService.class);
-		
+		try {
+			transazione.mettereInVendita(treno, marco);
+		} catch (Exception e) {
+			e.printStackTrace();
+			e.getMessage();
+		}
+		pippo.setUserId(30);
+		System.out.println(pippo.getUserId());
+		transazione.compraTreno(pippo,treno);
 
 		//transazione.mettereInVendita(treno, marco);
 
 		System.out.println(treno.getOwner().getNome());
 		
 		
-		Transazione x = transazione.getMarket();
+		
 		//transazione.acquistaTreno(x, pippo, 30);
 		System.out.println(treno.getOwner().getNome());
 		
-		transazione.mettereInVendita(treno, pippo);
 		//rivendiamo il treno proviamo un po
 //		transazione.mettereInVendita(treno, pippo);
 //		Transazione x2 = transazione.getMarket();
-		transazione.acquistaTreno(x, marco, 150);
+		
 //		
 		System.out.println(treno.getOwner().getNome());
 
