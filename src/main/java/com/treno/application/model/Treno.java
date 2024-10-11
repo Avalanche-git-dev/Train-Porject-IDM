@@ -1,5 +1,6 @@
 package com.treno.application.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,9 +77,33 @@ public class Treno {
 	//@Column(name="valutazioni") DA RIGUARDARE E STUDIARE QUESTA TIPOLOGIA DI GESTIONE BIAGIO GENIO 
 	private List<Valutazione> valutazioni = new LinkedList<Valutazione>();
 	
-	@ManyToOne
+	@ManyToOne (cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "id_owner")
 	private User owner;
+	
+	
+	@OneToMany(mappedBy="treno")
+	private List <Transazione> transazioni = new ArrayList <Transazione>();
+	
+	public void addTransazione(Transazione t) {
+		//if(this.transazioni.isEmpty())
+		this.transazioni.add(t);
+	}
+	
+	public void removeTransazione(Transazione t) {
+		this.transazioni.remove(t);
+	}
+	
+	
+	
+	
+	public List<Transazione> getTransazioni() {
+		return transazioni;
+	}
+	public void setTransazioni(List<Transazione> transazioni) {
+		this.transazioni = transazioni;
+	}
+	
 	
 	public User getOwner() {
 		return owner;
@@ -232,5 +257,7 @@ public class Treno {
 	public Treno getTreno() {
 		return new Treno(Collections.unmodifiableList(vagoni));  // Restituisce una copia immutabile del treno.
 	}
+	
+	//imposta il riferimento al treno delle sue trasazioni .
+	}
 
-}

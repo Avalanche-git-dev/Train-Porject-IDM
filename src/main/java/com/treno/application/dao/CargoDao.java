@@ -2,13 +2,14 @@ package com.treno.application.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.model.Cargo;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
+@Component
 public class CargoDao implements Dao <Cargo> {
 
 	@PersistenceContext
