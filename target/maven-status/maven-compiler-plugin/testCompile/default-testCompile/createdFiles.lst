@@ -1,0 +1,5 @@
+treno\test\creazione\TestTrenoRiferimentiDB.class
+treno\test\user\TestCreaUtente.class
+treno\test\creazione\TestTrenoCreaTrenoStringa.class
+treno\test\dao\TestDAO.class
+treno\test\dao\TestDAOTreno.class

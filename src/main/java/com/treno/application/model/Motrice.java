@@ -4,8 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-//@Component
-//@Scope("prototype")
+
 @Entity
 @Table(name = "motrici") // Nome della tabella specifica per la motrice
 public class Motrice extends Vagone {

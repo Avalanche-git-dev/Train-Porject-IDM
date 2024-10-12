@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Component
 @Scope("prototype")
 @Entity
-@Table(name = "markets")
+@Table(name = "transazioni")
 public class Transazione {
 	
 	
@@ -53,17 +53,6 @@ public class Transazione {
 
 
 
-
-	public Transazione(Double importo, LocalDateTime data, Integer idMarket, Treno treno, User acquirente,
-			User venditore) {
-		super();
-		this.importo = importo;
-		this.data = data;
-		this.idTransazione = idMarket;
-		this.treno = treno;
-		this.acquirente = acquirente;
-		this.venditore = venditore;
-	}
 
 
 

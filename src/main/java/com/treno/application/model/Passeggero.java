@@ -4,8 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-//@Component
-//@Scope("prototype")
+
 @Entity
 @Table(name= "passeggeri")
 public class Passeggero extends Vagone {

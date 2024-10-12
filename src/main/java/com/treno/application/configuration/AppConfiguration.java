@@ -5,9 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -16,11 +14,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.treno.application.dao.UserDao;
-
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages="com.treno")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
 //@ComponentScan(basePackages="com.treno")
 public class AppConfiguration {
@@ -31,11 +26,10 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("Giorick1997.");
-		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
+		ds.setPassword("momo");
+		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
 		return ds; 
-	} 
-	
+	} 	
 
 	// E' come se fosse un context per l'entity manager.
 	@Bean
