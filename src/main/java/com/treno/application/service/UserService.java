@@ -14,7 +14,7 @@ import com.treno.application.model.User;
 public class UserService {
 	
 	@Autowired
-	@Qualifier("userDao")
+	@Qualifier("UserDao")
 	private Dao<User> userDao;
 	
 	public Dao<User> getUserDao() {

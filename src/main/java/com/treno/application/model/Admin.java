@@ -13,12 +13,6 @@ public class Admin extends RegisteredUser {
 	
 	public Admin() {}
 	
-	public Admin(String username, String password, String email, String telefono,
-			String nome, String cognome, boolean privilegio) {
-		super(username, password, email, telefono, nome, cognome);
-		this.privilegio = privilegio;
-	}
-	
 	public void controllaAttivita(User user) {
 		
 	}

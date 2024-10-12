@@ -3,9 +3,8 @@ package treno.test.user;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.treno.application.configuration.AppConfiguration;
 import com.treno.application.model.User;
 import com.treno.application.service.UserService;
 
@@ -13,7 +12,7 @@ public class TestCreaUtente {
 	
 	public static void main(String[] args) {
         
-		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+		ApplicationContext context = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
         
         UserService uservice = context.getBean(UserService.class);
         User u = uservice.getUserDao().findById(11);
@@ -43,5 +42,6 @@ public class TestCreaUtente {
         }
         
     }
+	
 
 }

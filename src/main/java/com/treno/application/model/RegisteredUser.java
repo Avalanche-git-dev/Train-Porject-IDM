@@ -45,16 +45,6 @@ public abstract class RegisteredUser {
 	public RegisteredUser() {
 	}
 
-	public RegisteredUser(String username, String password, String email, String telefono, String nome,
-			String cognome) {
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.telefono = telefono;
-		this.nome = nome;
-		this.cognome = cognome;
-	}
-
 	public Integer getUserId() {
 		return userId;
 	}

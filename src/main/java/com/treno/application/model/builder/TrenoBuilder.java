@@ -17,8 +17,11 @@ public abstract class TrenoBuilder {
 		for (int i = 0; i < 30; i++) {
 			treno.add(addCargo());
 			treno.add(addPasseggeri());
+			//treno.setIdTreno(i);
+			//treno.setOwner(null);
 		}
 		treno.add(addRistorante());
+		
 		return treno;
 	}
 
