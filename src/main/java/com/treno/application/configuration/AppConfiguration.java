@@ -20,7 +20,9 @@ import com.treno.application.dao.TrenoDao;
 import com.treno.application.dao.UserDao;
 import com.treno.application.dao.VagoneDao;
 import com.treno.application.dao.ValutazioneDao;
+import com.treno.application.model.Transazione;
 import com.treno.application.model.builder.TBuilder;
+import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.service.ValutazioneService;
@@ -150,11 +152,24 @@ public class AppConfiguration {
 	public UserService getUserService() {
 		return new UserService();
 	}
+	
+	@Bean (name = "TransazioneService")
+	@Scope ("prototype")
+	public TransazioneService getTransazioneService() {
+		return new TransazioneService();
+		
+	}
 
 	
 	
 	
+	//Bean Component
 	
+	@Bean ("Transazione")
+	@Scope ("prototype")
+	public Transazione getTransazione() {
+		return new Transazione();
+	}
 	
 	
 	

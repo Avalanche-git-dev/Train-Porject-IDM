@@ -18,10 +18,11 @@ public class TestCreaUtente {
         UserService uservice = context.getBean(UserService.class);
         User u = uservice.getUserDao().findById((long) 11);
         long id = 10;
-        User user = uservice.getUserDao().findById(id);
-        if(user != null) {
-        	uservice.login(id, user.getPassword());
-        }
+//        User user = uservice.getUserDao().findById(id);
+//        
+//        if(user != null) {
+//        	uservice.login(userDto);
+//        }
         if(u != null) {
         	System.out.println("Trovato e rimosso");
         	uservice.cancellaAccount(u);
@@ -39,7 +40,7 @@ public class TestCreaUtente {
         	us.setNome("userN"+i);
         	us.setCognome("userC"+i);
         	us.setPortafoglio(100.0);
-        	uservice.registrazione(us);
+        	//uservice.registrazione(us);
         }
         
     }

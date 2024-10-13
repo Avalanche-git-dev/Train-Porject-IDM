@@ -5,13 +5,30 @@ package com.treno.application.dao;
 
 import com.treno.application.model.User;
 
+import jakarta.persistence.NoResultException;
 
 
-public class UserDao extends ProxyDao<User>{
+
+public class UserDao extends ProxyDao<User> implements UserUtility{
 
 	public UserDao() {
 		super(User.class);
 	}
+
+	
+
+
+	    @Override
+	    public User findByUsername(String username) {
+	        String hql = "FROM User u WHERE u.username = :username";
+	        try {
+	            return em.createQuery(hql, User.class)
+	                     .setParameter("username", username)
+	                     .getSingleResult();
+	        } catch (NoResultException e) {
+	            return null; // Nessun utente trovato con questo username
+	        }
+
 	
 //	 public List<User> filtraUtenteByParametro(UtenteFilter filtro) {
 //	        // Inizio della query HQL
@@ -53,4 +70,9 @@ public class UserDao extends ProxyDao<User>{
 	
 
 	
+}
+
+
+
+
 }

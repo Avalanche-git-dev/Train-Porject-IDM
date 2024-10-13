@@ -45,5 +45,6 @@ public class TBuilder extends TrenoBuilder {
 	protected Ristorante addRistorante() {
 		return factory.creaRistorante();
 	}
+	
 
 }

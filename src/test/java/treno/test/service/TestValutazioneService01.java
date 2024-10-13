@@ -12,6 +12,7 @@ import com.treno.application.service.ValutazioneService;
 
 public class TestValutazioneService01 {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws Exception {
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 
@@ -27,6 +28,9 @@ public class TestValutazioneService01 {
 			System.out.println(v.getVotazione());
 			
 		}
+		
+		
+		ctx.close();
 	}
 
 }
