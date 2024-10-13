@@ -87,6 +87,8 @@ public class TransazioneService {
 		trenoDao.update(treno);
 		
 	}
+	
+	@Transactional
 	public void compraTreno(User compratore,Treno treno) throws Exception {
         // Recupero deelle entità che mi servono dal db
         compratore =  userDao.findById(compratore.getUserId()); //aggiungere eccezioni 

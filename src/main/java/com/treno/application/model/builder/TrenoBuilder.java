@@ -31,6 +31,11 @@ public abstract class TrenoBuilder {
 		treno.setSigla(sigla+"");
 		costo = treno.getCosto();
 		treno.setPrezzoVendita(costo);
+			//treno.setIdTreno(i);
+			//treno.setOwner(null);
+		}
+		treno.add(addRistorante());
+		
 		return treno;
 	}
 

@@ -5,8 +5,11 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+<<<<<<< HEAD
+=======
+import org.springframework.context.annotation.Scope;
+>>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -15,11 +18,16 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+<<<<<<< HEAD
+=======
+import com.treno.application.dao.TrenoDao;
+import com.treno.application.dao.UserDao;
+import com.treno.application.dao.VagoneDao;
+
+>>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages="com.treno")
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
-//@ComponentScan(basePackages="com.treno")
 public class AppConfiguration {
 
 	@Bean(name="dataSource")
@@ -28,11 +36,10 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("Giorick1997.");
-		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
+		ds.setPassword("momo");
+		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
 		return ds; 
-	} 
-	
+	} 	
 
 	// E' come se fosse un context per l'entity manager.
 	@Bean
@@ -74,8 +81,35 @@ public class AppConfiguration {
 		// transactionManager.setNestedTransactionAllowed(false);
 		return transactionManager;
 	}
+	
+	
+	//Bean Di configurazione che ne ho abbastanza.
+	@Bean(name = "VagoneDao" )
+	@Scope("prototype")
+	public VagoneDao getVagoneDao() {
+		return new VagoneDao();
+	}
+	
+	@Bean(name= "UserDao" )
+	@Scope("prototype")
+	public UserDao getUserDao() {
+		return new UserDao();
+	}
+	
+	@Bean(name="TrenoDao")
+	@Scope("prototype")
+	public TrenoDao getTrenoDao() {
+		return new TrenoDao();
+	}
+	
+	
+	
+	
+	
+	
+	}
 
 	
 	
 
-}
+
