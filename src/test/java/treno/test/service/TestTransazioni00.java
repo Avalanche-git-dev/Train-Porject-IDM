@@ -3,8 +3,8 @@ package treno.test.service;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.treno.application.dao.Dao;
 import com.treno.application.dao.TrenoUtility;
+import com.treno.application.dao.UserUtility;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.service.TransazioneService;
@@ -16,7 +16,7 @@ public class TestTransazioni00 {
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfigurationTest.xml");
 
 		TrenoUtility trenoDao = (TrenoUtility) ctx.getBean("TrenoDao");
-		Dao<User> userDao = (Dao<User>) ctx.getBean("UserDao");
+		UserUtility userDao =  (UserUtility) ctx.getBean("UserDao");
 
 		Treno treno = trenoDao.findById(10);
 
