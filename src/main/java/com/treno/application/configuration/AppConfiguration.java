@@ -15,9 +15,15 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.treno.application.dao.TransazioneDao;
 import com.treno.application.dao.TrenoDao;
 import com.treno.application.dao.UserDao;
 import com.treno.application.dao.VagoneDao;
+import com.treno.application.dao.ValutazioneDao;
+import com.treno.application.model.builder.TBuilder;
+import com.treno.application.service.TrenoService;
+import com.treno.application.service.UserService;
+import com.treno.application.service.ValutazioneService;
 
 @Configuration
 @EnableTransactionManagement
@@ -68,6 +74,7 @@ public class AppConfiguration {
 	}
 
 	/*** transazioni ***/
+	
 	@Bean
 	public PlatformTransactionManager getTransactionManager() {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -76,32 +83,87 @@ public class AppConfiguration {
 		return transactionManager;
 	}
 	
+	//Configurazione della Factory
+	
+	@Bean(name = "Factory")
+	public FactoryConfiguration getFactoryConfiguration() {
+		return new FactoryConfiguration();
+	}
+	
+	//Configurazione del builder
+	
+	@Bean (name = "Builder")
+	//@Scope("prototype")
+	public TBuilder getTrenoBuilder() {
+		return new TBuilder();
+	}
 	
 	//Bean Di configurazione che ne ho abbastanza.
+	
 	@Bean(name = "VagoneDao" )
 	@Scope("prototype")
 	public VagoneDao getVagoneDao() {
 		return new VagoneDao();
 	}
 	
-	@Bean(name= "UserDao" )
+	@Bean(name = "UserDao" )
 	@Scope("prototype")
 	public UserDao getUserDao() {
 		return new UserDao();
 	}
 	
-	@Bean(name="TrenoDao")
+	@Bean(name = "TrenoDao")
 	@Scope("prototype")
 	public TrenoDao getTrenoDao() {
 		return new TrenoDao();
 	}
 	
-	
-	
-	
-	
-	
+	@Bean (name = "TransazioneDao")
+	@Scope("prototype")
+	public TransazioneDao getTransazioneDao() {
+		return new TransazioneDao();
+		
 	}
+	
+	@Bean (name = "ValutazioneDao")
+	@Scope("prototype")
+	public ValutazioneDao getValutazioneDao() {
+		return new ValutazioneDao();
+	}
+	
+	//Service Bean
+	
+	@Bean (name = "ValutazioneService")
+	@Scope("prototype")
+	public ValutazioneService getValutazioneService() {
+		return new ValutazioneService();
+	}
+	
+	@Bean (name = "TrenoService")
+	@Scope("prototype")
+	public TrenoService getTrenoService() {
+		return new TrenoService();
+	}
+	
+	@Bean (name = "UserService")
+	@Scope("prototype")
+	public UserService getUserService() {
+		return new UserService();
+	}
+
+	
+	
+	
+	
+	
+	
+	
+}
+	
+	
+	
+	
+	
 
 	
 	

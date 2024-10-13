@@ -5,13 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hibernate.annotations.Check;
+
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +24,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "treni")
+@Check(constraints = "voti >= 1 AND voti <= 5") // Questo invece è proprio di hibernate ...
 public class Treno {
 
 	@Id // Chiave primaria dell'entità
@@ -35,7 +34,7 @@ public class Treno {
 	 * strategy di auto-incremento. Non c'è bisogno di specificare Column(...) come
 	 * per gli altri attributi perché la sua creazione è garantita da GeneratedValue
 	 */
-	private Integer idTreno;
+	private long idTreno;
 
 	@Column(name = "sigla", length = 50, unique = true)
 	private String sigla;
@@ -64,56 +63,58 @@ public class Treno {
 	@OneToMany(mappedBy = "treno", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Vagone> vagoni;
 
-	// questo rimane treno perchè è il nome della chiave esterna che abbiamo dato al
-	// riferimento nella classe vagoni.
-
-	@ElementCollection(targetClass = Valutazione.class ,fetch = FetchType.LAZY)
 	/*
+	 * 
+	 * @ElementCollection(targetClass = Valutazione.class ,fetch = FetchType.LAZY)
+	 *
 	 * Si usa per mappare una collezione di valori base o tipi enum senza creare
 	 * un'entità separata. Semplicemente crea una tabella secondaria che contiene i
 	 * valori della lista associandoli all'entità principale. targetClass specifica
 	 * il tipo di dati memorizzato nella collezione, ovvero un enum di tipo
 	 * Valutazione
-	 */
-	@CollectionTable(name = "valutazioni", joinColumns = @JoinColumn(name = "id_treno"))
-	/*
+	 *
+	 * @CollectionTable(name = "valutazioni", joinColumns = @JoinColumn(name =
+	 * "id_treno"))
+	 *
 	 * I dati della collezione verranno salvati in una tabella separata
 	 * valutazioni_treno. In questa tabella sarà presente una chiave esterna che fa
 	 * riferimento alla tabella Treni.
-	 */
-	@Enumerated(EnumType.STRING)
-	/*
-	 * Mappa gli enum nel database. I vari valori verranno memorizzati come
-	 * stringhe.
+	 *
+	 * @Enumerated(EnumType.STRING) /* Mappa gli enum nel database. I vari valori
+	 * verranno memorizzati come stringhe.
 	 */
 	// @Column(name="valutazioni") DA RIGUARDARE E STUDIARE QUESTA TIPOLOGIA DI
 	// GESTIONE BIAGIO GENIO
+	// private List<Valutazione> valutazioni;
+
+	@OneToMany(mappedBy = "treno", cascade = CascadeType.ALL)
 	private List<Valutazione> valutazioni;
-	
-    //Caricamente dell'utente per ora solo quando serve ma poco robusta a livello di architettura ideata
+
+	// Caricamente dell'utente per ora solo quando serve ma poco robusta a livello
+	// di architettura ideata
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "id_owner" ,nullable = false )
+	@JoinColumn(name = "id_owner", nullable = false)
 	private User owner;
 
-	@OneToMany(mappedBy = "treno" ,fetch = FetchType.LAZY )
+	@OneToMany(mappedBy = "treno", fetch = FetchType.LAZY)
 	private List<Transazione> transazioni;
 
 	// Static metodo per costruire il treno all'esterno della classe.
 	public static Treno build() {
 		return new Treno();
 	}
-	
-	//Costruttore
 
-	private Treno() {
+	// Costruttore
+
+	public Treno() {
 		super();
-		this.vagoni=new LinkedList<Vagone>();
-		this.valutazioni=new ArrayList <Valutazione>();
-		this.transazioni= new ArrayList<Transazione>();
-		}
-	
-	//Vagoni
-	
+		this.vagoni = new LinkedList<Vagone>();
+		this.valutazioni = new ArrayList<Valutazione>();
+		this.transazioni = new ArrayList<Transazione>();
+	}
+
+	// Vagoni
+
 	public List<Vagone> getVagoni() {
 		return vagoni;
 	}
@@ -121,7 +122,7 @@ public class Treno {
 	public void setVagoni(List<Vagone> vagoni) {
 		this.vagoni = vagoni;
 	}
-	
+
 	public void add(Vagone vagone) {
 		vagoni.add(vagone);
 		vagone.setTreno(this);// antilogica oop
@@ -131,9 +132,9 @@ public class Treno {
 		vagoni.remove(vagone);
 		vagone.setTreno(null);// antilogica oop
 	}
-	
-	//Valutazioni
-	
+
+	// Valutazioni
+
 	public List<Valutazione> getValutazioni() {
 		return valutazioni;
 	}
@@ -141,13 +142,19 @@ public class Treno {
 	public void setValutazioni(List<Valutazione> valutazioni) {
 		this.valutazioni = valutazioni;
 	}
-	
+
 	public final void addValutazione(Valutazione valutazione) {
 		valutazioni.add(valutazione);
+		valutazione.setTreno(this);
 	}
-	
-    //Metodi per evitare proprietà inutili
-	
+
+	public final void removeValutazione(Valutazione valutazione) {
+		valutazioni.remove(valutazione);
+		valutazione.setTreno(null);
+	}
+
+	// Metodi per evitare proprietà inutili
+
 	public final double getPeso() {
 		Iterator<Vagone> it = vagoni.iterator();
 		double pesoTotale = 0;
@@ -201,7 +208,7 @@ public class Treno {
 		return postiTotali;
 	}
 
-	//In Vendita ( boolean per gestione market )
+	// In Vendita ( boolean per gestione market )
 	public void setInVendita(boolean InVendita) {
 		this.InVendita = InVendita;
 	}
@@ -209,18 +216,19 @@ public class Treno {
 	public boolean getInVendita() {
 		return this.InVendita;
 	}
-	
-	//Id Treno 
 
-	public Integer getIdTreno() {
+	// Id Treno
+
+	public Long getIdTreno() {
 		return idTreno;
 	}
 
-	public void setIdTreno(Integer idTreno) {
+	public void setIdTreno(Long idTreno) {
 		this.idTreno = idTreno;
 	}
-	
-	//Prezzo vendita (diveterà un calcolo che dipende dal prezzo del treno + il prezzo di vendita dell'utente)
+
+	// Prezzo vendita (diveterà un calcolo che dipende dal prezzo del treno + il
+	// prezzo di vendita dell'utente)
 
 	public double getPrezzoVendita() {
 		return prezzoVendita;
@@ -229,9 +237,9 @@ public class Treno {
 	public void setPrezzoVendita(double prezzoVendita) {
 		this.prezzoVendita = prezzoVendita;
 	}
-	
-	//Owner
-	
+
+	// Owner
+
 	public User getOwner() {
 		return owner;
 	}
@@ -239,8 +247,8 @@ public class Treno {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
-	//Sigla usata per crearlo.
+
+	// Sigla usata per crearlo.
 
 	public String getSigla() {
 		return sigla;
@@ -249,8 +257,8 @@ public class Treno {
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
-	
-	//Immagine del treno.
+
+	// Immagine del treno.
 
 	public String getImmagine() {
 		return immagine;
@@ -259,19 +267,11 @@ public class Treno {
 	public void setImmagine(String immagine) {
 		this.immagine = immagine;
 	}
-	
-	//Iterator per metodi
-	
+
+	// Iterator per metodi
+
 	public Iterator<Vagone> iterator() {
 		return vagoni.iterator();
 	}
-	
-	//Enum valutazione, da capire come mappare l'aggiunta e il salvataggio dell'utente che valuta
-
-	public enum Valutazione {
-		UNO, DUE, TRE, QUATTRO, CINQUE;
-	}
-
-
 
 }

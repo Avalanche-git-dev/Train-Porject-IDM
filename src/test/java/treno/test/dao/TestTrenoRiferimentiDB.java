@@ -1,4 +1,4 @@
-package treno.test.creazione;
+package treno.test.dao;
 
 import java.util.Scanner;
 
@@ -9,7 +9,6 @@ import com.treno.application.configuration.Factory;
 import com.treno.application.configuration.FactoryConfiguration;
 import com.treno.application.dao.Dao;
 import com.treno.application.model.Treno;
-import com.treno.application.model.Treno.Valutazione;
 import com.treno.application.model.builder.TBuilder;
 import com.treno.application.model.builder.TrenoBuilder;
 
@@ -31,11 +30,7 @@ public class TestTrenoRiferimentiDB {
 
 		Treno treno = builder.creaTrenoDaStringa(input);
 
-		treno.addValutazione(Valutazione.UNO);
-		treno.addValutazione(Valutazione.DUE);
-		treno.addValutazione(Valutazione.TRE);
-		treno.addValutazione(Valutazione.QUATTRO);
-		treno.addValutazione(Valutazione.CINQUE);
+	
 		System.out.println(treno.getSigla() + treno.getValutazioni());
 
 		@SuppressWarnings("unchecked")

@@ -10,7 +10,7 @@ import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.User;
 
-@Component
+
 public class FactoryConfiguration implements Factory {
 
 	@Autowired

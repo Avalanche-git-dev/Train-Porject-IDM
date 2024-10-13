@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-public  class ProxyDao<T> implements Dao<T> {
+public class ProxyDao<T> implements Dao<T> {
 	
 	@PersistenceContext
 	protected EntityManager em;
@@ -19,7 +19,7 @@ public  class ProxyDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public T findById(int id) {
+	public T findById(long id) {
 		return em.find(entityClass, id);
 	}
 

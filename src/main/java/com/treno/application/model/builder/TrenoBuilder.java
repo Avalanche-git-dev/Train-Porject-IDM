@@ -1,14 +1,12 @@
 package com.treno.application.model.builder;
 
-import org.springframework.stereotype.Component;
-
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.Treno;
 //Servizio si occupa di costruire il treno. da cambiare con service .
-@Component
+
 public abstract class TrenoBuilder {
 
 	public final Treno crealoRapido() {

@@ -1,4 +1,4 @@
-package treno.test.user;
+package treno.test.creazione;
 
 import java.util.List;
 
@@ -10,13 +10,14 @@ import com.treno.application.service.UserService;
 
 public class TestCreaUtente {
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
         
 		ApplicationContext context = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
         
         UserService uservice = context.getBean(UserService.class);
-        User u = uservice.getUserDao().findById(11);
-        int id = 10;
+        User u = uservice.getUserDao().findById((long) 11);
+        long id = 10;
         User user = uservice.getUserDao().findById(id);
         if(user != null) {
         	uservice.login(id, user.getPassword());
@@ -42,6 +43,9 @@ public class TestCreaUtente {
         }
         
     }
+	
+	
+	
 	
 
 }

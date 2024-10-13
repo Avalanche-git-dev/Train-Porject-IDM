@@ -2,15 +2,12 @@ package com.treno.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.model.User;
 
 
-@Component
-@Scope("prototype")
+
 public class UserService {
 	
 	@Autowired
@@ -49,7 +46,7 @@ public class UserService {
 	    }
 	}
 	
-	public User login(int id, String password) {
+	public User login(Long id, String password) {
 		User user = userDao.findById(id);
 		if(user != null && user.getPassword().equals(password)) {
 			System.out.println("L'utente ha effettuato corretamente il login");

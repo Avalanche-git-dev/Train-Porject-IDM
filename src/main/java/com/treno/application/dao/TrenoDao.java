@@ -15,5 +15,10 @@ public class TrenoDao extends ProxyDao<Treno> {
 		return null;
 		}
 	
-	
+	   public List<Treno> findAllInVendita() {
+	        String hql = "FROM Treno t WHERE t.InVendita = true";
+	        return super.em.createQuery(hql, Treno.class).getResultList();
+	    }
+	   
+	   
 }
