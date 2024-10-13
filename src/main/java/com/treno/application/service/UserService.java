@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.model.User;
+import com.treno.application.model.User.Stato;
+import com.treno.application.model.builder.TrenoBuilder;
 
 
 @Component
@@ -17,6 +19,9 @@ public class UserService {
 	@Qualifier("userDao")
 	private Dao<User> userDao;
 	
+	@Autowired
+	private TrenoBuilder trenoBuilder;
+	
 	public Dao<User> getUserDao() {
 		return userDao;
 	}
@@ -24,16 +29,22 @@ public class UserService {
 	public void setUserDao(Dao<User> userDao) {
 		this.userDao = userDao;
 	}
+	
+	public TrenoBuilder getTrenoBuilder() {
+		return trenoBuilder;
+	}
+
+	public void setTrenoBuilder(TrenoBuilder trenoBuilder) {
+		this.trenoBuilder = trenoBuilder;
+	}
 
 	public void registrazione(User user) {
 	    String password = user.getPassword();
 	    String email = user.getEmail();
 	    String telefono = user.getTelefono();
-	    
 	    String regPassword = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$";
 	    String regEmail = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 	    String regTelefono = "^\\+?39?[-.\\s]?\\d{2,4}[-.\\s]?\\d{3,4}[-.\\s]?\\d{3,4}$";
-
 	    if (password.matches(regPassword) && email.matches(regEmail) && telefono.matches(regTelefono)) {
 	        userDao.save(user);
 	    } else {
@@ -60,9 +71,5 @@ public class UserService {
 	}
 	
 	public void logout() {}
-	
-	public void cancellaAccount(User user) {
-		userDao.delete(user);
-	}
 
 }

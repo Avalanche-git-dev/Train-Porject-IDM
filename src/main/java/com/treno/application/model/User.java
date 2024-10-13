@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 public class User extends RegisteredUser {
 
 	@Column(name = "stato")
+	@Enumerated(EnumType.STRING)
 	private Stato stato;
 
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

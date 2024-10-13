@@ -14,36 +14,34 @@ import jakarta.persistence.PersistenceContext;
 public class UserDao implements Dao<User> {
 
 	@PersistenceContext
-	private EntityManager entitytManager;
+	private EntityManager entityManager;
 
 	@Override
 	public User findById(int id) {
-		return entitytManager.find(User.class, id);
+		return entityManager.find(User.class, id);
 	}
 
 	@Override
 	public List<User> findAll() {
-		return entitytManager.createQuery("from User", User.class).getResultList();
+		return entityManager.createQuery("from User", User.class).getResultList();
 	}
 
 	@Override
 	@Transactional
 	public void save(User user) {
-		entitytManager.persist(user);
+		entityManager.persist(user);
 	}
 
 	@Override
 	@Transactional
 	public void update(User user) {
-		entitytManager.merge(user);
-
+		entityManager.merge(user);
 	}
 
 	@Override
 	@Transactional
 	public void delete(User user) {
-		entitytManager.remove(entitytManager.contains(user) ? user : entitytManager.merge(user));
-
+		entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
 	}
 
 }

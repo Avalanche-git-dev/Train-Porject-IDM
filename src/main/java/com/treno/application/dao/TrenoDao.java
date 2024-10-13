@@ -75,10 +75,10 @@ public class TrenoDao implements Dao<Treno> {
 		Root<Treno> criteriaRoot = criteriaQuery.from(Treno.class); // FROM Treno
 		Predicate name = null, p1 = null, p2=null; 
 		if (filter.getPrezzoMin() != 0) {
-			p1  = criteriaBuilder.greaterThanOrEqualTo(criteriaRoot.get("prezzo"), filter.getPrezzoMin());
+			p1  = criteriaBuilder.greaterThanOrEqualTo(criteriaRoot.get("prezzoVendita"), filter.getPrezzoMin());
 		}
 		if (filter.getPrezzoMax() != 0) {
-			p2  = criteriaBuilder.lessThanOrEqualTo(criteriaRoot.get("prezzo"), filter.getPrezzoMax());
+			p2  = criteriaBuilder.lessThanOrEqualTo(criteriaRoot.get("prezzoVendita"), filter.getPrezzoMax());
 		}
 		// attenzione al bug dobbiamo fare i controlli sul predicato non nullo
 		Predicate beetwenPrezzo = criteriaBuilder.and(p1,p2);

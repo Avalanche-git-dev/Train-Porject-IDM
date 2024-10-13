@@ -6,16 +6,22 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.treno.application.configuration.AppConfiguration;
+import com.treno.application.model.Admin;
+import com.treno.application.model.RegisteredUser;
 import com.treno.application.model.User;
+import com.treno.application.model.User.Stato;
+import com.treno.application.service.AdminService;
 import com.treno.application.service.UserService;
 
 public class TestCreaUtente {
 	
+	@SuppressWarnings("unlikely-arg-type")
 	public static void main(String[] args) {
         
 		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
         
         UserService uservice = context.getBean(UserService.class);
+        AdminService aservice = context.getBean(AdminService.class);
         User u = uservice.getUserDao().findById(11);
         int id = 10;
         User user = uservice.getUserDao().findById(id);
@@ -42,6 +48,15 @@ public class TestCreaUtente {
         	uservice.registrazione(us);
         }
         
+        User searchedUser = uservice.getUserDao().findById(16);
+        if(searchedUser != null) {
+        	aservice.banna(searchedUser);
+        	if(searchedUser.getStato().equals(Stato.locked)) {
+        		aservice.riattiva(searchedUser);
+        	} else {
+        		System.out.println("Bloccato");
+        	}
+        }
     }
 
 }

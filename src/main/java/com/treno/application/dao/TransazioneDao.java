@@ -54,7 +54,7 @@ public class TransazioneDao implements Dao<Transazione> {
 	public Transazione findTransactionByTreno(Treno treno) {
         try {
             return entityManager.createQuery(
-                "SELECT m FROM Market m WHERE m.treniInVendita = :treno", Transazione.class)
+                "SELECT m FROM Transazione m WHERE m.treniInVendita = :treno", Transazione.class)
                 .setParameter("treno", treno)
                 .getSingleResult();
         } catch (NoResultException e) {
