@@ -42,6 +42,10 @@ public class User extends RegisteredUser {
 		this.valutazioni= new ArrayList<Valutazione>();
 	}
 	
+	public Long getId() {
+		return super.getUserId();
+	}
+	
 	//Lista Treni
 	
 	public List<Treno> getListaTreni() {
@@ -142,7 +146,16 @@ public class User extends RegisteredUser {
 		this.portafoglio = portafoglio;
 	}
 
+	
+	
     //Enum Stato
+
+	@Override
+	public String toString() {
+		return "User [stato=" + stato + ", nome=" + super.getNome() + "]";
+	}
+
+
 
 	public enum Stato {
 		locked, unlocked

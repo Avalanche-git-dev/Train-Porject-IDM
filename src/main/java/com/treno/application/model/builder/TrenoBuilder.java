@@ -6,21 +6,33 @@ import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.Treno;
+import com.treno.application.model.Vagone;
 //Servizio si occupa di costruire il treno. da cambiare con service .
 
 public abstract class TrenoBuilder {
 
 	public final Treno crealoRapido() {
 		Treno treno = Treno.build();
+		StringBuilder sb = new StringBuilder();
 		treno.add(addMotrice());
-		for (int i = 0; i < 30; i++) {
+		sb.append("H");
+		for (int i = 0; i < 5; i++) {
 			treno.add(addCargo());
 			treno.add(addPasseggeri());
+			sb.append("CP");
 			//treno.setIdTreno(i);
 			//treno.setOwner(null);
 		}
 		treno.add(addRistorante());
-		
+		sb.append("R");
+		double prezzo = treno.getCosto();
+		double lunghezza = treno.getLunghezza();
+		double peso = treno.getPeso();
+		treno.setPrezzoVendita(prezzo);
+		treno.setLunghezza(lunghezza);
+		treno.setPeso(peso);
+		treno.setSigla(sb + "");
+		System.out.println(prezzo);
 		return treno;
 	}
 

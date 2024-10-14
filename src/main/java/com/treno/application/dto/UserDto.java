@@ -5,7 +5,7 @@ public class UserDto {
     private String username;
     private String password;
     private String email;
-
+    
     // Getters e Setters
     public String getUsername() {
         return username;

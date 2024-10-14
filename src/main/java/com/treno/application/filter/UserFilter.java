@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UtenteFilter {
+public class UserFilter {
 	
     private String nome;
     private String cognome;

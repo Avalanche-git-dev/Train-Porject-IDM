@@ -51,6 +51,12 @@ public class Treno {
 
 	@Column(name = "prezzo_vendita")
 	private double prezzoVendita;
+	
+	@Column(name = "lunghezza")
+	private double lunghezza;
+	
+	@Column(name = "peso")
+	private double peso;
 
 	/*
 	 * La relazione tra treni e vagoni è 1:N, perciò usiamo
@@ -158,7 +164,7 @@ public class Treno {
 
 	// Metodi per evitare proprietà inutili
 
-	public final double getPeso() {
+	public double getPeso() {
 		Iterator<Vagone> it = vagoni.iterator();
 		double pesoTotale = 0;
 		while (it.hasNext()) {
@@ -168,22 +174,22 @@ public class Treno {
 		return pesoTotale;
 	}
 
-	public final double getCosto() {
+	public double getCosto() {
 		Iterator<Vagone> it = vagoni.iterator();
 		double costoTotale = 0;
 		while (it.hasNext()) {
 			Vagone vagone = it.next();
-			costoTotale += vagone.getCosto(); // Correzione dell'operatore per somma
+			costoTotale += vagone.getCosto();
 		}
 		return costoTotale;
 	}
 
-	public final double getLunghezza() {
+	public double getLunghezza() {
 		Iterator<Vagone> it = vagoni.iterator();
 		double lunghezzaTotale = 0;
 		while (it.hasNext()) {
 			Vagone vagone = it.next();
-			lunghezzaTotale += vagone.getLunghezza(); // Correzione dell'operatore per somma
+			lunghezzaTotale += vagone.getLunghezza();
 		}
 		return lunghezzaTotale;
 	}
@@ -240,6 +246,14 @@ public class Treno {
 	public void setPrezzoVendita(double prezzoVendita) {
 		this.prezzoVendita = prezzoVendita;
 	}
+	
+	public void setLunghezza(double lunghezza) {
+		this.lunghezza = lunghezza;
+	}
+	
+	public void setPeso(double peso) {
+		this.peso = peso;
+	}
 
 	// Owner
 
@@ -277,4 +291,9 @@ public class Treno {
 		return vagoni.iterator();
 	}
 
+	@Override
+	public String toString() {
+		return "Treno [idTreno=" + idTreno + ", sigla=" + sigla + "]";
+	}
+	
 }

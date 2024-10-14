@@ -65,7 +65,6 @@ public class TestCreaTreno {
 		
 		
 		
-		
 		//Chiudo il context
 		ctx.close();
 		

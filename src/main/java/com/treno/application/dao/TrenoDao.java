@@ -7,12 +7,12 @@ import com.treno.application.model.Treno;
 
 import jakarta.persistence.Query;
 
-	public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
+public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
+
 	public TrenoDao() {
 		super(Treno.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Treno> filtraTrenoByParametro(TrenoFilter filtro) {
 	    StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
 	    if (filtro.getPrezzoMin() != null && filtro.getPrezzoMin() > 0) {
@@ -34,7 +34,7 @@ import jakarta.persistence.Query;
 	        hql.append(" AND t.lunghezza <= :lunghezzaMax");
 	    }
 	    if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-	        hql.append(" AND t.sigla = :sigla");
+	        hql.append(" AND t.sigla LIKE :sigla");
 	    }
 
 	    Query query = em.createQuery(hql.toString(), Treno.class);
@@ -57,7 +57,7 @@ import jakarta.persistence.Query;
 	        query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
 	    }
 	    if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-	        query.setParameter("sigla", filtro.getSigla());
+	        query.setParameter("sigla", "%" + filtro.getSigla() + "%");
 	    }
 	    return query.getResultList();
 	}
