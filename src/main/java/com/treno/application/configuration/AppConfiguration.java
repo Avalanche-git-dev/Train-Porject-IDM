@@ -38,8 +38,8 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("momo");
-		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
+		ds.setPassword("Ilaria00");
+		ds.setUrl("jdbc:mysql://localhost:3306/db_ila");
 		return ds; 
 	} 	
 

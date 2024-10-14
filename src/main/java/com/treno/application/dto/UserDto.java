@@ -1,33 +1,62 @@
 package com.treno.application.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class UserDto {
 
-    private String username;
-    private String password;
-    private String email;
+	 @NotBlank(message = "Inserire username")
+	private String username;
+	 
+	 @NotBlank(message = "Inserire password")
+	private String password;
+	 
+	 @Email(message = "Inserire email")
+	private String email;
 
-    // Getters e Setters
-    public String getUsername() {
-        return username;
-    }
+	public UserDto() {
+		super();
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public UserDto(String username, String password, String email) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	// Getters e Setters
+	public String getUsername() {
+		return username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDto [username=" + username +  ", email=" + email + "]"; 
+	} /* ho tolto la password da qui perche chatgpt dice che rappresenta 
+	     un rischio per la sicurezza in quanto potrebbe finire 
+	     nei log o nelle risposte http */
+	
+	
+	
 }
