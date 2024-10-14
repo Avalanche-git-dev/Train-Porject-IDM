@@ -31,9 +31,9 @@ public class AdminService {
 	
 	public void controllaAttivita(User user) {
 		if(user.getUserId() != null) {
-			List<Treno> listaTreni = user.getL();
-			List<Transazione> listaAcquisti = user.getTransazioneAcquisto();
-			List<Transazione> listaVendite = user.getTransazioneVendita();
+			List<Treno> listaTreni = user.getListaTreni();
+			List<Transazione> listaAcquisti = user.getTransazioniAcquisto();
+			List<Transazione> listaVendite = user.getTransazioniVendita();
 			System.out.println(listaTreni);
 			System.out.println(listaAcquisti);
 			System.out.println(listaVendite);

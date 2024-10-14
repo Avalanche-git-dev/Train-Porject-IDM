@@ -71,5 +71,9 @@ public class UserService {
 	}
 	
 	public void logout() {}
+	
+	public void cancellaAccount(User user) {
+		userDao.delete(user);
+	}
 
 }

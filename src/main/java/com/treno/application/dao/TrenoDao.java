@@ -2,97 +2,67 @@ package com.treno.application.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-@Component("trenoDao")
-public class TrenoDao implements Dao<Treno> {
-	
-	/*
-	void save(Treno train);
-    
-    List<Treno> showByPrice(double price);
-    List<Treno> showByWeight(double weigth);
-    List<Treno> showByLength(double length);
-    
-    void updateTrain(int id);
-    void deleteTrain(int id);
-    void duplicateTrain(int id);
-    void reverseTrain(int id);
-    
-	
-	Treno findById(int id);
-	List<Treno> showAll();
-	List<Treno> findByUser(User user);
-	List<Treno> findBySigla(String sigla);
-	*/
-	
-	@PersistenceContext
-    private EntityManager entityManager;
 
-	@Override
-    public Treno findById(int id) {
-        return entityManager.find(Treno.class, id);
-    }
+public class TrenoDao extends ProxyDao<Treno> {
 
-	@Override
-    public List<Treno> findAll() {
-        return entityManager.createQuery("from Treno", Treno.class).getResultList();
-    }
-
-	@Override
-    @Transactional
-    public void save(Treno treno) {
-        entityManager.persist(treno);
-    }
-
-	@Override
-    @Transactional
-    public void update(Treno treno) {
-        entityManager.merge(treno);
-    }
-
-	@Override
-    @Transactional
-    public void delete(Treno treno) {
-        entityManager.remove(entityManager.contains(treno) ? treno : entityManager.merge(treno));
-    }
-	
-	@Transactional
-	public List<Treno> findByFilter(TrenoFilter filter) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Treno> criteriaQuery = criteriaBuilder.createQuery(Treno.class); 
-		Root<Treno> criteriaRoot = criteriaQuery.from(Treno.class); // FROM Treno
-		Predicate name = null, p1 = null, p2=null; 
-		if (filter.getPrezzoMin() != 0) {
-			p1  = criteriaBuilder.greaterThanOrEqualTo(criteriaRoot.get("prezzoVendita"), filter.getPrezzoMin());
-		}
-		if (filter.getPrezzoMax() != 0) {
-			p2  = criteriaBuilder.lessThanOrEqualTo(criteriaRoot.get("prezzoVendita"), filter.getPrezzoMax());
-		}
-		// attenzione al bug dobbiamo fare i controlli sul predicato non nullo
-		Predicate beetwenPrezzo = criteriaBuilder.and(p1,p2);
-		Predicate finale= criteriaBuilder.and(name, beetwenPrezzo);
-		criteriaQuery.where(finale);
-		Query query = entityManager.createQuery(criteriaQuery);
-		@SuppressWarnings("unchecked")
-		List<Treno> result = query.getResultList();
-		return result;
+	public TrenoDao() {
+		super(Treno.class);
 	}
 	
-	//Mi serve per il market scusate !
-    public List<Treno> findAllV() {
-        return entityManager.createQuery("FROM Treno t WHERE t.inVendita = true", Treno.class).getResultList();
-    }
+	@SuppressWarnings("unchecked")
+	public List<Treno> filtraTrenoByParametro(TrenoFilter filtro) {
+	    StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
+	    if (filtro.getPrezzoMin() != null && filtro.getPrezzoMin() > 0) {
+	        hql.append(" AND t.prezzoVendita >= :prezzoMin");
+	    }
+	    if (filtro.getPrezzoMax() != null && filtro.getPrezzoMax() > 0) {
+	        hql.append(" AND t.prezzoVendita <= :prezzoMax");
+	    }
+	    if (filtro.getPesoMin() != null && filtro.getPesoMin() > 0) {
+	        hql.append(" AND t.peso >= :pesoMin");
+	    }
+	    if (filtro.getPesoMax() != null && filtro.getPesoMax() > 0) {
+	        hql.append(" AND t.peso <= :pesoMax");
+	    }
+	    if (filtro.getLunghezzaMin() != null && filtro.getLunghezzaMin() > 0) {
+	        hql.append(" AND t.lunghezza >= :lunghezzaMin");
+	    }
+	    if (filtro.getLunghezzaMax() != null && filtro.getLunghezzaMax() > 0) {
+	        hql.append(" AND t.lunghezza <= :lunghezzaMax");
+	    }
+	    if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+	        hql.append(" AND t.sigla = :sigla");
+	    }
 
+	    Query query = em.createQuery(hql.toString(), Treno.class);
+	    if (filtro.getPrezzoMin() != null && filtro.getPrezzoMin() > 0) {
+	        query.setParameter("prezzoMin", filtro.getPrezzoMin());
+	    }
+	    if (filtro.getPrezzoMax() != null && filtro.getPrezzoMax() > 0) {
+	        query.setParameter("prezzoMax", filtro.getPrezzoMax());
+	    }
+	    if (filtro.getPesoMin() != null && filtro.getPesoMin() > 0) {
+	        query.setParameter("pesoMin", filtro.getPesoMin());
+	    }
+	    if (filtro.getPesoMax() != null && filtro.getPesoMax() > 0) {
+	        query.setParameter("pesoMax", filtro.getPesoMax());
+	    }
+	    if (filtro.getLunghezzaMin() != null && filtro.getLunghezzaMin() > 0) {
+	        query.setParameter("lunghezzaMin", filtro.getLunghezzaMin());
+	    }
+	    if (filtro.getLunghezzaMax() != null && filtro.getLunghezzaMax() > 0) {
+	        query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
+	    }
+	    if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+	        query.setParameter("sigla", filtro.getSigla());
+	    }
+	    return query.getResultList();
+	}
+
+
+	
 }

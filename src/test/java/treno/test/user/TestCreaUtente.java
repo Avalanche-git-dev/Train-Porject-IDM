@@ -5,12 +5,6 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-<<<<<<< HEAD
-import com.treno.application.configuration.AppConfiguration;
-import com.treno.application.model.Admin;
-import com.treno.application.model.RegisteredUser;
-=======
->>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 import com.treno.application.model.User;
 import com.treno.application.model.User.Stato;
 import com.treno.application.service.AdminService;

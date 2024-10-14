@@ -6,10 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< HEAD
-=======
 import org.springframework.context.annotation.Scope;
->>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,13 +15,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-<<<<<<< HEAD
-=======
 import com.treno.application.dao.TrenoDao;
 import com.treno.application.dao.UserDao;
 import com.treno.application.dao.VagoneDao;
 
->>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 @Configuration
 @EnableTransactionManagement
 //@EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -36,8 +30,8 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource(); 
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("momo");
-		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
+		ds.setPassword("Giorick1997.");
+		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
 		return ds; 
 	} 	
 

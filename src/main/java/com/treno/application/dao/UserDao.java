@@ -11,20 +11,11 @@ import com.treno.application.model.User;
 import jakarta.persistence.Query;
 
 
-<<<<<<< HEAD
-	@PersistenceContext
-	private EntityManager entityManager;
-
-	@Override
-	public User findById(int id) {
-		return entityManager.find(User.class, id);
-=======
 
 public class UserDao extends ProxyDao<User>{
 
 	public UserDao() {
 		super(User.class);
->>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4
 	}
 	
 	 public List<User> filtraUtenteByParametro(UtenteFilter filtro) {
@@ -44,32 +35,6 @@ public class UserDao extends ProxyDao<User>{
 	            hql.append(" AND u.età = :età");
 	        }
 
-<<<<<<< HEAD
-	@Override
-	public List<User> findAll() {
-		return entityManager.createQuery("from User", User.class).getResultList();
-	}
-
-	@Override
-	@Transactional
-	public void save(User user) {
-		entityManager.persist(user);
-	}
-
-	@Override
-	@Transactional
-	public void update(User user) {
-		entityManager.merge(user);
-	}
-
-	@Override
-	@Transactional
-	public void delete(User user) {
-		entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
-	}
-
-}
-=======
 	        // Creazione della query
 	        Query query = em.createQuery(hql.toString(), User.class);
 
@@ -94,4 +59,3 @@ public class UserDao extends ProxyDao<User>{
 
 	
 }
->>>>>>> 01e3b02e6968efe5195021a1abc20046c2ac48d4

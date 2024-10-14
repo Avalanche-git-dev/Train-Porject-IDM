@@ -1,8 +1,8 @@
 package com.treno.application.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.treno.application.model.User.Stato;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="admins")
@@ -13,11 +13,6 @@ public class Admin extends RegisteredUser {
 	
 	public Admin() {}
 	
-	public Admin(String username, String password, String email, String telefono,
-			String nome, String cognome, boolean privilegio) {
-		super(username, password, email, telefono, nome, cognome);
-		this.privilegio = privilegio;
-
 	public void controllaAttivita(User user) {
 		
 	}
