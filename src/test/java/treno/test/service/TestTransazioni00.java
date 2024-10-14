@@ -23,7 +23,7 @@ public class TestTransazioni00 {
 		User venditore = userDao.findById(8);
 
 
-		User acquirente = userDao.findById(10);
+		User acquirente = userDao.findById(1-0);
 		acquirente.setPortafoglio(15000000.0);
 		userDao.update(acquirente);
 
@@ -31,7 +31,7 @@ public class TestTransazioni00 {
 
 		// service.mettiInVendita(treno.getOwner().getUserId(), treno.getIdTreno(),
 		// 3000.0);
-		System.out.println(service.mettiInVendita(venditore.getUserId(), treno.getIdTreno(), 3000.0));
+		//System.out.println(service.mettiInVendita(venditore.getUserId(), treno.getIdTreno(), 3000.0));
 		 //System.out.println (service.mettiInVendita(acquirente.getUserId(), treno.getIdTreno(), 3000.0));
 		// service.compraTreno(acquirente, treno);
 
