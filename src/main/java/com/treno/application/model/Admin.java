@@ -2,7 +2,9 @@ package com.treno.application.model;
 
 import com.treno.application.model.User.Stato;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name="admins")

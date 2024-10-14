@@ -9,67 +9,139 @@
            http://www.springframework.org/schema/context
            https://www.springframework.org/schema/context/spring-context.xsd">
 
+ 
 
-
-	<!-- Abilitare Component Scanning -->
-	<!-- context:component-scan base-package="com.treno"/ -->
-	<!-- context:component-scan base-package="test.treno" / -->
-	
-	
+	<!-- component scan  -->
 	<context:component-scan
 		base-package="com.treno.application">
 	</context:component-scan>
 	
 	
-
-	<bean name="deMotrice" class="com.treno.application.model.Motrice" scope= "prototype">
-		<property name="costo" value="50.0000"></property>
-		<property name="peso" value="5.000"></property>
-		<property name="pesoTrainabile" value="220.000"></property>
-		<property name="tipoMotore" value="tedesco"></property>
-	</bean>
-
-
-	<bean name="deCargo" class="com.treno.application.model.Cargo" scope= "prototype">
-		<property name="costo" value="80.000" />
-		<property name="peso" value="7.000" />
-		<property name="volumeCargo" value="20.000" />
-	</bean>
-
-
-	<bean name="dePasseggero" class="com.treno.application.model.Passeggero" scope= "prototype">
-		<property name="costo" value="100.000" />
-		<property name="peso" value="20.000" />
-		<property name="numeroPosti" value="120" />
-		<property name="classe" value=" A " />
-	</bean>
-
-
-	<bean name="deRistorante" class="com.treno.application.model.Ristorante" scope= "prototype">
-		<property name="costo" value="120.000" />
-		<property name="peso" value="12.000" />
-		<property name="numeroPostiRistorante" value="110" />
-		<property name="menu"
-			value="è un ristorante tedesco, il menu è orribile" />
-	</bean>
+	<!-- bean configurazione -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/views/" />
+    <property name="suffix" value=".jsp" />
+    </bean>
+    
+    
 	
+	
+	<!-- Motrice tedesca -->
+<bean name="tedescoMotrice" class="com.treno.application.model.Motrice" scope="prototype">
+    <property name="costo" value="50.0000" />
+    <property name="peso" value="5.000" />
+    <property name="pesoTrainabile" value="220.000" />
+    <property name="tipoMotore" value="tedesco" />
+    <property name="marca" value="tedesco" />
+</bean>
 
-    <!-- Configurazione per MarcaA -->
-    <bean id="MarcaA" class="com.treno.application.model.Cargo">
-        <property name="peso" value="3000"/>
-        <property name="costo" value="50000"/>
-    </bean>
+<!-- Motrice francese -->
+<bean name="franceseMotrice" class="com.treno.application.model.Motrice" scope="prototype">
+    <property name="costo" value="55.0000" />
+    <property name="peso" value="5.500" />
+    <property name="pesoTrainabile" value="210.000" />
+    <property name="tipoMotore" value="francese" />
+    <property name="marca" value="francese" />
+</bean>
 
-    <!-- Configurazione per MarcaB -->
-    <bean id="itMotrice" class="com.treno.application.model.Motrice">
-        <property name="peso" value="7000"/>
-        <property name="costo" value="120000"/>
-        <property name="pesoTrainabile" value="20000"/>
-        <property name="tipoMotore" value="Elettrico"/>
-    </bean>
-     
+<!-- Motrice italiana -->
+<bean name="italianoMotrice" class="com.treno.application.model.Motrice" scope="prototype">
+    <property name="costo" value="60.0000" />
+    <property name="peso" value="5.200" />
+    <property name="pesoTrainabile" value="230.000" />
+    <property name="tipoMotore" value="italiano" />
+    <property name="marca" value="italiano" />
+</bean>
 
 
+<!-- Cargo tedesco -->
+<bean name="tedescoCargo" class="com.treno.application.model.Cargo" scope="prototype">
+    <property name="costo" value="80.000" />
+    <property name="peso" value="7.000" />
+    <property name="volumeCargo" value="20.000" />
+    <property name="marca" value="tedesco" />
+</bean>
 
+<!-- Cargo francese -->
+<bean name="franceseCargo" class="com.treno.application.model.Cargo" scope="prototype">
+    <property name="costo" value="85.000" />
+    <property name="peso" value="7.500" />
+    <property name="volumeCargo" value="22.000" />
+    <property name="marca" value="francese" />
+</bean>
 
-</beans>
+<!-- Cargo italiano -->
+<bean name="italianoCargo" class="com.treno.application.model.Cargo" scope="prototype">
+    <property name="costo" value="90.000" />
+    <property name="peso" value="7.200" />
+    <property name="volumeCargo" value="21.000" />
+    <property name="marca" value="italiano" />
+</bean>
+
+<!-- Passeggero tedesco -->
+<bean name="tedescoPasseggero" class="com.treno.application.model.Passeggero" scope="prototype">
+    <property name="costo" value="100.000" />
+    <property name="peso" value="20.000" />
+    <property name="numeroPosti" value="120" />
+    <property name="classe" value="A" />
+    <property name="marca" value="tedesco" />
+</bean>
+
+<!-- Passeggero francese -->
+<bean name="francesePasseggero" class="com.treno.application.model.Passeggero" scope="prototype">
+    <property name="costo" value="110.000" />
+    <property name="peso" value="19.500" />
+    <property name="numeroPosti" value="130" />
+    <property name="classe" value="B" />
+    <property name="marca" value="francese" />
+</bean>
+
+<!-- Passeggero italiano -->
+<bean name="italianoPasseggero" class="com.treno.application.model.Passeggero" scope="prototype">
+    <property name="costo" value="120.000" />
+    <property name="peso" value="21.000" />
+    <property name="numeroPosti" value="140" />
+    <property name="classe" value="A" />
+    <property name="marca" value="italiano" />
+</bean>
+
+<!-- Ristorante tedesco -->
+<bean name="tedescoRistorante" class="com.treno.application.model.Ristorante" scope="prototype">
+    <property name="costo" value="120.000" />
+    <property name="peso" value="12.000" />
+    <property name="numeroPostiRistorante" value="110" />
+    <property name="menu" value="è un ristorante tedesco, il menu è orribile" />
+    <property name="marca" value="tedesco" />
+</bean>
+
+<!-- Ristorante francese -->
+<bean name="franceseRistorante" class="com.treno.application.model.Ristorante" scope="prototype">
+    <property name="costo" value="130.000" />
+    <property name="peso" value="11.500" />
+    <property name="numeroPostiRistorante" value="115" />
+    <property name="menu" value="ristorante francese, il menu è sofisticato" />
+    <property name="marca" value="francese" />
+</bean>
+
+<!-- Ristorante italiano -->
+<bean name="italianoRistorante" class="com.treno.application.model.Ristorante" scope="prototype">
+    <property name="costo" value="140.000" />
+    <property name="peso" value="13.000" />
+    <property name="numeroPostiRistorante" value="120" />
+    <property name="menu" value="ristorante italiano, il menu è delizioso" />
+    <property name="marca" value="italiano" />
+</bean>
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</beans>

@@ -13,7 +13,7 @@ public class TestTransazioni00 {
 
 	public static void main(String[] args) throws Exception {
 
-		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfigurationTest.xml");
+		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 
 		TrenoUtility trenoDao = (TrenoUtility) ctx.getBean("TrenoDao");
 		UserUtility userDao =  (UserUtility) ctx.getBean("UserDao");
@@ -23,7 +23,7 @@ public class TestTransazioni00 {
 		User venditore = userDao.findById(8);
 
 
-		User acquirente = userDao.findById(1-0);
+		User acquirente = userDao.findById(10);
 		acquirente.setPortafoglio(15000000.0);
 		userDao.update(acquirente);
 
