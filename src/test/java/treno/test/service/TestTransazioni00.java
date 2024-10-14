@@ -13,7 +13,7 @@ public class TestTransazioni00 {
 
 	public static void main(String[] args) throws Exception {
 
-		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfigurationTest.xml");
+		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
 
 		TrenoUtility trenoDao = (TrenoUtility) ctx.getBean("TrenoDao");
 		UserUtility userDao =  (UserUtility) ctx.getBean("UserDao");
@@ -31,7 +31,7 @@ public class TestTransazioni00 {
 
 		// service.mettiInVendita(treno.getOwner().getUserId(), treno.getIdTreno(),
 		// 3000.0);
-		System.out.println(service.mettiInVendita(venditore.getUserId(), treno.getIdTreno(), 3000.0));
+		//System.out.println(service.mettiInVendita(venditore.getUserId(), treno.getIdTreno(), 3000.0));
 		 //System.out.println (service.mettiInVendita(acquirente.getUserId(), treno.getIdTreno(), 3000.0));
 		// service.compraTreno(acquirente, treno);
 
