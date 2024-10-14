@@ -15,6 +15,8 @@ treno\test\dao\TestDaoValutazioni.class
 treno\test\creazione\TestCreaUtente.class
 treno\test\service\TesUserService2.class
 treno\test\dao\TestDAOTreno.class
+treno\test\dao\package-info.class
 treno\test\dao\TestoTrenoDaoNuovo.class
 treno\test\service\TestUserService.class
 treno\test\creazione\TestCreaTreno.class
+treno\test\creazione\package-info.class

@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -15,7 +16,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.treno.application.dao.TransazioneDao;
 import com.treno.application.dao.TrenoDao;
@@ -29,34 +29,15 @@ import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.service.ValutazioneService;
 
+
+
+
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
+@ComponentScan("com.treno.application")
 public class AppConfiguration {
 	// View Resolver
-	@Bean
-	public InternalResourceViewResolver JspViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/");
-		resolver.setSuffix(".html");
-		return resolver;
-	}
-
-//	//View Resolver Statici
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//	    registry.addResourceHandler("/**")
-//	            .addResourceLocations("classpath:/static/", "file:/WEB-INF/view/");
-//	}
-
-//	@Bean
-//	public ViewResolver htmlViewResolver() {
-//	    UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-//	    resolver.setPrefix("/WEB-INF");
-//	    resolver.setSuffix(".html");
-//	    resolver.setViewClass(org.springframework.web.servlet.view.InternalResourceView.class);
-//	   // resolver.setOrder(2); // Ordine di priorità dopo JSP
-//	    return resolver;
-//	}
 
 	// Datasource
 	@Bean(name = "dataSource")
@@ -193,5 +174,10 @@ public class AppConfiguration {
 	public Transazione getTransazione() {
 		return new Transazione();
 	}
+	
+	//Application
+	
+	
+	}
 
-}
+
