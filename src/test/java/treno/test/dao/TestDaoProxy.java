@@ -31,7 +31,7 @@ public class TestDaoProxy {
 		//daoVagoni.update(m);
 		
 		//FindbyId
-		Motrice mDiProva= (Motrice) daoVagoni.findById(5);
+		Motrice mDiProva= (Motrice) daoVagoni.findById((long) 5);
 		
 		System.out.println(mDiProva);
 		

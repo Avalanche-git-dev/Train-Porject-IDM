@@ -20,7 +20,7 @@ public class TestUserDao {
 		@SuppressWarnings("unchecked")
 		Dao<User> UserDao = (Dao<User>) ctx.getBean("UserDao");
 		
-	    User u1 = UserDao.findById(5);
+	    User u1 = UserDao.findById((long) 5);
 		
 		
 		

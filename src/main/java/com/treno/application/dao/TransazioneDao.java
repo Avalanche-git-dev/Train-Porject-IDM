@@ -2,65 +2,43 @@ package com.treno.application.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.treno.application.dto.TransazioneDto;
 import com.treno.application.model.Transazione;
-import com.treno.application.model.Treno;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-@Component("transazioneDao")
-public class TransazioneDao implements Dao<Transazione> {
-	@PersistenceContext
-	private EntityManager entityManager;
+public class TransazioneDao extends ProxyDao<Transazione> implements TransazioneUtility {
 
-	@Override
-	public Transazione findById(int id) {
-		return entityManager.find(Transazione.class, id);
-	}
-
-	@Override
-	public List<Transazione> findAll() {
-		return entityManager.createQuery("from Transazione", Transazione.class).getResultList();
-	}
-
-	@Transactional
-	@Override
-	public void save(Transazione market) {
-		entityManager.persist(market);
-
-	}
-
-	@Transactional
-	@Override
-	public void update(Transazione market) {
-		entityManager.merge(market);
-
-	}
-
-	@Transactional
-	@Override
-	public void delete(Transazione market) {
-		entityManager.remove(entityManager.contains(market) ? market : entityManager.merge(market));
-
+	public TransazioneDao() {
+		super(Transazione.class);
 	}
 	
+	public List<Transazione> findTransazioniByUser(long userId) {
+	    String hql = "FROM Transazione t WHERE t.acquirente.id = :userId OR t.venditore.id = :userId";
+	    return em.createQuery(hql, Transazione.class)
+	             .setParameter("userId", userId)
+	             .getResultList();
+	}
+	//amo HQL
+	public List<Transazione> findTransazioniByTreno(long trenoId) {
+	    String hql = "FROM Transazione t WHERE t.treno.id = :trenoId";
+	    return em.createQuery(hql, Transazione.class)
+	             .setParameter("trenoId", trenoId)
+	             .getResultList();
+	}
+	
+	//restituisce una lista di treni e ordinata in ordine decrescente per totale ammontare di transazioni (Tecnica DTo easy)
+	
+	public List<TransazioneDto> findTreniByTotalTransactionValueDesc() {
+	    String hql = "SELECT new com.treno.application.dto.TrenoTransazioneTotaleDTO(t.treno, SUM(t.importo)) " +
+	                 "FROM Transazione t " +
+	                 "GROUP BY t.treno " +
+	                 "ORDER BY SUM(t.importo) DESC";
+	    
+	    return em.createQuery(hql, TransazioneDto.class)
+	             .getResultList();
+	}
+
+
 	
 	
-	
-	
-	public Transazione findTransactionByTreno(Treno treno) {
-        try {
-            return entityManager.createQuery(
-                "SELECT m FROM Transazione m WHERE m.treniInVendita = :treno", Transazione.class)
-                .setParameter("treno", treno)
-                .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
+
 }
-
-

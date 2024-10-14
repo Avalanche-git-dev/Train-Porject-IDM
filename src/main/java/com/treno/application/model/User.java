@@ -3,8 +3,6 @@ package com.treno.application.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.treno.application.model.Treno.Valutazione;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +25,9 @@ public class User extends RegisteredUser {
 
 	@OneToMany(mappedBy = "venditore", fetch = FetchType.LAZY)
 	private List<Transazione> transazioniVendita;
+	
+	@OneToMany(mappedBy = "user" , fetch = FetchType.LAZY)
+	private List<Valutazione> valutazioni;
 
 	@Column(name = "portafoglio")
 	private double portafoglio;
@@ -38,6 +39,7 @@ public class User extends RegisteredUser {
 		this.listaTreni = new ArrayList<Treno>();
 		this.transazioniAcquisto = new ArrayList<Transazione>();
 		this.transazioniVendita = new ArrayList<Transazione>();
+		this.valutazioni= new ArrayList<Valutazione>();
 	}
 	
 	//Lista Treni
@@ -100,12 +102,25 @@ public class User extends RegisteredUser {
 		transazione.setVenditore(null);
 	}
 	
-	//Valutazioni Treno
+	//Valutazioni
+	
+		public List<Valutazione> getValutazioni() {
+			return valutazioni;
+		}
 
-	public void valutaTreno(Treno treno, Valutazione valutazione) {
-		treno.addValutazione(valutazione);
-		//valutazione.setUser(this);
-	}
+		public void setValutazioni(List<Valutazione> valutazioni) {
+			this.valutazioni = valutazioni;
+		}
+		
+		public final void addValutazione(Valutazione valutazione) {
+			valutazioni.add(valutazione);
+			valutazione.setUser(this);
+		}
+		
+		public final void removeValutazione(Valutazione valutazione) {
+			valutazioni.remove(valutazione);
+			valutazione.setUser(null);
+		}
 	
     //Stato
 	

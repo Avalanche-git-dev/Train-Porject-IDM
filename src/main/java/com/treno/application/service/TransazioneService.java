@@ -4,239 +4,222 @@ package com.treno.application.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
-import com.treno.application.dao.TrenoDao;
+import com.treno.application.dao.TrenoUtility;
 import com.treno.application.model.Transazione;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
-@Component
-@Scope("prototype")
+
+@Service
 public class TransazioneService {
 
-	@Autowired
-	@Qualifier("transazioneDao")
-	private Dao<Transazione> transazioneDao;
+    @Autowired
+    @Qualifier("TransazioneDao")
+    private Dao<Transazione> transazioneDao;
+    
+    @Autowired
+    @Qualifier("TrenoDao")
+    private TrenoUtility trenoDao;
 
-	@Autowired
-	@Qualifier("trenoDao")
-	private Dao<Treno> trenoDao;
-	
-//	@Autowired
-//	private Transazione market;
-	
-	@Autowired
-	@Qualifier("trenoDao")
-	private Dao<User> userDao;
+    @Autowired
+    @Qualifier("UserDao")
+    private Dao<User> userDao;
 
+    @Autowired
+    @Qualifier("Transazione")
+    Transazione nuovaTransazione;
+    
+    
+    
+    
+   
 
-
-	public Dao<Transazione> getTransazioneDao() {
-		return transazioneDao;
-	}
-
-	public void setTransazioneDao(Dao<Transazione> transazioneDao) {
-		this.transazioneDao = transazioneDao;
-	}
-
-	public Dao<Treno> getTrenoDao() {
-		return trenoDao;
-	}
-
-	public void setTrenoDao(Dao<Treno> trenoDao) {
-		this.trenoDao = trenoDao;
-	}
-
-
-	public Dao<User> getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(Dao<User> userDao) {
-		this.userDao = userDao;
-	}
-
-	public void setTrenoDao(TrenoDao trenoDao) {
-		this.trenoDao = trenoDao;
-	}
-
-	public List<Treno> getAllTreniV() {
-		return ((TrenoDao) trenoDao).findAllV();
-	}
-
-	public TransazioneService() {
-		super();
-	}
-
-	@Transactional
-	public void mettereInVendita(Treno treno, User venditore) throws Exception {
-		// Controlla se il treno è già in vendita
-		if (treno.getInVendita()) {
-			throw new IllegalArgumentException("Il treno è già in vendita.");
-		}
-		// Controlla se effettivamente il propietaro è il venditore.
-		if(treno.getOwner()!=venditore) {
-			throw new IllegalAccessException("non puoi vendere un treno che non è un tuo :( ");
-		}
-
-		treno.setInVendita(true);
-		trenoDao.update(treno);
-		
-	}
-	
-	@Transactional
-	public void compraTreno(User compratore,Treno treno) throws Exception {
-        // Recupero deelle entità che mi servono dal db
-        compratore =  userDao.findById(compratore.getUserId()); //aggiungere eccezioni 
-        treno = trenoDao.findById(treno.getIdTreno());// idem aggiubngere eccezzioni in caso di not found.
-        
-        User venditore = treno.getOwner();
-
-        // Evrifico che il treno sia in vendita
-        if (!treno.getInVendita()) {
-            throw new Exception("Il treno non è  piu in vendita");
-        }
-
-        // controllo che il compratore non sia allo stesso momento il venditore.
-        if (compratore.equals(venditore)) {
-            throw new Exception("Non puoi acquistare il tuo stesso treno..");
-        }
-
-        // Controllo saldo compratore
-        if (compratore.getPortafoglio() < treno.getPrezzoVendita()) {
-            throw new Exception("Saldo insufficiente");
-        }
-
-        // passaggio di soldi
-        compratore.setPortafoglio(compratore.getPortafoglio() - treno.getPrezzoVendita());
-        venditore.setPortafoglio(venditore.getPortafoglio()+ treno.getPrezzoVendita());
-
-        // Trasferisci la proprietà del treno
-        treno.setOwner(compratore);
-        treno.setInVendita(false);  // Imposta il treno come non più in vendita
-        trenoDao.save(treno);
-
-        // Registra la transazione con i dettagli di compratore e venditore
-        Transazione transazione = new Transazione();
-        transazione.setAcquirente(compratore);
-        transazione.setVenditore(venditore);
-        transazione.setTreno(treno);
-        transazione.setImporto(treno.getPrezzoVendita());
-        transazione.setData(LocalDateTime.now());
-
-       
-
-        transazioneDao.save(transazione);
-
-        // Aggiorna saldo utenti
-        userDao.save(compratore);
-        userDao.save(venditore);
+    // Metodo per trovare una transazione per ID (ereditato da ProxyDao)
+    public Transazione findById(long id) {
+        return ((TransazioneService) transazioneDao).findById(id);
     }
 
-	
-	
-	
-	
-	
-	
+    // Metodo per trovare tutte le transazioni (ereditato da ProxyDao)
+    public List<Transazione> findAll() {
+        return ((Dao<Transazione>)transazioneDao).findAll();
+    }
+    
+    
+    
+    
+    
 
-//	@Transactional
-//	public void acquistaTreno(Transazione market, User acquirente, double prezzo) {
-//		// Controlli di concorrenza e validità
-//		if (market == null || market.getTrenoInVendita() == null) {
-//			throw new IllegalArgumentException("Transazione non valida. Il treno non esiste.");
-//		}
-//
-//		if (market.getAcquirente() != null) {
-//			throw new IllegalStateException("Il treno è già stato acquistato da un altro utente.");
-//		}
-//
-//		// Controlla se il treno è ancora in vendita
-//		if (!market.getTrenoInVendita().getInVendita()) {
-//			throw new IllegalArgumentException("Il treno non è più disponibile per l'acquisto.");
-//		}
-//
-//		// Registra l'acquirente, il prezzo e imposta la data della transazione
-//		market.setAcquirente(acquirente);
-//		market.setAmount(prezzo);
-//		market.setTransactionDate(LocalDateTime.now());
-//
-//		market.getTrenoInVendita().setInVendita(false);
-//		// Imposto il riferimento del nuovo propietario
-//		Treno t = market.getTrenoInVendita();
-//		t.setOwner(acquirente);
-//
-//		trenoDao.update(t);
-//		marketDao.update(market);
-//
-//		registraTransazione(market);
-//	}
-	
-	
-	
-	
-	
-	
+    
+    
+    
+    @Transactional
+    public void compraTreno(long Iduser, long idtreno) throws Exception {
+    	
+    	Treno treno = trenoDao.findById(idtreno);
+        // Trova il venditore dal treno
+        User venditore = treno.getOwner();
+        User acquirente = userDao.findById(Iduser);
+        // Recupera il prezzo del treno in vendita
+        Double prezzo = treno.getPrezzoVendita();
+        
+        if (venditore == null || acquirente == null) {
+            throw new Exception("Venditore o acquirente non trovato.");
+        }
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	@Transactional
-//	public void registraTransazione(Transazione market) {
-//		if (market.getAcquirente() == null || market.getAmount() == null) {
-//			throw new IllegalArgumentException("Transazione incompleta. Manca l'acquirente o il prezzo.");
-//		}
-//
-//		// Aggiunge il passaggio di proprietà del treno
-//		Treno treno = market.getTrenoInVendita();
-//		User venditore = market.getVenditore();
-//		User acquirente = market.getAcquirente();
-//
-//		// Aggiorna lo stato del treno come non in vendita
-//		treno.setInVendita(false);
-//		trenoDao.update(treno);
-//
-//		// Salva/aggiorna il market nel database (transazione completata)
-//		marketDao.update(market);
-//
-//		System.out.println("Transazione registrata: " + venditore.getUsername() + " ha venduto un treno a "
-//				+ acquirente.getUsername() + " per €" + market.getAmount());
-//	}
+        // Verifica che l'acquirente abbia abbastanza fondi
+        if (acquirente.getPortafoglio() < prezzo) {
+            throw new IllegalArgumentException("Fondi insufficienti per completare l'acquisto!");
+        }
+        
+        Hibernate.initialize(venditore.getPortafoglio());
+        Hibernate.initialize(acquirente.getPortafoglio());
 
-//	@Transactional
-//	public void rimuoviDallaVendita(Treno treno, User venditore) {
-//		// Controllo se il treno è in vendita
-//		if (!treno.getInVendita()) {
-//			throw new IllegalArgumentException("Il treno non è in vendita.");
-//		}
+        
+      
+        // Esegui la transazione economica
+        acquirente.setPortafoglio(acquirente.getPortafoglio() - prezzo);
+        venditore.setPortafoglio(venditore.getPortafoglio() + prezzo);
+        
+        
+        
+       
+
+        // Trasferisci il treno all'acquirente e aggiornalo
+        treno.setOwner(acquirente);
+        treno.setInVendita(false);
+        treno.setPrezzoVendita(0);
+        
+        
+        
+        //Transazione nuovaTransazione = new Transazione();
+        nuovaTransazione.setAcquirente(acquirente);
+        nuovaTransazione.setVenditore(venditore);
+        nuovaTransazione.setTreno(treno);
+        nuovaTransazione.setImporto(prezzo);
+        nuovaTransazione.setData(LocalDateTime.now());
+
+        // Aggiorna i dati nel database
+        transazioneDao.save(nuovaTransazione); // Salva la transazione
+        trenoDao.update(treno);                // Aggiorna il treno con il nuovo proprietario
+        userDao.update(acquirente);            // Aggiorna i dati dell'acquirente
+        userDao.update(venditore);
+        
+
+       // this.registrazioneTransazione(acquirente, venditore, treno, prezzo);
+
+
+
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @Transactional
+    public String mettiInVendita(long idUtente, long idTreno, Double prezzoVendita) {
+        // Recupera l'utente proprietario dal database tramite il suo ID
+        User proprietario = userDao.findById(idUtente);
+        
+        // Recupera il treno dal database tramite il suo ID
+        Treno treno = trenoDao.findById(idTreno);
+
+        // Inizializza la collezione lazy vagoni
+        Hibernate.initialize(treno.getVagoni());
+
+        // Verifica che l'utente sia il proprietario del treno
+        if (!treno.getOwner().equals(proprietario)) {
+            return "L'utente non è il proprietario di questo treno!";
+        }
+        
+        if (treno.getInVendita()){
+        	return "dai è gia in vendita";
+        	
+        }
+
+        // Verifica che il prezzo sia valido
+        if (prezzoVendita == null || prezzoVendita <= 0) {
+            return "Il prezzo di vendita deve essere maggiore di zero!";
+        }
+
+        // Imposta il treno come in vendita e assegna il prezzo
+        treno.setInVendita(true);
+        treno.setPrezzoVendita(prezzoVendita+treno.getCosto());
+
+        // Aggiorna il treno nel database
+        trenoDao.update(treno);
+
+        return "Treno messo in vendita con successo!";
+    }
+       
+    
+    
+//    
+//      @Transactional
+//      public void registrazioneTransazione(User acquirente, User venditore, Treno treno, Double importo) {
+//          // Crea un nuovo oggetto Transazione
+//          Transazione nuovaTransazione = new Transazione();
+//          nuovaTransazione.setAcquirente(acquirente);
+//          nuovaTransazione.setVenditore(venditore);
+//          nuovaTransazione.setTreno(treno);
+//          nuovaTransazione.setImporto(importo);
+//          nuovaTransazione.setData(LocalDateTime.now()); // Imposta la data corrente
 //
-//		// controllo se il venditore è lo stesso proprietario che ha messo in vendita il
-//		// treno
-//		Transazione market = ((TransazioneDao) marketDao).findTransactionByTreno(treno);
-//		if (market == null || !market.getVenditore().equals(venditore)) {
-//			throw new SecurityException("Non sei autorizzato a rimuovere questo treno dalla vendita.");
-//		}
+//          // Da fare poi i controlli
+//          userDao.update(acquirente);
+//          userDao.update(venditore);
+//          trenoDao.update(treno);
+//          ((Dao<Transazione>)transazioneDao).save(nuovaTransazione);
+//         
+//          
 //
-//		// tolgo il treno dalla vendita
-//		treno.setInVendita(false);
-//		trenoDao.update(treno);
-//
-//		// tolgo l'inserimento di vendita dal database
-//		marketDao.delete(market);
-//	}
+//      }
+//    
+//    
+//    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
+
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	

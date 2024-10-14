@@ -26,7 +26,7 @@ public class Transazione {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_transazione")
-	private Integer idTransazione;
+	private long idTransazione;
 	
 	@Column(name = "importo", nullable = false)
 	private Double importo;

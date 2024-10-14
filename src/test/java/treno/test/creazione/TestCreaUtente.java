@@ -1,4 +1,5 @@
-package treno.test.user;
+
+package treno.test.creazione;
 
 import java.util.List;
 
@@ -6,25 +7,23 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.treno.application.model.User;
-import com.treno.application.model.User.Stato;
-import com.treno.application.service.AdminService;
 import com.treno.application.service.UserService;
 
 public class TestCreaUtente {
 	
-	@SuppressWarnings("unlikely-arg-type")
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
         
 		ApplicationContext context = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
         
         UserService uservice = context.getBean(UserService.class);
-        AdminService aservice = context.getBean(AdminService.class);
-        User u = uservice.getUserDao().findById(11);
-        int id = 10;
-        User user = uservice.getUserDao().findById(id);
-        if(user != null) {
-        	uservice.login(id, user.getPassword());
-        }
+        User u = uservice.getUserDao().findById((long) 11);
+        long id = 10;
+//        User user = uservice.getUserDao().findById(id);
+//        
+//        if(user != null) {
+//        	uservice.login(userDto);
+//        }
         if(u != null) {
         	System.out.println("Trovato e rimosso");
         	uservice.cancellaAccount(u);
@@ -42,19 +41,13 @@ public class TestCreaUtente {
         	us.setNome("userN"+i);
         	us.setCognome("userC"+i);
         	us.setPortafoglio(100.0);
-        	uservice.registrazione(us);
+        	//uservice.registrazione(us);
         }
         
-        User searchedUser = uservice.getUserDao().findById(16);
-        if(searchedUser != null) {
-        	aservice.banna(searchedUser);
-        	if(searchedUser.getStato().equals(Stato.locked)) {
-        		aservice.riattiva(searchedUser);
-        	} else {
-        		System.out.println("Bloccato");
-        	}
-        }
     }
+	
+	
+	
 	
 
 }

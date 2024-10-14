@@ -22,7 +22,7 @@ import lombok.ToString;
 public abstract class Vagone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idVagone;
+    private long idVagone;
 
     @Column(name = "peso")
     private double peso;

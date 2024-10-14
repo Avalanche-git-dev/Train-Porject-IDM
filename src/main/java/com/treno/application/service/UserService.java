@@ -2,22 +2,21 @@ package com.treno.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
+import com.treno.application.dao.UserUtility;
+import com.treno.application.dto.UserDto;
 import com.treno.application.model.User;
-import com.treno.application.model.User.Stato;
 import com.treno.application.model.builder.TrenoBuilder;
 
 
-@Component
-@Scope("prototype")
+
 public class UserService {
 	
 	@Autowired
 	@Qualifier("UserDao")
-	private Dao<User> userDao;
+	private UserUtility userDao;
 	
 	@Autowired
 	private TrenoBuilder trenoBuilder;
@@ -27,7 +26,7 @@ public class UserService {
 	}
 
 	public void setUserDao(Dao<User> userDao) {
-		this.userDao = userDao;
+		this.userDao = (UserUtility) userDao;
 	}
 	
 	public TrenoBuilder getTrenoBuilder() {
@@ -58,22 +57,65 @@ public class UserService {
 	            System.out.println("Il numero di telefono non è corretto");
 	        }
 	    }
+		this.userDao = (UserUtility) userDao;
 	}
 	
-	public User login(int id, String password) {
-		User user = userDao.findById(id);
-		if(user != null && user.getPassword().equals(password)) {
-			System.out.println("L'utente ha effettuato corretamente il login");
-			return user;
-		}
-		System.out.println("La password non è corretta");
-		return null;
-	}
+	
+    //Metodo registrazione
+	@Transactional
+    public String registra(UserDto userDto) {
+        // Controlla se l'utente esiste già
+        User utenteEsistente = userDao.findByUsername(userDto.getUsername());
+        if (utenteEsistente != null) {
+            // Se l'utente esiste, restituisci un messaggio di errore
+            return "Utente già registrato con questo username!";
+        }
+
+        // Crea un nuovo oggetto User a partire dai dati del DTO
+        User nuovoUtente = new User();
+        nuovoUtente.setUsername(userDto.getUsername());
+        nuovoUtente.setPassword(userDto.getPassword());  // Assicurati di usare un sistema di hashing per le password!
+        nuovoUtente.setEmail(userDto.getEmail());
+
+        // Aggiungere il controllo della presenza dell'utente
+        userDao.save(nuovoUtente);
+
+        return "Registrazione avvenuta con successo!";
+    }
+	
+	//Metodo Login
+    public String login(UserDto userDto) {
+        // Controlla se l'utente esiste
+        User utenteEsistente = userDao.findByUsername(userDto.getUsername());
+        if (utenteEsistente == null) {
+            // Se l'utente non esiste, restituisci un messaggio di errore
+            return "Username o password errati!";
+        }
+
+        if (!userDto.getPassword().equals(utenteEsistente.getPassword())) {
+            // Se la password non corrisponde, restituisci un messaggio di errore
+            return "Username o password errati!";
+        }
+
+        // Se tutto è corretto, restituisci un messaggio di successo
+        return "Login avvenuto con successo!";
+    }
 	
 	public void logout() {}
 	
 	public void cancellaAccount(User user) {
 		userDao.delete(user);
 	}
+
+	public User findById(User user) {
+		return userDao.findById(user.getUserId());
+	}
+	
+    @Transactional
+	public void update(User user) {
+		userDao.update(user);
+	}
+	
+	
 
 }
