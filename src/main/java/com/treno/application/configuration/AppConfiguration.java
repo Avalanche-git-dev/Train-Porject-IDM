@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -36,6 +37,7 @@ import com.treno.application.service.ValutazioneService;
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan("com.treno.application")
+@ImportResource("classpath:/BeansConfiguration.xml")
 public class AppConfiguration {
 	// View Resolver
 

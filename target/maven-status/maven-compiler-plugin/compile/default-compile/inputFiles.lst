@@ -18,9 +18,13 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\TrenoUtility.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\UtenteValutaTreno.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\FactoryConfiguration.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\eccezzioni\InvalidPasswordException.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\TrenoController.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\builder\package-info.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\eccezzioni\UserNotFoundException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Treno.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Transazione.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\eccezzioni\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\Factory.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\MotriceDao.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\TransazioneDao.java
@@ -37,6 +41,7 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\UserDto.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Admin.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\DashboardController.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Vagone.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\TransazioneDto.java

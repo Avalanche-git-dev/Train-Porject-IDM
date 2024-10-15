@@ -6,61 +6,59 @@ public class TrenoFilter {
 	private Integer pesoMin, pesoMax;
 	private Integer lunghezzaMin, lunghezzaMax;
 	private String sigla;
-	
-	public double getPrezzoMin() {
+	private String marca;
+	public Integer getPrezzoMin() {
 		return prezzoMin;
 	}
-	
-	public void setPrezzoMin(int prezzoMin) {
+	public void setPrezzoMin(Integer prezzoMin) {
 		this.prezzoMin = prezzoMin;
 	}
-	
-	public double getPrezzoMax() {
+	public Integer getPrezzoMax() {
 		return prezzoMax;
 	}
-	
-	public void setPrezzoMax(int prezzoMax) {
+	public void setPrezzoMax(Integer prezzoMax) {
 		this.prezzoMax = prezzoMax;
 	}
-	
-	public double getPesoMin() {
+	public Integer getPesoMin() {
 		return pesoMin;
 	}
-	
-	public void setPesoMin(int pesoMin) {
+	public void setPesoMin(Integer pesoMin) {
 		this.pesoMin = pesoMin;
 	}
-	
-	public double getPesoMax() {
+	public Integer getPesoMax() {
 		return pesoMax;
 	}
-	
-	public void setPesoMax(int pesoMax) {
+	public void setPesoMax(Integer pesoMax) {
 		this.pesoMax = pesoMax;
 	}
-	
-	public double getLunghezzaMin() {
+	public Integer getLunghezzaMin() {
 		return lunghezzaMin;
 	}
-	
-	public void setLunghezzaMin(int lunghezzaMin) {
+	public void setLunghezzaMin(Integer lunghezzaMin) {
 		this.lunghezzaMin = lunghezzaMin;
 	}
-	
-	public double getLunghezzaMax() {
+	public Integer getLunghezzaMax() {
 		return lunghezzaMax;
 	}
-	
-	public void setLunghezzaMax(int lunghezzaMax) {
+	public void setLunghezzaMax(Integer lunghezzaMax) {
 		this.lunghezzaMax = lunghezzaMax;
 	}
-	
 	public String getSigla() {
 		return sigla;
 	}
-	
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
+	public String getMarca() {
+		return marca;
+	}
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+	public TrenoFilter() {
+		super();
+	}
+	
+	
 	
 }

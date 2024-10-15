@@ -1,5 +1,7 @@
 package com.treno.application.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.treno.application.dao.Dao;
 import com.treno.application.dao.UserUtility;
 import com.treno.application.dto.UserDto;
+import com.treno.application.filter.UtenteFilter;
 import com.treno.application.model.User;
+import com.treno.eccezzioni.InvalidPasswordException;
+import com.treno.eccezzioni.UserNotFoundException;
 
 
 
@@ -48,31 +53,15 @@ public class UserService {
         return "Registrazione avvenuta con successo!";
     }
 	
-	//Metodo Login
-    public String login(UserDto userDto) {
-        // Controlla se l'utente esiste
-        User utenteEsistente = userDao.findByUsername(userDto.getUsername());
-        if (utenteEsistente == null) {
-            // Se l'utente non esiste, restituisci un messaggio di errore
-            return "Username o password errati!";
-        }
 
-        if (!userDto.getPassword().equals(utenteEsistente.getPassword())) {
-            // Se la password non corrisponde, restituisci un messaggio di errore
-            return "Username o password errati!";
-        }
-
-        // Se tutto è corretto, restituisci un messaggio di successo
-        return "Login avvenuto con successo!";
-    }
-	
+     
 	public void logout() {}
 	
 	public void cancellaAccount(User user) {
 		userDao.delete(user);
 	}
 
-	public User findById(User user) {
+	public User findById(UserDto user) {
 		return userDao.findById(user.getUserId());
 	}
 	
@@ -80,7 +69,36 @@ public class UserService {
 	public void update(User user) {
 		userDao.update(user);
 	}
-	
+    
+    //Metodo login con eccezzioni
+    public void login(UserDto userDto) {
+        // Trova l'utente tramite il suo username
+        User user = userDao.findByUsername(userDto.getUsername());
+
+        // Controlla se l'utente esiste
+        if (user == null) {
+            throw new UserNotFoundException("Utente non trovato");
+        }
+
+        // Verifica la password (si presume che la password nel DB sia già hashata)
+        if (!user.getPassword().equals(userDto.getPassword())) {
+            throw new InvalidPasswordException("Password non corretta");
+        }
+
+        // Nessuna azione necessaria, l'autenticazione è avvenuta con successo
+    }
+    
+    // Metodo per cercare l'utente tramite username (esistente)
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+    
+    
+    
+    public List<User> filtraUtenti(UtenteFilter filtro, long userId) {
+	    return userDao.filtraUtenti(filtro, userId);
+	}
+
 	
 
 }

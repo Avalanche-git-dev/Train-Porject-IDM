@@ -19,7 +19,7 @@ public class TesUserService2 {
 		user2.setPassword("password456");
 		user2.setEmail("Calogerissimo@example.com");
 		
-		System.out.println(userService.login(user2));
+		//System.out(userService.login(user2));
 
 	}
 

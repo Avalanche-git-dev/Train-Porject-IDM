@@ -21,7 +21,7 @@ public abstract class RegisteredUser {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
-	@Column(name = "username")
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 
 	// Almeno 8 caratteri: maiuscola, minuscola, numero e carattere speciale

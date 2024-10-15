@@ -14,8 +14,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-
 	<build>
+
+
 		<plugins>
 			<!-- Plugin per la compilazione -->
 			<plugin>
@@ -36,6 +37,23 @@
 				<configuration>
 					<!--failOnMissingWebXml>false</failOnMissingWebXml-->
 				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M7</version> <!-- Versione compatibile con JUnit 5 -->
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+					</includes>
+					<properties>
+						<configurationParameters>
+							junit.jupiter.extensions.autodetection.enabled=true</configurationParameters>
+					</properties>
+				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
@@ -58,6 +76,15 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>3.2.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>6.1.3</version> <!-- La stessa versione di Spring che stai
+			usando -->
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Dipendenze per l'accesso al database -->
@@ -105,8 +132,8 @@
 		<dependency>
 			<groupId>jakarta.servlet.jsp.jstl</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-			<version>3.0.0</version>
-			<scope>provided</scope>
+			<version>3.0.1</version>
+			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -143,6 +170,21 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.4.11</version>
+		</dependency>
+
+		<!-- JUnit 5 (Jupiter) -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.10.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.10.0</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

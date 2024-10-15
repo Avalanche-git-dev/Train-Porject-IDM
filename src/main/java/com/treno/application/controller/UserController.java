@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.treno.application.dto.UserDto;
+import com.treno.application.model.User;
 import com.treno.application.service.UserService;
+import com.treno.eccezzioni.InvalidPasswordException;
+import com.treno.eccezzioni.UserNotFoundException;
 
-@Controller
+import jakarta.servlet.http.HttpSession;
+
+@Controller 
 public class UserController {
 
     @Autowired
@@ -42,24 +47,37 @@ public class UserController {
 
     // Get = mostra facciamo prima
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    public String Login(Model model) {
         model.addAttribute("userDto", new UserDto());
-        return "login.html"; // html o altra vista per il login
+        return "login"; // jsp o altra vista per il login , maledizione smettila con l'estensione, e fai sto view resolver html.
+        
     }
 
     // Post = ricevi dal front end
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("userDto") UserDto userDto, Model model) {
-        String risultato = userService.login(userDto);
-        model.addAttribute("message", risultato);
+    public String loginUser(@ModelAttribute("userDto") UserDto userDto, Model model, HttpSession session) {
+        try {
+            userService.login(userDto);
+            
+            // Se il login ha successo, salva l'utente nella sessione
+            User utente = userService.findByUsername(userDto.getUsername());
+            session.setAttribute("utente", utente);
+
+            return "redirect:/dashboard"; 
+
+        } catch (UserNotFoundException e) {
+            model.addAttribute("error", "Utente non trovato.");
+            return "login"; 
+
+        } catch (InvalidPasswordException e) {
+            model.addAttribute("error", "Password errata.");
+            return "login"; 
+        }
+    }
+
     
-		if (risultato.contains("successo")) {
-			// Esempio di salvataggio dell'utente nella sessione (se necessario)
-//			 session.setAttribute("utente",
-//			 userService.findByUsername(userDto.getUsername()));
-			return "dashboard"; // Redirect alla pagina successiva dopo il login (es. dashboard)
-		} else {
-			return "/login"; // Se fallisce, si rimanda alla pagina di login con messaggio d'errore
-		}
+    
+    
+    
 	}
-}
+

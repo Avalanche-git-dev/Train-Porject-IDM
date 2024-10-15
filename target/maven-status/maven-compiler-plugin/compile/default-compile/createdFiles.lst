@@ -4,13 +4,16 @@ com\treno\application\dao\ValutazioneDao.class
 com\treno\application\model\builder\TBuilder.class
 com\treno\application\TrenoApplication.class
 com\treno\application\model\package-info.class
+com\treno\application\controller\TrenoController.class
 com\treno\application\model\Vagone.class
+com\treno\eccezzioni\InvalidPasswordException.class
 com\treno\application\model\Transazione.class
 com\treno\application\configuration\FactoryConfiguration.class
 com\treno\application\model\Passeggero.class
 com\treno\application\model\Ristorante.class
 com\treno\application\dto\package-info.class
 com\treno\application\filter\UtenteFilter.class
+com\treno\application\controller\DashboardController.class
 com\treno\application\service\TrenoService.class
 com\treno\application\model\builder\package-info.class
 com\treno\application\model\User.class
@@ -33,8 +36,10 @@ com\treno\application\dao\TrenoUtility.class
 com\treno\application\dao\TransazioneUtility.class
 com\treno\application\model\Ruolo.class
 com\treno\application\service\package-info.class
+com\treno\eccezzioni\UserNotFoundException.class
 com\treno\package-info.class
 com\treno\application\dao\UtenteValutaTreno.class
+com\treno\eccezzioni\package-info.class
 com\treno\application\dao\Dao.class
 com\treno\application\dto\UserDto.class
 com\treno\application\service\ValutazioneService.class
