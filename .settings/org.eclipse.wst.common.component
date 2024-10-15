@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <wb-module deploy-name="ProgettoTreno">
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
@@ -10,12 +11,37 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-test-sources/test-annotations"/>
 =======
     <wb-module deploy-name="ProgettoTreno-0.0.1-SNAPSHOT">
+=======
+            
+    
+    <wb-module deploy-name="ProgettoTreno-1.0">
+                        
+        
+>>>>>>> aabf7be44b9dfeb8690f8371230c57fc25c5ae5a
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+                        
+        
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                        
+        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
 >>>>>>> 52e8342f54a88f0ec32230e3bb21cf418bfa9232
+=======
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+                        
+        
+>>>>>>> aabf7be44b9dfeb8690f8371230c57fc25c5ae5a
         <property name="context-root" value="ProgettoTreno"/>
+                        
+        
         <property name="java-output-path" value="/ProgettoTreno/target/classes"/>
+                    
+    
     </wb-module>
+        
+
 </project-modules>
