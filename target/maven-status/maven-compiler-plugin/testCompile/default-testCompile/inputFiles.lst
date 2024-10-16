@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\TestTrenoRiferimentiDB.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\creazione\TestCreazioneValutazioni.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\service\package-info.java
@@ -11,6 +10,7 @@ C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\TestDAOTreno.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\creazione\TestModificaNomi.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\filtri\TestFiltroTreno.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\service\TestTrenoService00.java
+C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\junit\package-info.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\TestDAO.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\user\TestUserCreaTreno.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\user\package-info.java
@@ -24,33 +24,6 @@ C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\service\TesUserServic
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\package-info.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\TestDaoValutazioni.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\filtri\TestFiltroUser.java
+C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\junit\DatabaseTest.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\creazione\TestTrenoCreaTrenoStringa.java
 C:\Users\utente\Train-Porject-IDM\src\test\java\treno\test\dao\TestoTrenoDaoNuovo.java
-=======
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\package-info.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestDAOTreno.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestValutazioneService01.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestCreaTreno.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestDaoProxy.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\junit\package-info.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestUserDao.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestoTrenoDaoNuovo.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestTrenoService00.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestUpdateIndicizzato.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestModificaNomi.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestValutazioniService00.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestDaoValutazioni.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestTransazioni00.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestDAO.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestUserService.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestCreaUtente.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\package-info.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestTrenoCreaTrenoStringa.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\user\package-info.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TestTransazioni01.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\dao\TestTrenoRiferimentiDB.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\package-info.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\creazione\TestCreazioneValutazioni.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\junit\DatabaseTest.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\test\java\treno\test\service\TesUserService2.java
->>>>>>> 0aceb76548f7ce957383e87072f4129c82bb6b70

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
@@ -15,7 +16,7 @@ import com.treno.application.model.builder.TrenoBuilder;
 import com.treno.eccezzioni.InvalidPasswordException;
 import com.treno.eccezzioni.UserNotFoundException;
 
-
+@Service
 public class UserService {
 	
 	@Autowired

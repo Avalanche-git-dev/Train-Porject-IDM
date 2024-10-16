@@ -58,4 +58,13 @@ public class TrenoService {
 	    return ((TrenoUtility) trenoDao).filtraTreni(filtro, userId);
 	}
 
+	public List<Treno> findTreniInVendita() {
+		List<Treno> allTreni = trenoDao.findAll();
+		for(Treno t: allTreni) {
+			if(t.getInVendita() != true)
+				allTreni.remove(t);
+		}
+		return allTreni;
+	}
+
 }

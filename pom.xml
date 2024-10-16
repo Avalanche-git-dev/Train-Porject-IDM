@@ -24,8 +24,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.10.1</version>
 				<configuration>
-					<source>21</source>
-					<target>21</target>
+					<source>22</source>
+					<target>22</target>
 				</configuration>
 			</plugin>
 
@@ -39,7 +39,7 @@
 				</configuration>
 			</plugin>
 
-
+			<!-- Plugin per eseguire i test con JUnit 5 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -50,10 +50,10 @@
 					</includes>
 					<properties>
 						<configurationParameters>
-							junit.jupiter.extensions.autodetection.enabled=true</configurationParameters>
+							junit.jupiter.extensions.autodetection.enabled=true
+						</configurationParameters>
 					</properties>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
@@ -88,18 +88,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>6.1.3</version> <!-- La stessa versione di Spring che stai
-			usando -->
+			<version>6.1.3</version> <!-- La stessa versione di Spring -->
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Dipendenze per l'accesso al database -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.2.0.Final</version>
-		</dependency>
-
+        <!-- Dipendenza per MySQL -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -139,20 +132,13 @@
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>10.0.27</version>
         </dependency>
+
 		<!-- Dipendenze per JSTL -->
 		<dependency>
 			<groupId>jakarta.servlet.jsp.jstl</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 			<version>3.0.1</version>
-			<!--scope>provided</scope-->
 		</dependency>
-
-        <!-- Dipendenze per JSTL -->
-        <dependency>
-            <groupId>jakarta.servlet.jsp.jstl</groupId>
-            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.glassfish.web</groupId>
@@ -160,28 +146,12 @@
             <version>3.0.1</version>
         </dependency>
 
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jasper</artifactId>
-			<version>10.1.0</version> <!-- Usa una versione compatibile con il
-			tuo Tomcat -->
-		</dependency>
-
-		<!-- Altre dipendenze -->
 		<!-- Dependency Injection -->
 		<dependency>
 			<groupId>jakarta.inject</groupId>
 			<artifactId>jakarta.inject-api</artifactId>
 			<version>2.0.1</version>
 		</dependency>
-
-        <!-- Altre dipendenze -->
-        <!-- Dependency Injection -->
-        <dependency>
-            <groupId>jakarta.inject</groupId>
-            <artifactId>jakarta.inject-api</artifactId>
-            <version>2.0.1</version>
-        </dependency>
 
         <!-- Lombok -->
         <dependency>
@@ -205,7 +175,7 @@
             <version>1.4.11</version>
         </dependency>
         
-        		<!-- JUnit 5 (Jupiter) -->
+        <!-- JUnit 5 (Jupiter) -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>

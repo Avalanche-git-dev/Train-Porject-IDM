@@ -160,7 +160,7 @@
         <!-- Menu nascosto -->
         <ul id="menu-items" class="menu-items">
             <li><a href="#">I tuoi treni</a></li>
-            <li><a href="#">Marketplace</a></li>
+            <li><a href="/ProgettoTreno/marketplace">Marketplace</a></li>
         </ul>
 
         <div class="auth-links">
@@ -202,7 +202,7 @@
 
         <!-- Leggenda -->
         <div class="legend">
-            Leggenda: H (motrice), C (Cargo), P (Vagone passeggeri), R (Vagone ristorante)
+            Leggenda: H (Motrice), C (Cargo), P (Vagone passeggeri), R (Vagone ristorante)
         </div>
     </div>
 </body>
