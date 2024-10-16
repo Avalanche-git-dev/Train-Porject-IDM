@@ -1,5 +1,6 @@
 com\treno\application\package-info.class
 com\treno\application\configuration\PrototypeScopePostProcessor.class
+com\treno\application\dto\TrenoDto.class
 com\treno\application\dao\ValutazioneDao.class
 com\treno\application\model\builder\TBuilder.class
 com\treno\application\TrenoApplication.class
@@ -10,7 +11,7 @@ com\treno\application\configuration\FactoryConfiguration.class
 com\treno\application\model\Passeggero.class
 com\treno\application\model\Ristorante.class
 com\treno\application\dto\package-info.class
-com\treno\application\filter\UtenteFilter.class
+com\treno\application\service\AdminService.class
 com\treno\application\service\TrenoService.class
 com\treno\application\model\builder\package-info.class
 com\treno\application\model\User.class
@@ -29,6 +30,7 @@ com\treno\application\model\Motrice.class
 com\treno\application\model\Valutazione.class
 com\treno\application\configuration\package-info.class
 com\treno\application\controller\package-info.class
+com\treno\application\controller\HomepageController.class
 com\treno\application\dao\TrenoUtility.class
 com\treno\application\dao\TransazioneUtility.class
 com\treno\application\model\Ruolo.class
@@ -42,10 +44,12 @@ com\treno\application\configuration\AppConfiguration.class
 com\treno\application\dao\ProxyDao.class
 com\treno\Temp.class
 com\treno\application\dao\VagoneDao.class
+Prova\Servlet.class
 com\treno\application\model\Treno.class
 com\treno\application\dao\package-info.class
 com\treno\application\configuration\Factory.class
 com\treno\application\dao\UserDao.class
 com\treno\application\model\RegisteredUser.class
 com\treno\application\dao\TransazioneDao.class
+com\treno\application\filter\UserFilter.class
 com\treno\application\model\User$Stato.class
