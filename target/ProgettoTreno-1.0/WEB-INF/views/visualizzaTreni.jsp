@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,16 +128,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/profilo">Profilo</a>
+                    <a class="nav-link" href="/profilo">Profilo</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/treni">Treni</a>
+                    <a class="nav-link" href="/treni">Treni</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/market">Market</a>
+                    <a class="nav-link" href="/market">Market</a>
                 </li>
             </ul>
-            <form class="form-inline" action="${pageContext.request.contextPath}/logout" method="post">
+            <form class="form-inline" action="/logout" method="post">
                 <button class="btn logout-btn my-2 my-sm-0" type="submit">Logout</button>
                 <i class="fas fa-cog settings-icon" title="Impostazioni"></i>
             </form>
@@ -150,13 +149,18 @@
         <h1>Lista dei Treni</h1>
         <div class="train-list">
             <!-- Singolo elemento del treno -->
-            <c:forEach var="treno" items="${treni}">
-                <div class="train-item">
-                    <img src="${treno.immagine}" alt="Immagine Treno">
-                    <h3>${treno.nome}</h3>
-                    <p>${treno.descrizione}</p>
-                </div>
-            </c:forEach>
+            <!-- Aggiungi manualmente i treni in modo statico o con script lato server -->
+            <div class="train-item">
+                <img src="immagine1.jpg" alt="Immagine Treno 1">
+                <h3>Treno 1</h3>
+                <p>Descrizione del Treno 1</p>
+            </div>
+
+            <div class="train-item">
+                <img src="immagine2.jpg" alt="Immagine Treno 2">
+                <h3>Treno 2</h3>
+                <p>Descrizione del Treno 2</p>
+            </div>
         </div>
     </div>
 

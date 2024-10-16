@@ -89,7 +89,7 @@ public class TrenoController {
 
        model.addAttribute("treni", treni); // Passa i treni alla vista
        model.addAttribute("utente", utente); // Passa anche l'utente alla vista per eventuali altre informazioni
-       return "listaTreni"; // Restituisce la vista per la lista dei treni
+       return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
    }
    
    
@@ -105,7 +105,7 @@ public class TrenoController {
        List<Treno> treni = trenoService.filtraTreni(trenoFilter, utente.getUserId());
 
        model.addAttribute("treni", treni);
-       return "listaTreni";
+       return "visualizzaTreni";
    }
 
 

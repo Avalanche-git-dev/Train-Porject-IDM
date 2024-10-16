@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +25,20 @@
             background-color: #f0f0f0; /* Grigio chiaro */
             padding: 15px;
             border-bottom: 1px solid #ddd;
+        }
+
+        .navbar-brand {
+            color: #333; /* Grigio scuro */
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold; /* Più spesso rispetto agli altri */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #0275d8; /* Blu per hover */
         }
 
         .navbar-nav .nav-item .nav-link {
@@ -115,7 +128,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -145,7 +158,7 @@
             <!-- Pulsante "Crea un nuovo treno" mappato al metodo crea -->
             <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/treni/crea'">Crea un nuovo treno</button>
             <!-- Pulsante "Visualizza treni" mappato alla pagina di visualizzazione treni -->
-            <button class="cta-btn" onclick="window.location.href='/visualizzaTreni'">Visualizza treni</button>
+            <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/visualizzaTreni'">Visualizza treni</button>
         </div>
     </div>
 
@@ -161,6 +174,11 @@
     <!-- Font Awesome for settings icon -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+    <script>
+        document.querySelector('.navbar-brand').addEventListener('click', function() {
+            document.querySelector('.navbar-collapse').classList.add('d-none'); /* Nasconde la navbar al click su Dashboard */
+            window.location.href = '${pageContext.request.contextPath}/dashboard'; /* Reindirizza alla dashboard */
+        });
+    </script>
 </body>
 </html>
-l>

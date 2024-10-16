@@ -142,6 +142,13 @@
 			<version>3.0.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper</artifactId>
+			<version>10.1.0</version> <!-- Usa una versione compatibile con il
+			tuo Tomcat -->
+		</dependency>
+
 		<!-- Altre dipendenze -->
 		<!-- Dependency Injection -->
 		<dependency>

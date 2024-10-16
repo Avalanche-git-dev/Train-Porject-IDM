@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.treno.application.dao.Dao;
 import com.treno.application.dao.TrenoUtility;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
@@ -24,7 +23,7 @@ public class TrenoService {
 
 	@Autowired
 	@Qualifier("TrenoDao")
-	private Dao<Treno> trenoDao;
+	private TrenoUtility trenoDao;
 
 	// Owner gestito trasmite sessione quindi arriva a livello service convalidato.
 	@Transactional
@@ -41,6 +40,7 @@ public class TrenoService {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<Treno> findAllById(long userId) {
         return (List<Treno>) trenoDao.findById(userId);
     }

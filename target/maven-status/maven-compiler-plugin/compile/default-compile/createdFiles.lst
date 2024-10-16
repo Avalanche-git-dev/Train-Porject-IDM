@@ -45,6 +45,7 @@ com\treno\application\dto\UserDto.class
 com\treno\application\service\ValutazioneService.class
 com\treno\application\configuration\AppConfiguration.class
 com\treno\application\dao\ProxyDao.class
+com\treno\application\controller\ProfiloController.class
 com\treno\Temp.class
 com\treno\application\dao\VagoneDao.class
 com\treno\application\model\Treno.class

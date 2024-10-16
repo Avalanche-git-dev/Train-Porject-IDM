@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,30 +27,47 @@
             border-bottom: 1px solid #ddd;
         }
 
+        .navbar-brand {
+            color: #333; /* Grigio scuro */
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold; /* Più spesso rispetto agli altri */
+            border-radius: 5px;
+            transition: color 0.3s ease; /* Aggiunge la transizione */
+        }
+
+        .navbar-brand:hover {
+            color: #0275d8; /* Blu per hover */
+        }
+
         .navbar-nav .nav-item .nav-link {
             color: #333; /* Grigio scuro */
             margin-right: 20px;
             font-size: 18px;
+            transition: color 0.3s ease; /* Aggiunge la transizione */
         }
 
         .navbar-nav .nav-item .nav-link:hover {
             color: #0275d8; /* Blu per hover */
         }
 
+        /* Logout button */
         .logout-btn {
-            background-color: #f0f0f0; /* Grigio chiaro */
-            color: #333; /* Grigio scuro */
+            background-color: #333; /* Colore simile al tasto Home */
+            color: white;
             padding: 10px 20px;
-            border: 2px solid #ddd; /* Bordo */
+            border: none;
             border-radius: 20px; /* Arrotondato */
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         .logout-btn:hover {
-            background-color: #e0e0e0; /* Hover Grigio leggermente più scuro */
+            background-color: #555; /* Hover grigio più scuro */
         }
 
+        /* Settings icon */
         .settings-icon {
             font-size: 22px;
             color: #0275d8;
@@ -81,22 +97,6 @@
             margin-bottom: 50px;
         }
 
-        .cta-btn {
-            background-color: #0275d8; /* Blu */
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 300px; /* Mantiene la stessa dimensione della versione precedente */
-            margin: 0 auto; /* Centra il pulsante */
-        }
-
-        .cta-btn:hover {
-            background-color: #025aa5; /* Hover Blu */
-        }
-
         footer {
             background-color: #f0f0f0; /* Grigio chiaro */
             padding: 20px;
@@ -115,7 +115,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -142,7 +142,6 @@
     <div class="main">
         <h1>Benvenuto, ${utente.username}</h1>
         <p>Questa è la tua dashboard personale.</p>
-        <button class="cta-btn" onclick="window.location.href='/treni/crea'">Crea un nuovo treno</button>
     </div>
 
     <!-- Footer -->
@@ -159,4 +158,3 @@
 
 </body>
 </html>
-

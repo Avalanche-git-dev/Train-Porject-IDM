@@ -27,30 +27,47 @@
             border-bottom: 1px solid #ddd;
         }
 
+        .navbar-brand {
+            color: #333; /* Grigio scuro */
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold; /* Più spesso rispetto agli altri */
+            border-radius: 5px;
+            transition: color 0.3s ease; /* Aggiunge la transizione */
+        }
+
+        .navbar-brand:hover {
+            color: #0275d8; /* Blu per hover */
+        }
+
         .navbar-nav .nav-item .nav-link {
             color: #333; /* Grigio scuro */
             margin-right: 20px;
             font-size: 18px;
+            transition: color 0.3s ease; /* Aggiunge la transizione */
         }
 
         .navbar-nav .nav-item .nav-link:hover {
             color: #0275d8; /* Blu per hover */
         }
 
+        /* Logout button */
         .logout-btn {
-            background-color: #f0f0f0; /* Grigio chiaro */
-            color: #333; /* Grigio scuro */
+            background-color: #333; /* Colore simile al tasto Home */
+            color: white;
             padding: 10px 20px;
-            border: 2px solid #ddd; /* Bordo */
+            border: none;
             border-radius: 20px; /* Arrotondato */
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         .logout-btn:hover {
-            background-color: #e0e0e0; /* Hover Grigio leggermente più scuro */
+            background-color: #555; /* Hover grigio più scuro */
         }
 
+        /* Settings icon */
         .settings-icon {
             font-size: 22px;
             color: #0275d8;

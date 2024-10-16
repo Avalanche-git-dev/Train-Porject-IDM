@@ -11,6 +11,7 @@ import com.treno.application.service.TransazioneService;
 
 public class TestTransazioni00 {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");

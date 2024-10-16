@@ -27,6 +27,20 @@
             border-bottom: 1px solid #ddd;
         }
 
+        .navbar-brand {
+            color: #333; /* Grigio scuro */
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold; /* Più spesso rispetto agli altri */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            color: #0275d8; /* Blu per hover */
+        }
+
         .navbar-nav .nav-item .nav-link {
             color: #333; /* Grigio scuro */
             margin-right: 20px;
@@ -114,7 +128,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">Dashboard</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -160,5 +174,11 @@
     <!-- Font Awesome for settings icon -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+    <script>
+        document.querySelector('.navbar-brand').addEventListener('click', function() {
+            document.querySelector('.navbar-collapse').classList.add('d-none'); /* Nasconde la navbar al click su Dashboard */
+            window.location.href = '${pageContext.request.contextPath}/dashboard'; /* Reindirizza alla dashboard */
+        });
+    </script>
 </body>
 </html>

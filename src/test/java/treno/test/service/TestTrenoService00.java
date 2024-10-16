@@ -9,7 +9,7 @@ import com.treno.application.service.TrenoService;
 
 public class TestTrenoService00 {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public static void main(String[] args) {
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfigurationTest.xml");
 		TrenoService service = (TrenoService) ctx.getBean("TrenoService");

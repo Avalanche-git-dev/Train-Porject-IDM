@@ -61,8 +61,8 @@ public class UserService {
 		userDao.delete(user);
 	}
 
-	public User findById(UserDto user) {
-		return userDao.findById(user.getUserId());
+	public User findById(long l) {
+		return userDao.findById(l);
 	}
 	
     @Transactional

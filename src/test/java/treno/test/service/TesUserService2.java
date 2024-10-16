@@ -8,6 +8,7 @@ import com.treno.application.service.UserService;
 
 public class TesUserService2 {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfigurationTest.xml");
@@ -18,9 +19,9 @@ public class TesUserService2 {
 		user2.setUsername("Calogero");
 		user2.setPassword("password456");
 		user2.setEmail("Calogerissimo@example.com");
-		
-		//System.out(userService.login(user2));
 
+		// System.out(userService.login(user2));
+		ctx.close();
 	}
 
 }

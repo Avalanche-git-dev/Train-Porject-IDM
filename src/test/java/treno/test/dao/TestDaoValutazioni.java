@@ -11,6 +11,7 @@ import com.treno.application.model.builder.TrenoBuilder;
 
 public class TestDaoValutazioni {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");

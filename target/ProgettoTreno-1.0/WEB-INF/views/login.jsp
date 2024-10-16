@@ -19,41 +19,37 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         /* Navbar styling */
         .navbar {
-            background-color: #f0f0f0; /* Grigio chiaro */
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
             width: 100%;
-            position: fixed;
-            top: 0;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
+            padding: 15px 0;
+            background-color: #f0f0f0; /* Grigio chiaro */
+            border-bottom: 1px solid #ddd;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        .navbar a {
-            text-decoration: none;
-            color: #333; /* Grigio scuro */
-            margin-right: 20px;
-            padding: 10px;
-            font-weight: 500;
-            font-size: 18px;
-        }
-
-        .navbar .home-btn {
+        .home-btn {
             background-color: #333; /* Grigio scuro */
             color: white;
-            padding: 10px 20px;
+            padding: 10px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .navbar .home-btn:hover {
-            background-color: #555; /* Hover Grigio scuro */
+        .home-btn:hover {
+            background-color: #555; /* Hover Grigio più scuro */
+            transform: scale(1.05);
         }
 
         /* Form container */
@@ -61,23 +57,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100%;
             width: 100%;
-            flex-direction: column;
         }
 
         .login-form {
             background-color: white;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             width: 350px;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .login-form h2 {
             text-align: center;
             color: #333; /* Grigio scuro */
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 20px;
             font-weight: 700;
         }
@@ -102,11 +99,12 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .login-form .login-btn:hover {
             background-color: #025aa5; /* Hover Blu */
+            transform: scale(1.05);
         }
 
         /* Animation for input focus */
@@ -114,11 +112,6 @@
             border-color: #0275d8;
             box-shadow: 0 0 5px rgba(2, 117, 216, 0.3);
             outline: none;
-        }
-
-        /* Add some subtle animation to make it more appealing */
-        .login-form {
-            animation: fadeIn 1s ease-in-out;
         }
 
         @keyframes fadeIn {
@@ -130,6 +123,13 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
         }
 
     </style>
@@ -152,10 +152,9 @@
 
         <!-- Display errors if any -->
         <c:if test="${not empty errorMessage}">
-            <div style="color:red; text-align: center; margin-top: 10px;">${errorMessage}</div>
+            <div class="error-message">${errorMessage}</div>
         </c:if>
     </div>
 
 </body>
 </html>
-

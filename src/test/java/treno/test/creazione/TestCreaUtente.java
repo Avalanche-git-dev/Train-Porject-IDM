@@ -11,7 +11,7 @@ import com.treno.application.service.UserService;
 
 public class TestCreaUtente {
 	
-	@SuppressWarnings("resource")
+	@SuppressWarnings({ "resource", "unused" })
 	public static void main(String[] args) {
         
 		ApplicationContext context = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
