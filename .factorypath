@@ -49,6 +49,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/tomcat/tomcat-api/10.1.0/tomcat-api-10.1.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/tomcat/tomcat-util-scan/10.1.0/tomcat-util-scan-10.1.0.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/tomcat/tomcat-util/10.1.0/tomcat-util-10.1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/google/code/gson/gson/2.8.8/gson-2.8.8.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar" enabled="true" runInBatchMode="false"/>

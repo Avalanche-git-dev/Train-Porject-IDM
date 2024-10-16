@@ -56,6 +56,10 @@ public class TrenoService {
 	    return ((TrenoUtility) trenoDao).filtraTreni(filtro, userId);
 	}
 
+	public Treno findById(Long id) {
+		return trenoDao.findById(id);
+	}
+
 //	 public List<Treno> findTreniByUser(long userId) {
 //	        return trenoDao.findAllTreniByUser(userId);
 //	    }

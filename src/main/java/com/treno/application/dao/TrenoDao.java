@@ -24,7 +24,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
 	public List<Treno> findAllTreniByUser (long userId) {
         String hql = "FROM Treno t WHERE t.owner.id = :userId";
-        return em.createQuery(hql, Treno.class)
+        return super.em.createQuery(hql, Treno.class)
                  .setParameter("userId", userId)
                  .getResultList();
     }

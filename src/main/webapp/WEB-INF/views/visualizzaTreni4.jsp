@@ -38,8 +38,27 @@
 </div>
 
 <script>
-    // Recupera la lista dei treni passata dal backend in formato JSON
-    const treniUtente = JSON.parse('${treniJson}');  // Popola con la lista passata dal controller
+    // Lista di treni dell'utente (simulazione statica)
+    const treniUtente = [
+        {
+            id: 1,
+            nome: "Treno 1",
+            mediaValutazioni: 4.5,
+            immagineUrl: "/images/treno1.png"
+        },
+        {
+            id: 2,
+            nome: "Treno 2",
+            mediaValutazioni: 3.8,
+            immagineUrl: "/images/treno2.png"
+        },
+        {
+            id: 3,
+            nome: "Treno 3",
+            mediaValutazioni: 4.2,
+            immagineUrl: "/images/treno3.png"
+        }
+    ];
 
     // Funzione per popolare la lista dei treni
     function populateTrainList() {
@@ -47,16 +66,13 @@
         trainListContainer.innerHTML = ''; // Pulisce l'elemento
 
         treniUtente.forEach(treno => {
-            const mediaValutazioni = treno.mediaValutazioni ? treno.mediaValutazioni : "Non valutato";
-            const imageUrl = treno.immagineUrl ? treno.immagineUrl : "/images/default-train.png";
-
             const trainCard = `
                 <div class="col-md-4 train-card">
                     <div class="card">
-                        <img src="${imageUrl}" class="card-img-top" alt="${treno.nome}">
+                        <img src="${treno.immagineUrl}" class="card-img-top" alt="${treno.nome}">
                         <div class="card-body">
                             <h5 class="card-title">${treno.nome}</h5>
-                            <p class="card-text">Media Valutazioni: ${mediaValutazioni} / 5</p>
+                            <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
                             <button class="details-btn" onclick="window.location.href='/treni/dettagli/${treno.id}'">Dettagli</button>
                         </div>
                     </div>

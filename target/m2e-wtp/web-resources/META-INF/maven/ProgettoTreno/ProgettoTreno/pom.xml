@@ -149,7 +149,22 @@
 			tuo Tomcat -->
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.taglibs</groupId>
+			<artifactId>taglibs-standard-impl</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
+
 		<!-- Altre dipendenze -->
+
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.8</version>
+		</dependency>
+
 		<!-- Dependency Injection -->
 		<dependency>
 			<groupId>jakarta.inject</groupId>
