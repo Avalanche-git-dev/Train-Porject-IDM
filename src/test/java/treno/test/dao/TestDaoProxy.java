@@ -11,7 +11,7 @@ import com.treno.application.model.Vagone;
 
 public class TestDaoProxy {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public static void main(String[] args) {
 		
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");

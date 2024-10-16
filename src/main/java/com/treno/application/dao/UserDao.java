@@ -66,6 +66,12 @@ public class UserDao extends ProxyDao<User> implements UserUtility{
 	    // Restituisci la lista dei risultati
 	    return  query.getResultList();
     }
-	
+
+	@Override
+	public List<User> filtraUserByParametro(UserFilter filtro, long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }
-	

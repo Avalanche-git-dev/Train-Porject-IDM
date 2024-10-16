@@ -8,6 +8,7 @@ import com.treno.application.model.Treno;
 public interface TrenoUtility extends Dao <Treno> {
 
 	Treno findById(Treno treno);
-	List<Treno> filtraTrenoByParametro(TrenoFilter filtro);
+	//Treno findById(Treno treno);
+	List<Treno> filtraTreni(TrenoFilter filtro, long userId);
 
 }

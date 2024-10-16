@@ -14,6 +14,7 @@ import com.treno.application.service.ValutazioneService;
 public class TestCreazioneValutazioni {
 	
 	
+	@SuppressWarnings("unchecked")
 	public static void main (String[]arg) {
 	// Crea il contesto Spring e recupera i bean necessari
 	AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");

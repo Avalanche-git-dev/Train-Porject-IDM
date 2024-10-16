@@ -9,6 +9,7 @@ import com.treno.application.model.User;
 public class TestUpdateIndicizzato {
 	
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 treno\test\service\package-info.class
+=======
+treno\test\creazione\TestModificaNomi.class
+treno\test\junit\package-info.class
+>>>>>>> 0aceb76548f7ce957383e87072f4129c82bb6b70
 treno\test\dao\TestDAO.class
 treno\test\service\TestTransazioni01.class
 treno\test\creazione\TestTrenoCreaTrenoStringa.class
@@ -6,7 +11,15 @@ treno\test\service\TestTrenoService00.class
 treno\test\service\TestValutazioniService00.class
 treno\test\filtri\TestFiltroUser.class
 treno\test\dao\TestTrenoRiferimentiDB.class
+<<<<<<< HEAD
 treno\test\filtri\TestFiltroTreno.class
+=======
+treno\test\dao\TestUserDao.class
+treno\test\junit\DatabaseTest.class
+treno\test\creazione\TestCreazioneValutazioni.class
+treno\test\dao\TestDaoValutazioni.class
+treno\test\creazione\TestCreaUtente.class
+>>>>>>> 0aceb76548f7ce957383e87072f4129c82bb6b70
 treno\test\service\TesUserService2.class
 treno\test\dao\TestDAOTreno.class
 treno\test\dao\package-info.class

@@ -6,7 +6,8 @@ public class TrenoFilter {
 	private Integer pesoMin, pesoMax;
 	private Integer lunghezzaMin, lunghezzaMax;
 	private String sigla;
-	
+	private String marca;
+
 	public Integer getPrezzoMin() {
 		return prezzoMin;
 	}
@@ -49,18 +50,21 @@ public class TrenoFilter {
 	
 	public Integer getLunghezzaMax() {
 		return lunghezzaMax;
-	}
-	
-	public void setLunghezzaMax(Integer lunghezzaMax) {
-		this.lunghezzaMax = lunghezzaMax;
-	}
-	
+	}	
 	public String getSigla() {
 		return sigla;
 	}
-	
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
+	}
+	public String getMarca() {
+		return marca;
+	}
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+	public TrenoFilter() {
+		super();
 	}
 	
 }

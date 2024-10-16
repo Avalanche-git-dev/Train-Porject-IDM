@@ -1,7 +1,8 @@
 package com.treno.application.dto;
 
 public class UserDto {
-
+	
+	private int userId;
     private String username;
     private String password;
     private String email;
@@ -30,4 +31,14 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
+	
 }

@@ -27,7 +27,7 @@ public class TestFiltroTreno {
 		
 		filtro.setSigla("HP");
         
-        List<Treno> treniFiltrati = trenoDao.filtraTrenoByParametro(filtro);
+        List<Treno> treniFiltrati = ((TrenoDao) trenoDao).filtraTrenoByParametro(filtro);
         
         if(treniFiltrati.size() == 0) {
         	System.out.println("Nessun treno corrisponde a questa ricerca");

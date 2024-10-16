@@ -7,7 +7,11 @@
 =======
   <fixed facet="wst.jsdt.web"/>
   <installed facet="java" version="21"/>
+<<<<<<< HEAD
 >>>>>>> 52e8342f54a88f0ec32230e3bb21cf418bfa9232
   <installed facet="jst.web" version="5.0"/>
+=======
+>>>>>>> 0aceb76548f7ce957383e87072f4129c82bb6b70
   <installed facet="wst.jsdt.web" version="1.0"/>
+  <installed facet="jst.web" version="5.0"/>
 </faceted-project>

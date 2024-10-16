@@ -1,11 +1,14 @@
 package com.treno.application.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.treno.application.dao.Dao;
+import com.treno.application.dao.TrenoUtility;
+import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.builder.TBuilder;
@@ -20,29 +23,39 @@ public class TrenoService {
 
 	@Autowired
 	@Qualifier("TrenoDao")
-	private Dao<Treno> trenoDao;
+	private TrenoUtility trenoDao;
 
 	// Owner gestito trasmite sessione quindi arriva a livello service convalidato.
 	@Transactional
-	public Treno creaTreno(String input, User owner, String marca) {
+	public void creaTreno(String input, User owner, String marca) {
 		TBuilder builder2 = (TBuilder) builder;
 		builder2.getFactory().setMarca(marca);
 		Treno treno = builder.creaTrenoDaStringa(input);
 		treno.setOwner(owner);
-		// Da Aggiungere la logica di controllo per il treno se esiste gia oppure no per
-		// controllare se l'utente è guest prima di salvare.
 		trenoDao.save(treno);
-		return treno;
 	}
 
-	public Treno findById(Treno treno) {
+	public Treno findByT(Treno treno) {
 		return trenoDao.findById(treno.getIdTreno());
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Treno> findAllById(long userId) {
+        return (List<Treno>) trenoDao.findById(userId);
+    }
 
 	@Transactional
 	public void update(Treno treno) {
 		trenoDao.update(treno);
 
+	}
+	
+	
+	//Metodo pronto per i filtri 
+
+	public List<Treno> filtraTreni(TrenoFilter filtro, long userId) {
+	    return ((TrenoUtility) trenoDao).filtraTreni(filtro, userId);
 	}
 
 }
