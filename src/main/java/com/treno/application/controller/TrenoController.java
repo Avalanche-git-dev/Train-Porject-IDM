@@ -33,7 +33,6 @@ public class TrenoController {
    @GetMapping
    public String treni(HttpSession session, Model model) {
        User utente = (User) session.getAttribute("utente");
-       
        if (utente == null) {
            return "redirect:/login"; 
        }
@@ -44,7 +43,7 @@ public class TrenoController {
 // Metodo per mostrare la pagina per creare un nuovo treno
    @GetMapping("/crea")
    public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-       User utente = (User) session.getAttribute("utente");
+	   User utente = (User) session.getAttribute("utente");
        
        if (utente == null) {
            return "redirect:/login"; 
@@ -60,14 +59,11 @@ public class TrenoController {
                            @RequestParam("marca") String marca, 
                            HttpSession session, Model model) {
        User utente = (User) session.getAttribute("utente");
-       
        if (utente == null) {
            return "redirect:/login";
        }
-
        // Chiama il servizio per creare il treno
        trenoService.creaTreno(input, utente, marca);
-
        return "redirect:/treni"; // Reindirizza alla lista dei treni o alla dashboard
    }
    

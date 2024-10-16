@@ -202,7 +202,7 @@
 
         <!-- Leggenda -->
         <div class="legend">
-            Leggenda: H (Motrice), C (Cargo), P (Vagone passeggeri), R (Vagone ristorante)
+            Legenda: H (Motrice), C (Cargo), P (Vagone passeggeri), R (Vagone ristorante)
         </div>
     </div>
 </body>

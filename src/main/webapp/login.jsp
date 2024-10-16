@@ -139,12 +139,12 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index" class="home-btn">Home</a>
+        <a href="homepage.jsp" class="home-btn">Home</a>
     </div>
 
     <!-- Login form -->
     <div class="login-container">
-        <form class="login-form" action="${pageContext.request.contextPath}/login" method="post">
+        <form class="login-form" action="${pageContext.request.contextPath}/login.jsp" method="post">
             <h2>Log In</h2>
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
