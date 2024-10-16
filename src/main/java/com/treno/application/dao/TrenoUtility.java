@@ -13,4 +13,5 @@ public interface TrenoUtility extends Dao <Treno> {
 
 	public List<Treno> findAllTreniByUser(long userId);
 
+
 }

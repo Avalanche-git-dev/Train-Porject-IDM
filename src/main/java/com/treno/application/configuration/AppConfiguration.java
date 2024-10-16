@@ -33,9 +33,10 @@ import com.treno.application.service.ValutazioneService;
 
 
 
+
 @Configuration
 @EnableTransactionManagement
-@EnableWebMvc
+@EnableWebMvc//Questo maledetto mi è costato una figura del cazzo
 @ComponentScan("com.treno.application")
 @ImportResource("classpath:/BeansConfiguration.xml")
 public class AppConfiguration {

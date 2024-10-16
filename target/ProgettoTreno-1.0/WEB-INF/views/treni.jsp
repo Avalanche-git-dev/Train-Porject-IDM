@@ -31,7 +31,7 @@
             color: #333; /* Grigio scuro */
             padding: 10px 20px;
             font-size: 18px;
-            font-weight: bold; /* Più spesso rispetto agli altri */
+            font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
             transition: color 0.3s ease;
@@ -42,7 +42,7 @@
         }
 
         .navbar-nav .nav-item .nav-link {
-            color: #333; /* Grigio scuro */
+            color: #333;
             margin-right: 20px;
             font-size: 18px;
         }
@@ -52,17 +52,17 @@
         }
 
         .logout-btn {
-            background-color: #f0f0f0; /* Grigio chiaro */
-            color: #333; /* Grigio scuro */
+            background-color: #f0f0f0;
+            color: #333;
             padding: 10px 20px;
-            border: 2px solid #ddd; /* Bordo */
-            border-radius: 20px; /* Arrotondato */
+            border: 2px solid #ddd;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 16px;
         }
 
         .logout-btn:hover {
-            background-color: #e0e0e0; /* Hover Grigio leggermente più scuro */
+            background-color: #e0e0e0;
         }
 
         .settings-icon {
@@ -76,7 +76,7 @@
         .main {
             text-align: center;
             padding: 80px 20px;
-            background-color: #ffffff; /* Sfondo bianco */
+            background-color: #ffffff;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -85,42 +85,48 @@
 
         .main h1 {
             font-size: 48px;
-            color: #333; /* Grigio scuro */
+            color: #333;
             margin-bottom: 30px;
         }
 
         .main .btn-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             gap: 30px;
         }
 
         .cta-btn {
-            background-color: #0275d8; /* Blu */
+            background-color: #0275d8;
             color: white;
-            padding: 15px 30px;
+            padding: 20px 40px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            width: 250px;
+            font-size: 18px;
+            width: 300px;
         }
 
         .cta-btn:hover {
-            background-color: #025aa5; /* Hover Blu */
+            background-color: #025aa5;
         }
 
         footer {
-            background-color: #f0f0f0; /* Grigio chiaro */
+            background-color: #f0f0f0;
             padding: 20px;
             text-align: center;
             border-top: 1px solid #ddd;
-            color: #333; /* Grigio scuro */
+            color: #333;
             width: 100%;
         }
 
         footer p {
             margin: 0;
+        }
+
+        .spacer {
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -155,10 +161,13 @@
     <div class="main">
         <h1>Gestione Treni</h1>
         <div class="btn-container">
-            <!-- Pulsante "Crea un nuovo treno" mappato al metodo crea -->
+            <!-- Pulsante "Crea un nuovo treno" -->
             <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/treni/crea'">Crea un nuovo treno</button>
-            <!-- Pulsante "Visualizza treni" mappato alla pagina di visualizzazione treni -->
-            <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/visualizzaTreni'">Visualizza treni</button>
+            <!-- Pulsante "Visualizza i tuoi treni" -->
+            <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza'">Visualizza i tuoi treni</button>
+            <!-- Pulsante "Vedi i treni di tutti gli utenti" -->
+            <div class="spacer"></div>
+            <button class="cta-btn" onclick="window.location.href='${pageContext.request.contextPath}/treni/tutti'">Vedi i treni di tutti gli utenti</button>
         </div>
     </div>
 
@@ -171,14 +180,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Font Awesome for settings icon -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-    <script>
-        document.querySelector('.navbar-brand').addEventListener('click', function() {
-            document.querySelector('.navbar-collapse').classList.add('d-none'); /* Nasconde la navbar al click su Dashboard */
-            window.location.href = '${pageContext.request.contextPath}/dashboard'; /* Reindirizza alla dashboard */
-        });
-    </script>
 </body>
 </html>

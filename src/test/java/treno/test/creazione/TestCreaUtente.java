@@ -27,7 +27,7 @@ public class TestCreaUtente {
 //        }
         if(u != null) {
         	System.out.println("Trovato e rimosso");
-        	uservice.cancellaAccount(u);
+        	//uservice.cancellaAccount(u);
         } else {
         	System.out.println("Utente non presente");
         }

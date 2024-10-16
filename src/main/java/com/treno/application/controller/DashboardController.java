@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.treno.application.model.User;
+import com.treno.application.dto.UserDTO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -13,41 +13,43 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-//	@GetMapping
-//	public String Dashboard() {
-//
-//		return "dashboard"; // Nome pagina
-//	}
+    @GetMapping
+    public String Dashboard(HttpSession session, Model model) {
+        UserDTO utente = (UserDTO) session.getAttribute("utente"); // Usa UserDTO
+        if (utente == null) {
+            return "redirect:/login"; // Reindirizza alla pagina di login
+        }
+        model.addAttribute("utente", utente); 
+        return "dashboard"; // dashboard
+    }
 
-	@GetMapping
-	public String Dashboard(HttpSession session, Model model) {
-		User utente = (User) session.getAttribute("utente");
+    @GetMapping("/profilo")
+    public String Profilo(HttpSession session) {
+        if (!isUserLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        return "profilo"; // profilo
+    }
 
-		if (utente == null) {
-			return "redirect:/login"; // Reindirizza alla pagina di login
-		}
+    @GetMapping("/treni")
+    public String Treni(HttpSession session) {
+        if (!isUserLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        return "treni"; // treni
+    }
 
-		model.addAttribute("utente", utente); // passa l'utente al modello per la view
-		return "dashboard"; // dashboard
-	}
-	
-	
+    @GetMapping("/market")
+    public String Market(HttpSession session) {
+        if (!isUserLoggedIn(session)) {
+            return "redirect:/login";
+        }
+        return "market"; // market
+    }
 
-	@GetMapping("/profilo")
-	public String Profilo() {
-		return "profilo"; // profilo
-	}
-
-	@GetMapping("/treni")
-	public String Treni() {
-		return "treni"; // treni
-	}
-
-	@GetMapping("/market")
-	public String Market() {
-		return "market"; // market
-	}
-	
-	
-	
+    // Metodo privato per verificare se l'utente è autenticato
+    private boolean isUserLoggedIn(HttpSession session) {
+        UserDTO utente = (UserDTO) session.getAttribute("utente"); // Usa UserDTO
+        return utente != null;
+    }
 }

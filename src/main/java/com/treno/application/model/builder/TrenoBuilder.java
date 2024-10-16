@@ -5,75 +5,94 @@ import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.Treno;
-//Servizio si occupa di costruire il treno. da cambiare con service .
+import com.treno.eccezzioni.MotriceInMezzoException;
+import com.treno.eccezzioni.MotricenonInTestaException;
+import com.treno.eccezzioni.TroppiRistorantiException;
+import com.treno.eccezzioni.VagoniIncompatibiliException;
 
 public abstract class TrenoBuilder {
-
+	
+	
+	//Treno TEST
 	public final Treno crealoRapido() {
-		Treno treno = Treno.build();
-		treno.add(addMotrice());
-		for (int i = 0; i < 30; i++) {
-			treno.add(addCargo());
-			treno.add(addPasseggeri());
-			//treno.setIdTreno(i);
-			//treno.setOwner(null);
-		}
-		treno.add(addRistorante());
-		
-		return treno;
+	   Treno t = Treno.build();
+	   t.add(addMotrice());
+	   for (int i = 0; i < 5; i++) {
+		   t.add(addPasseggeri());
+	   }
+	   t.add(addPasseggeri());
+	   return t;
 	}
-
-	public final Treno creaTrenoDaStringa(String input) {
-		String controllo = input.trim();
-
-		Treno treno = Treno.build();
-
-		// Usa l'assemblatore per creare i vagoni in base alla stringa
-		for (char c : controllo.toCharArray()) {
-			switch (c) {
-			case 'H':
-				treno.add(addMotrice());
-				break;
-			case 'C':
-				treno.add(addCargo());
-				break;
-			case 'P':
-				treno.add(addPasseggeri());
-				break;
-			case 'R':
-				treno.add(addRistorante());
-				break;
-			default:
-				System.out.println("Creazione del treno fallita per ora stampa, cerca le eccezioni nel vecchio progetto.");
-			}
-		}
-		treno.setSigla(input);
-		return treno;
-
-
-
-
-
-
-	}
-
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	protected abstract Motrice addMotrice();
+    public final Treno creaTrenoDaStringa(String input) {
+    	String controllo = input.trim().toUpperCase().replaceAll("\\s", "");
+ 
 
-	protected abstract Cargo addCargo();
+        
+        if (controllo.isEmpty() || controllo.charAt(0) != 'H') {
+            throw new MotricenonInTestaException("Il treno deve iniziare con una motrice (H).");
+        }
 
-	protected abstract Passeggero addPasseggeri();
+        Treno treno = Treno.build();
+        boolean hasRistorante = false;
+        char lastAdded = 'H';
 
-	protected abstract Ristorante addRistorante();
+        // Usa l'assemblatore per creare i vagoni in base alla stringa
+        for (int i = 0; i < controllo.length(); i++) {
+            char c = controllo.charAt(i);
 
+            switch (c) {
+                case 'H':
+                    // Verifica se la motrice è in mezzo al treno
+                    if (i != 0 && i != controllo.length() - 1) {
+                        throw new MotriceInMezzoException("La motrice può essere solo in testa o in coda al treno.");
+                    }
+                    treno.add(addMotrice());
+                    lastAdded = 'H';
+                    break;
+                case 'C':
+                    // Verifica compatibilità tra Cargo e Passeggeri
+                    if (lastAdded == 'P') {
+                        throw new VagoniIncompatibiliException("Non è possibile combinare vagoni Passeggeri e Cargo nello stesso treno.");
+                    }
+                    treno.add(addCargo());
+                    lastAdded = 'C';
+                    break;
+                case 'P':
+                    // Verifica compatibilità tra Passeggeri e Cargo
+                    if (lastAdded == 'C') {
+                        throw new VagoniIncompatibiliException("Non è possibile combinare vagoni Cargo e Passeggeri nello stesso treno.");
+                    }
+                    treno.add(addPasseggeri());
+                    lastAdded = 'P';
+                    break;
+                case 'R':
+                    // Verifica che non ci sia già un ristorante
+                    if (hasRistorante) {
+                        throw new TroppiRistorantiException("Può esserci un solo ristorante per treno.");
+                    }
+                    treno.add(addRistorante());
+                    hasRistorante = true;
+                    lastAdded = 'R';
+                    break;
+                default:
+                    throw new IllegalArgumentException("Carattere non riconosciuto nella stringa di input: " + c);
+            }
+        }
+
+        treno.setSigla(input);
+        return treno;
+    }
+
+    protected abstract Motrice addMotrice();
+
+    protected abstract Cargo addCargo();
+
+    protected abstract Passeggero addPasseggeri();
+
+    protected abstract Ristorante addRistorante();
 }
+

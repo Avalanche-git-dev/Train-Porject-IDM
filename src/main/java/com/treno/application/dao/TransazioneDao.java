@@ -2,7 +2,7 @@ package com.treno.application.dao;
 
 import java.util.List;
 
-import com.treno.application.dto.TransazioneDto;
+import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.model.Transazione;
 
 public class TransazioneDao extends ProxyDao<Transazione> implements TransazioneUtility {
@@ -27,13 +27,13 @@ public class TransazioneDao extends ProxyDao<Transazione> implements Transazione
 	
 	//restituisce una lista di treni e ordinata in ordine decrescente per totale ammontare di transazioni (Tecnica DTo easy)
 	
-	public List<TransazioneDto> findTreniByTotalTransactionValueDesc() {
+	public List<TransazioneDTO> findTreniByTotalTransactionValueDesc() {
 	    String hql = "SELECT new com.treno.application.dto.TrenoTransazioneTotaleDTO(t.treno, SUM(t.importo)) " +
 	                 "FROM Transazione t " +
 	                 "GROUP BY t.treno " +
 	                 "ORDER BY SUM(t.importo) DESC";
 	    
-	    return em.createQuery(hql, TransazioneDto.class)
+	    return em.createQuery(hql, TransazioneDTO.class)
 	             .getResultList();
 	}
 

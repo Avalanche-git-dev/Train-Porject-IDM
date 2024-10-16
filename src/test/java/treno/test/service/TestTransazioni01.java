@@ -4,19 +4,19 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.treno.application.configuration.Factory;
-import com.treno.application.configuration.FactoryConfiguration;
 import com.treno.application.dao.Dao;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.builder.TBuilder;
-import com.treno.application.model.builder.TrenoBuilder;
+
+import treno.FactoryConfiguration;
 
 public class TestTransazioni01 {
 
 	@SuppressWarnings({ "resource", "unchecked", "unused" })
 	public static void main(String[] args) {
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
-		TrenoBuilder builder = ctx.getBean(TBuilder.class);
+		TBuilder builder = ctx.getBean(TBuilder.class);
 		// System.out.println(builder);
 		Dao <User> daoU= (Dao<User>) ctx.getBean("userDao");
 		Dao <Treno> dao=(Dao<Treno>) ctx.getBean("trenoDao");
@@ -24,7 +24,7 @@ public class TestTransazioni01 {
 		Factory f = ctx.getBean(FactoryConfiguration.class);
 		f.setMarca("de");
 
-		Treno treno = builder.crealoRapido();
+		//Treno treno = builder.crealoRapido();
 		
 
 }

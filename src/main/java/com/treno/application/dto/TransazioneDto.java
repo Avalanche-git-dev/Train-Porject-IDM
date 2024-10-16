@@ -4,11 +4,11 @@ import com.treno.application.model.Treno;
 
 
 
-public class TransazioneDto {
+public class TransazioneDTO {
     private Treno treno;
     private Double totaleTransazioni;
 
-    public TransazioneDto(Treno treno, Double totaleTransazioni) {
+    public TransazioneDTO(Treno treno, Double totaleTransazioni) {
         this.treno = treno;
         this.totaleTransazioni = totaleTransazioni;
     }

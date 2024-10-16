@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!-- visualizza_treni.jsp -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,42 +36,20 @@
 <div class="container mt-5">
     <h1 class="text-center">I tuoi treni</h1>
     <div class="row" id="trainList">
-        <!-- La lista dei treni sarà inserita qui da JavaScript -->
-    </div>
-</div>
-
-<script>
-    // Recupera la lista dei treni passata dal backend in formato JSON
-    const treniUtente = JSON.parse('${treniJson}');  // Popola con la lista passata dal controller
-
-    // Funzione per popolare la lista dei treni
-    function populateTrainList() {
-        const trainListContainer = document.getElementById('trainList');
-        trainListContainer.innerHTML = ''; // Pulisce l'elemento
-
-        treniUtente.forEach(treno => {
-            const mediaValutazioni = treno.mediaValutazioni ? treno.mediaValutazioni : "Non valutato";
-            const imageUrl = treno.immagineUrl ? treno.immagineUrl : "/images/default-train.png";
-
-            const trainCard = `
-                <div class="col-md-4 train-card">
-                    <div class="card">
-                        <img src="${imageUrl}" class="card-img-top" alt="${treno.nome}">
-                        <div class="card-body">
-                            <h5 class="card-title">${treno.nome}</h5>
-                            <p class="card-text">Media Valutazioni: ${mediaValutazioni} / 5</p>
-                            <button class="details-btn" onclick="window.location.href='/treni/dettagli/${treno.id}'">Dettagli</button>
-                        </div>
+         <c:forEach var="treno" items="${treniDto}">
+            <div class="col-md-4 train-card">
+                <div class="card">
+                    <img src="${treno.immagine}" class="card-img-top" alt="Treno Nome: ${treno.nome}">
+                    <div class="card-body">
+                        <h5 class="card-title">${treno.nome}</h5>
+                        <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
+                        <button class="details-btn" onclick="window.location.href='/treni/dettagli/${treno.idTreno}'">Dettagli</button>
                     </div>
                 </div>
-            `;
-            trainListContainer.innerHTML += trainCard;
-        });
-    }
-
-    // Popola la lista dei treni al caricamento della pagina
-    populateTrainList();
-</script>
+            </div>
+        </c:forEach> 
+    </div>
+</div>
 
 </body>
 </html>

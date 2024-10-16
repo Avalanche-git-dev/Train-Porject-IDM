@@ -11,10 +11,19 @@ import lombok.ToString;
 @ToString
 public class UtenteFilter {
 	
+	
+	//Filtri per utente
     private String nome;
     private String cognome;
     private String email;
     private Integer età;
+    
+    
+    //Filtri per admin
+    private String username;
+    private String password;
+    private String attivita;
+    
     
     
 }

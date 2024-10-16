@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
+<!-- visualizza_treni.jsp -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,11 +39,11 @@
          <c:forEach var="treno" items="${treniDto}">
             <div class="col-md-4 train-card">
                 <div class="card">
-                    <img src="${treno.immagine}" class="card-img-top" alt="Treno ID: ${treno.id}">
+                    <img src="${treno.immagine}" class="card-img-top" alt="Treno Nome: ${treno.nome}">
                     <div class="card-body">
-                        <h5 class="card-title">${treno.id}</h5>
+                        <h5 class="card-title">${treno.nome}</h5>
                         <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
-                        <button class="details-btn" onclick="window.location.href='/treni/dettagli/${treno.id}'">Dettagli</button>
+                        <button class="details-btn" onclick="window.location.href='/treni/dettagli/${treno.idTreno}'">Dettagli</button>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 package com.treno.application.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.Check;
 
@@ -35,8 +36,23 @@ public class Treno {
 	 * per gli altri attributi perché la sua creazione è garantita da GeneratedValue
 	 */
 	private long idTreno;
+	@Column(name = "nome")
+    private String nome;
+	
+	
+	
+	public String getNome() {
+		return nome;
+	}
 
-	@Column(name = "sigla", length = 50, unique = true)
+
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Column(name = "sigla", length = 50, unique = false)
 	private String sigla;
 
 	@Column(name = "immagine", length = 255)
@@ -51,6 +67,45 @@ public class Treno {
 
 	@Column(name = "prezzo_vendita")
 	private double prezzoVendita;
+	
+	@Column(name = "marca")
+	private String marca;
+	
+	public String getMarca() {
+		return marca;
+	}
+
+
+
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+
+
+
+
+
+
+
+	public Set<Transazione> getTransazioni() {
+		return transazioni;
+	}
+
+
+
+
+	public void setTransazioni(Set<Transazione> transazioni) {
+		this.transazioni = transazioni;
+	}
+
+
+
+
+	public void setIdTreno(long idTreno) {
+		this.idTreno = idTreno;
+	}
 
 	/*
 	 * La relazione tra treni e vagoni è 1:N, perciò usiamo
@@ -60,7 +115,7 @@ public class Treno {
 	 * associati al treno non verranno caricati subito, ma solo quando ce ne sarà
 	 * l'effettivo bisogno.
 	 */
-	@OneToMany(mappedBy = "treno", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "treno", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Vagone> vagoni;
 
 	/*
@@ -87,8 +142,8 @@ public class Treno {
 	// GESTIONE BIAGIO GENIO
 	// private List<Valutazione> valutazioni;
 
-	@OneToMany(mappedBy = "treno", cascade = CascadeType.ALL)
-	private List<Valutazione> valutazioni;
+	@OneToMany( mappedBy = "treno", cascade = CascadeType.ALL)
+	private Set <Valutazione> valutazioni;
 
 	// Caricamente dell'utente per ora solo quando serve ma poco robusta a livello
 	// di architettura ideata
@@ -96,8 +151,8 @@ public class Treno {
 	@JoinColumn(name = "id_owner", nullable = false)
 	private User owner;
 
-	@OneToMany(mappedBy = "treno", fetch = FetchType.LAZY)
-	private List<Transazione> transazioni;
+	@OneToMany( mappedBy = "treno", fetch = FetchType.LAZY)
+	private Set<Transazione> transazioni;
 
 	// Static metodo per costruire il treno all'esterno della classe.
 	public static Treno build() {
@@ -108,12 +163,12 @@ public class Treno {
 	
 
 	// Costruttore
-
 	public Treno() {
-		super();
-		this.vagoni = new LinkedList<Vagone>();
-		this.valutazioni = new ArrayList<Valutazione>();
-		this.transazioni = new ArrayList<Transazione>();
+	    super();
+	    this.vagoni = new LinkedList<Vagone>();         // Collezione di tipo List
+	    this.valutazioni = new HashSet<Valutazione>();  // Collezione di tipo Set
+	    this.transazioni = new HashSet<Transazione>(); 
+	    this.InVendita= false; // Collezione di tipo Set
 	}
 
 	// Vagoni
@@ -138,23 +193,59 @@ public class Treno {
 
 	// Valutazioni
 
-	public List<Valutazione> getValutazioni() {
-		return valutazioni;
-	}
-
-	public void setValutazioni(List<Valutazione> valutazioni) {
-		this.valutazioni = valutazioni;
-	}
 
 	public final void addValutazione(Valutazione valutazione) {
 		valutazioni.add(valutazione);
 		valutazione.setTreno(this);
 	}
 
+	public Set<Valutazione> getValutazioni() {
+		return valutazioni;
+	}
+
+
+
+
+	public void setValutazioni(Set<Valutazione> valutazioni) {
+		this.valutazioni = valutazioni;
+	}
+
+
+
+
 	public final void removeValutazione(Valutazione valutazione) {
 		valutazioni.remove(valutazione);
 		valutazione.setTreno(null);
 	}
+	
+	
+	
+	//Calcoli valutazioni.
+	 public double getValutazioneTotale() {
+	        Iterator<Valutazione> it = valutazioni.iterator();
+	        double sommaValutazioni = 0;
+	        while (it.hasNext()) {
+	            Valutazione valutazione = it.next();
+	            sommaValutazioni += valutazione.getVotazione();
+	        }
+	        return sommaValutazioni;
+	    }
+	 
+	 
+	 public final double getMediaValutazioni() {
+		    if (valutazioni.isEmpty()) {
+		        return 0; // Nessuna valutazione disponibile
+		    }
+		    
+		    Iterator<Valutazione> it = valutazioni.iterator();
+		    double sommaValutazioni = 0;
+		    while (it.hasNext()) {
+		        Valutazione valutazione = it.next();
+		        sommaValutazioni += valutazione.getVotazione();
+		    }
+		    return sommaValutazioni / valutazioni.size(); // Calcolo della media
+		}
+
 
 	// Metodi per evitare proprietà inutili
 
@@ -276,5 +367,17 @@ public class Treno {
 	public Iterator<Vagone> iterator() {
 		return vagoni.iterator();
 	}
+
+
+
+
+	public double setLunghezza() {
+		return this.getLunghezza();
+		
+	}
+
+
+
+
 
 }

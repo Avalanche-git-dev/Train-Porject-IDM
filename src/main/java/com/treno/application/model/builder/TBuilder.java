@@ -9,8 +9,6 @@ import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 
-
-
 public class TBuilder extends TrenoBuilder {
 	
 	@Autowired
@@ -25,11 +23,20 @@ public class TBuilder extends TrenoBuilder {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
-
+//
+//	@Override
+//	protected Motrice addMotrice() {
+//		return factory.creaMotrice();
+//	}
+	
 	@Override
 	protected Motrice addMotrice() {
-		return factory.creaMotrice();
+	    if (factory == null) {
+	        throw new IllegalStateException("factory bazlata");
+	    }
+	    return factory.creaMotrice();
 	}
+
 
 	@Override
 	protected Cargo addCargo() {

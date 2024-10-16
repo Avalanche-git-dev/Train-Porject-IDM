@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.TrenoDTO;
+import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
-import com.treno.application.model.User;
 import com.treno.application.service.TrenoService;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,147 +26,169 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/treni")
 public class TrenoController {
 
-	@Autowired
-	@Qualifier("TrenoService")
-	TrenoService trenoService;
+    @Autowired
+    @Qualifier("TrenoService")
+    TrenoService trenoService;
 
-	// Controllo accesso pagina solo in sessione di lgoin
-	@GetMapping
-	public String treni(HttpSession session, Model model) {
-		User utente = (User) session.getAttribute("utente");
+    // Controllo accesso pagina solo in sessione di login
+    @GetMapping
+    public String treni(HttpSession session, Model model) {
+        UserDTO utenteDto = (UserDTO) session.getAttribute("utente");
 
-		if (utente == null) {
-			return "redirect:/login";
-		}
+        if (utenteDto == null) {
+            return "redirect:/login";
+        }
 
-		model.addAttribute("utente", utente);
-		return "treni4"; // dashboard
-	}
+        model.addAttribute("utente", utenteDto);
+        return "treni"; // dashboard
+    }
 
-// Metodo per mostrare la pagina per creare un nuovo treno
-	@GetMapping("/crea")
-	public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-		User utente = (User) session.getAttribute("utente");
+    // Metodo per mostrare la pagina per creare un nuovo treno
+    @GetMapping("/crea")
+    public String mostraFormCreazioneTreno(HttpSession session, Model model) {
+        UserDTO utenteDto = (UserDTO) session.getAttribute("utente");
 
-		if (utente == null) {
-			return "redirect:/login";
-		}
+        if (utenteDto == null) {
+            return "redirect:/login";
+        }
 
-		model.addAttribute("treno", Treno.build()); // Aggiungi un treno vuoto per il form
-		return "crea2";
-	}
+        model.addAttribute("treno", new TrenoDTO()); // Se non gli do una istanza giustamente non va .
+        return "crea";
+    }
 
-	// Metodo per gestire la creazione del treno
-	@PostMapping("/crea")
-	public String creaTreno(@RequestParam("input") String input, @RequestParam("marca") String marca,
-			HttpSession session, Model model) {
-		User utente = (User) session.getAttribute("utente");
+    // Metodo per gestire la creazione del treno
+    @PostMapping("/crea")
+    public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input, @RequestParam("marca") String marca,
+                            HttpSession session, Model model) {
+        UserDTO utenteDto = (UserDTO) session.getAttribute("utente");
 
-		if (utente == null) {
-			return "redirect:/login";
-		}
+        if (utenteDto == null) {
+            return "redirect:/login";
+        }
 
-		// Chiama il servizio per creare il treno
-		trenoService.creaTreno(input, utente, marca);
+        // Crea un oggetto TrenoDTO e impostalo con i valori inseriti dall'utente
+        TrenoDTO trenoDto = new TrenoDTO();
+        trenoDto.setNome(nomeTreno); // Nome del treno dall'input dell'utente
+        trenoDto.setSigla(input);    // Sigla del treno
+        trenoDto.setMarca(marca);    // Marca del treno
 
-		return "redirect:/treni"; // Reindirizza alla lista dei treni o alla dashboard
-	}
+        // Chiama il servizio per creare il treno
+        trenoService.creaTreno(trenoDto, utenteDto);
 
-//	    @GetMapping("/visualizza")
-//	    public String visualizzaTreniUtente(HttpSession session, Model model) {
-//	        // Recupera l'utente dalla sessione
-//	        User utente = (User) session.getAttribute("utente");
-//
-//	        if (utente == null) {
-//	            return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
-//	        }
-//
-//	        // Recupera i treni dell'utente dal servizio usando il suo ID
-//	        List<Treno> treni = trenoService.findAllTreniByUser(utente.getUserId());
-//	        model.addAttribute("treni", treni); // Passa i treni alla vista
-//	        model.addAttribute("utente", utente); // Passa anche l'utente alla vista per eventuali altre informazioni
-//	        return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
-//	    }
+        return "redirect:/treni"; // Reindirizza alla lista dei treni o alla dashboard
+    }
 
-//	
-//	@GetMapping("/visualizza")
-//	public String visualizzaTreniUtente(HttpSession session, Model model) {
-//	    // Recupera l'utente dalla sessione
-//	    User utente = (User) session.getAttribute("utente");
-//
-//	    if (utente == null) {
-//	        return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
-//	    }
-//
-//	    // Recupera i treni dell'utente dal servizio usando il suo ID
-//	    List<Treno> treni = trenoService.findAllTreniByUser(utente.getUserId());
-//
-//	    // Mappa ogni Treno su TrenoDTO
-//	    List<TrenoDTO> treniDto = treni.stream()
-//	    	    .map(treno -> new TrenoDTO(
-//	    	        treno.getIdTreno(),             // Supponendo che il metodo per ottenere l'ID del treno sia getId()
-//	    	        treno.getInVendita(),           // Nome del treno
-//	    	        treno.getImmagine()     // URL dell'immagine del treno
-//	    	    ))
-//	    	    .collect(Collectors.toList());
-//
-//	    // Converte la lista in formato JSON
-//	    String treniJson = new Gson().toJson(treniDto); // Assicurati di avere la libreria Gson
-//
-//	    // Passa la lista dei treni in formato JSON alla vista
-//	    model.addAttribute("treniJson", treniJson);
-//	    return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
-//	}
 
-	@GetMapping("/visualizza")
-	public String visualizzaTreniUtente(HttpSession session, Model model) {
-		// Recupera l'utente dalla sessione
-		User utente = (User) session.getAttribute("utente");
+    // Visualizza treni di un utente in base alla sessione di login
+    @GetMapping("/visualizza")
+    public String visualizzaTreniUtente(HttpSession session, Model model) {
+        // Recupera l'utente dalla sessione
+        UserDTO utenteDto = (UserDTO) session.getAttribute("utente");
 
-		if (utente == null) {
-			return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
-		}
+        if (utenteDto == null) {
+            return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
+        }
 
-		// Recupera i treni dell'utente dal servizio usando il suo ID
-		List<Treno> treni = trenoService.findAllTreniByUser(utente.getUserId());
+        // Recupera i treni dell'utente dal servizio usando il suo ID
+        List<Treno> treni = trenoService.findAllTreniByUser(utenteDto.getUserId());
 
-		// Mappa ogni Treno su TrenoDTO
-		List<TrenoDTO> treniDto = treni.stream().map(treno -> new TrenoDTO(treno.getIdTreno(), // Supponendo che il
-																								// metodo per ottenere
-																								// l'ID del treno sia
-																								// getId()
-				treno.getInVendita(), // Nome del treno
-				treno.getImmagine() // URL dell'immagine del treno
-		)).collect(Collectors.toList());
+        // Mappa ogni Treno su TrenoDTO
+        List<TrenoDTO> treniDto = treni.stream().map(treno -> {
+            // Crea un'istanza vuota di TrenoDto
+            TrenoDTO dto = new TrenoDTO();
 
-		// Passa la lista dei DTO alla vista
-		model.addAttribute("treniDto", treniDto);
-		model.addAttribute("utente", utente); // Passa anche l'utente alla vista per eventuali altre informazioni
-		return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
-	}
+            // Imposta i campi di TrenoDto usando i metodi set
+            dto.setIdTreno(treno.getIdTreno());
+            dto.setInVendita(treno.getInVendita());
+            dto.setImmagine(treno.getImmagine());
+            dto.setMarca(treno.getMarca());
+            dto.setMediaValutazioni(treno.getMediaValutazioni());
+            dto.setPesoTotale(treno.getPeso());
+            dto.setPostiTotali(treno.getPostiTotali());
 
-	@GetMapping("/dettagli/{id}")
-	public String dettagliTreno(@PathVariable Long id, Model model) {
-		Treno treno = trenoService.findById(id); // Recupera il treno dal database
-		model.addAttribute("treno", treno); // Passa il treno alla vista
-		return "dettagliTreno"; // Restituisce la vista dettagliTreno.jsp
-	}
+            // Restituisci l'oggetto dto popolato
+            return dto;
+        }).collect(Collectors.toList());
 
-	///////////////////////////////////////////////////////
+        // Passa la lista dei DTO alla vista
+        model.addAttribute("treniDto", treniDto);
+        model.addAttribute("utente", utenteDto); // Passa anche l'utente alla vista per eventuali altre informazioni
+        return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
+    }
 
-	@PostMapping("/listaFiltrata")
-	public String getListaFiltrata(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, HttpSession session,
-			Model model) {
-		User utente = (User) session.getAttribute("utente");
-		if (utente == null) {
-			return "redirect:/login";
-		}
+    // Filtro treni
+    @GetMapping("/filtro")
+    public String filtraTreni(@ModelAttribute("filtro") TrenoFilter filtro, Model model, HttpSession session) {
+        UserDTO utenteDto = (UserDTO) session.getAttribute("utente");
 
-		// Recupera i treni filtrati usando il filtro e l'ID dell'utente
-		List<Treno> treni = trenoService.filtraTreni(trenoFilter, utente.getUserId());
+        if (utenteDto == null) {
+            return "redirect:/login";
+        }
 
-		model.addAttribute("treni", treni);
-		return "visualizzaTreni";
-	}
+        long userId = utenteDto.getUserId();
 
+        // Usa il service per filtrare i treni
+        List<Treno> treniFiltrati = trenoService.filtraTreni(filtro, userId);
+
+        // Converti la lista di treni in DTO
+        List<TrenoDTO> treniDto = treniFiltrati.stream().map(treno -> {
+            TrenoDTO dto = new TrenoDTO();
+            dto.setIdTreno(treno.getIdTreno());
+            dto.setImmagine(treno.getImmagine());
+            dto.setMediaValutazioni(treno.getMediaValutazioni());
+            dto.setMarca(treno.getMarca());
+            dto.setPesoTotale(treno.getPeso());
+            dto.setPostiTotali(treno.getPostiTotali());
+            return dto;
+        }).collect(Collectors.toList());
+
+        // Aggiungi la lista filtrata al model per il rendering nella JSP
+        model.addAttribute("treniDto", treniDto);
+        model.addAttribute("filtro", filtro); // Rendi disponibile il filtro corrente nella pagina
+
+        return "visualizzaTreni"; // Il nome della JSP
+    }
+
+    @ModelAttribute("filtro")
+    public TrenoFilter initFilter() {
+        return new TrenoFilter(); // Inizializza un filtro vuoto
+    }
+
+    // Dettagli del treno
+    @GetMapping("/dettagli/{id}")
+    public String dettagliTreno(@PathVariable Long id, Model model) {
+        Treno treno = trenoService.findById(id); // Recupera il treno dal database
+        TrenoDTO trenoDto = new TrenoDTO();
+        trenoDto.setIdTreno(treno.getIdTreno());
+        trenoDto.setImmagine(treno.getImmagine());
+        trenoDto.setMarca(treno.getMarca());
+        trenoDto.setMediaValutazioni(treno.getMediaValutazioni());
+        trenoDto.setPesoTotale(treno.getPeso());
+        trenoDto.setPostiTotali(treno.getPostiTotali());
+        model.addAttribute("treno", trenoDto); // Passa il treno alla vista
+        return "dettagliTreno"; // Restituisce la vista
+    }
+
+    // Modifica treno
+    @GetMapping("/modifica/{id}")
+    public String modificaTreno(@PathVariable Long id, Model model) {
+        Treno treno = trenoService.findById(id); // Recupera il treno da modificare
+        TrenoDTO trenoDto = new TrenoDTO();
+        trenoDto.setIdTreno(treno.getIdTreno());
+        trenoDto.setImmagine(treno.getImmagine());
+        trenoDto.setMarca(treno.getMarca());
+        trenoDto.setInVendita(treno.getInVendita());
+        model.addAttribute("treno", trenoDto); // Passa il treno al model
+        return "modificaTreno"; // Mostra la pagina di modifica
+    }
+
+    @PostMapping("/salvaModifica")
+    public String salvaModifica(@ModelAttribute("treno") TrenoDTO trenoDto) {
+        Treno treno = trenoService.findById(trenoDto.getIdTreno());
+        treno.setMarca(trenoDto.getMarca());
+        treno.setInVendita(trenoDto.isInVendita());
+        treno.setImmagine(trenoDto.getImmagine());
+        trenoService.update(treno); // Metodo per salvare le modifiche
+        return "redirect:/treni/dettagli/" + treno.getIdTreno(); // Reindirizza ai dettagli del treno modificato
+    }
 }

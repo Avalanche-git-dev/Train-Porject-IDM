@@ -7,6 +7,47 @@ public class TrenoFilter {
 	private Integer lunghezzaMin, lunghezzaMax;
 	private String sigla;
 	private String marca;
+	private double Valutazioni;
+	private double prezzoVendita;
+	private double ammontareTotale;
+	
+	public double getValutazioni() {
+		return Valutazioni;
+	}
+	public void setValutazioni(double valutazioni) {
+		Valutazioni = valutazioni;
+	}
+	public double getPrezzoVendita() {
+		return prezzoVendita;
+	}
+	public void setPrezzoVendita(double prezzoVendita) {
+		this.prezzoVendita = prezzoVendita;
+	}
+	public double getAmmontareTotale() {
+		return ammontareTotale;
+	}
+	public void setAmmontareTotale(double ammontareTotale) {
+		this.ammontareTotale = ammontareTotale;
+	}
+	public TrenoFilter(Integer prezzoMin, Integer prezzoMax, Integer pesoMin, Integer pesoMax, Integer lunghezzaMin,
+			Integer lunghezzaMax, String sigla, String marca, double valutazioni, double prezzoVendita,
+			double ammontareTotale) {
+		super();
+		this.prezzoMin = prezzoMin;
+		this.prezzoMax = prezzoMax;
+		this.pesoMin = pesoMin;
+		this.pesoMax = pesoMax;
+		this.lunghezzaMin = lunghezzaMin;
+		this.lunghezzaMax = lunghezzaMax;
+		this.sigla = sigla;
+		this.marca = marca;
+		Valutazioni = valutazioni;
+		this.prezzoVendita = prezzoVendita;
+		this.ammontareTotale = ammontareTotale;
+	}
+	public TrenoFilter() {
+		super();
+	}
 	public Integer getPrezzoMin() {
 		return prezzoMin;
 	}
@@ -55,9 +96,9 @@ public class TrenoFilter {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-	public TrenoFilter() {
-		super();
-	}
+	
+	
+	
 	
 	
 	

@@ -7,21 +7,21 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.treno.application.configuration.Factory;
-import com.treno.application.configuration.FactoryConfiguration;
 import com.treno.application.dao.Dao;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.builder.TBuilder;
-import com.treno.application.model.builder.TrenoBuilder;
+
+import treno.FactoryConfiguration;
 
 public class TestCreaTreno {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	public static void main(String[] args) {
 		
 
 		AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("BeansConfiguration.xml");
-		TrenoBuilder builder = ctx.getBean(TBuilder.class);
+		TBuilder builder = ctx.getBean(TBuilder.class);
 		// System.out.println(builder);
 
 		Factory f = ctx.getBean(FactoryConfiguration.class);
@@ -35,9 +35,9 @@ public class TestCreaTreno {
 		
 		List<Treno> treniRapidi = new ArrayList<Treno>();
 		
-		for(int i=0 ; i<10 ; i++) {
-			treniRapidi.add(builder.crealoRapido());
-		}
+//		for(int i=0 ; i<10 ; i++) {
+//			treniRapidi.add(builder.crealoRapido());
+//		}
 		
 		int numeroUtenti = utenti.size();
 		int nRapidi= treniRapidi.size();
