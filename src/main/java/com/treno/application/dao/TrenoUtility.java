@@ -10,5 +10,4 @@ public interface TrenoUtility extends Dao <Treno> {
 	Treno findById(Treno treno);
 	//Treno findById(Treno treno);
 	List<Treno> filtraTreni(TrenoFilter filtro, long userId);
-
 }
