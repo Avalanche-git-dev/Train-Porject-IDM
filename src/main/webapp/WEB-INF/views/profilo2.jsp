@@ -8,30 +8,27 @@
     <title>Profilo Utente</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .profile-info {
-            background-color: #f8f9fa;
+        .profile-section {
+            margin-bottom: 40px;
             padding: 20px;
+            background-color: #f8f9fa;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 300px;
         }
 
         .train-list {
-            margin-top: 100px;
+            margin-top: 30px;
         }
 
         .train-item {
             border: 1px solid #ddd;
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 15px;
-            background-color: #f8f9fa;
+            background-color: #fff;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -44,7 +41,7 @@
         .details-btn {
             background-color: #0275d8;
             color: white;
-            padding: 10px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -53,43 +50,164 @@
         .details-btn:hover {
             background-color: #025aa5;
         }
+
+        .no-trains {
+            margin-top: 20px;
+            text-align: center;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
 
     <div class="container mt-5">
-        <h2>Profilo Utente</h2>
-        
-        <!-- Scheda Profilo Utente in alto a destra -->
-        <div class="profile-info">
-            <h5>Informazioni Utente</h5>
-            <table class="table">
-                <tr><th>Nome:</th><td>${userInfo.nome}</td></tr>
-                <tr><th>Cognome:</th><td>${userInfo.cognome}</td></tr>
-                <tr><th>Email:</th><td>${userInfo.email}</td></tr>
-                <tr><th>Telefono:</th><td>${userInfo.telefono}</td></tr>
-                <tr><th>Username:</th><td>${userInfo.username}</td></tr>
-                <tr><th>Portafoglio:</th><td>${userInfo.portafoglio}</td></tr>
-            </table>
-            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-primary">Torna alla Dashboard</a>
+        <div class="row">
+            <!-- Sezione Profilo Utente -->
+            <div class="col-md-12 profile-section">
+                <h5>Informazioni Utente</h5>
+                <table class="table table-borderless">
+                    <tr><th>Nome:</th><td>${userInfo.nome}</td></tr>
+                    <tr><th>Cognome:</th><td>${userInfo.cognome}</td></tr>
+                    <tr><th>Email:</th><td>${userInfo.email}</td></tr>
+                    <tr><th>Telefono:</th><td>${userInfo.telefono}</td></tr>
+                    <tr><th>Username:</th><td>${userInfo.username}</td></tr>
+                    <tr><th>Portafoglio:</th><td>${userInfo.portafoglio}</td></tr>
+                </table>
+                <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-primary">Torna alla Dashboard</a>
+            </div>
         </div>
 
-        <!-- Lista scorrevole dei treni -->
-        <div class="train-list">
-            <h3>I tuoi Treni</h3>
+        <!-- Controllo se la lista dei treni è vuota -->
+        <c:if test="${empty trainList}">
+            <div class="no-trains">
+                <p>Non ci sono treni da visualizzare.</p>
+            </div>
+        </c:if>
+        <!-- Lista dei Treni -->
+        
+        
+        
+        
+
+
+
+<%--         <!-- Lista dei Treni -->
+        <div class="train-list row">
             <c:forEach var="treno" items="${trainList}">
-                <div class="train-item">
-                    <img src="${treno.imageUrl}" alt="Immagine Treno">
-                    <div>
-                        <h5>${treno.nome}</h5>
-                        <p>Prezzo: ${treno.prezzo}</p>
+                <div class="col-md-4">
+                    <div class="train-item">
+                        <img src="<c:out value='${treno.imageUrl != null ? treno.imageUrl : "/images/default-train.png"}'/>" alt="Immagine Treno">
+                        <div>
+                            <h5>${treno.nome}</h5>
+                            <p>Media Valutazioni: 
+                                <c:choose>
+                                    <c:when test="${not empty treno.valutazioni}">
+                                        <c:out value="${treno.mediaValutazioni}" /> / 5
+                                    </c:when>
+                                    <c:otherwise>
+                                        Non valutato
+                                    </c:otherwise>
+                                </c:choose>
+                            </p>
+                        </div>
+                        <button class="details-btn" 
+                                onclick="window.location.href='${pageContext.request.contextPath}/treni/dettagli/${treno.id}'">
+                            Dettagli
+                        </button>
                     </div>
-                    <button class="details-btn" onclick="window.location.href='${pageContext.request.contextPath}/treni/dettagli/${treno.id}'">Dettagli</button>
                 </div>
             </c:forEach>
         </div>
-
+         --%>
+         <!-- Lista statica dei Treni -->
+<div class="train-list row">
+    <div class="col-md-4">
+        <div class="train-item">
+            <img src="/images/default-train.png" alt="Immagine Treno">
+            <div>
+                <h5>Treno 1</h5>
+                <p>Media Valutazioni: 4.5 / 5</p>
+            </div>
+            <button class="details-btn" 
+                    onclick="window.location.href='${pageContext.request.contextPath}/treni/dettagli/1'">
+                Dettagli
+            </button>
+        </div>
     </div>
 
+    <div class="col-md-4">
+        <div class="train-item">
+            <img src="/images/default-train.png" alt="Immagine Treno">
+            <div>
+                <h5>Treno 2</h5>
+                <p>Media Valutazioni: Non valutato</p>
+            </div>
+            <button class="details-btn" 
+                    onclick="window.location.href='${pageContext.request.contextPath}/treni/dettagli/2'">
+                Dettagli
+            </button>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="train-item">
+            <img src="/images/default-train.png" alt="Immagine Treno">
+            <div>
+                <h5>Treno 3</h5>
+                <p>Media Valutazioni: 3.8 / 5</p>
+            </div>
+            <button class="details-btn" 
+                    onclick="window.location.href='${pageContext.request.contextPath}/treni/dettagli/3'">
+                Dettagli
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!--  treni statitici di prova  -->
+<div>
+<script>
+
+treni.forEach(t => {
+    t.getImmagine();
+    t.getMediaValutazioni();
+});
+
+
+
+</script>
+
+
+
+
+</div>
+
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+    </div>
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 </body>
 </html>

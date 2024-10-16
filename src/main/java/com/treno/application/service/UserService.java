@@ -33,23 +33,25 @@ public class UserService {
 	
     //Metodo registrazione
 	@Transactional
-    public String registra(UserDto userDto) {
+    public String registra (UserDto userDto) {
         // Controlla se l'utente esiste già
-        User utenteEsistente = userDao.findByUsername(userDto.getUsername());
+        User utenteEsistente = userDao.findById(userDto.getUserId());
         if (utenteEsistente != null) {
             // Se l'utente esiste, restituisci un messaggio di errore
             return "Utente già registrato con questo username!";
         }
 
         // Crea un nuovo oggetto User a partire dai dati del DTO
-        User nuovoUtente = new User();
-        nuovoUtente.setUsername(userDto.getUsername());
-        nuovoUtente.setPassword(userDto.getPassword());  // Assicurati di usare un sistema di hashing per le password!
-        nuovoUtente.setEmail(userDto.getEmail());
-
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword()); // Aggiungi qui la logica di hashing se necessario
+        user.setNome(userDto.getNome());
+        user.setCognome(userDto.getCognome());
+        user.setTelefono(userDto.getTelefono());
+        user.setEmail(userDto.getEmail());
+        user.setPortafoglio(0);
+        userDao.save(user);
         // Aggiungere il controllo della presenza dell'utente
-        userDao.save(nuovoUtente);
-
         return "Registrazione avvenuta con successo!";
     }
 	

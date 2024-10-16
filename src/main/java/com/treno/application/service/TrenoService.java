@@ -39,12 +39,10 @@ public class TrenoService {
 		return trenoDao.findById(treno.getIdTreno());
 	}
 	
-	
-	@SuppressWarnings("unchecked")
-	public List<Treno> findAllById(long userId) {
-        return (List<Treno>) trenoDao.findById(userId);
+	public List<Treno> findAllTreniByUser(long userId) {
+        return trenoDao.findAllTreniByUser(userId);
     }
-
+	
 	@Transactional
 	public void update(Treno treno) {
 		trenoDao.update(treno);
@@ -58,4 +56,7 @@ public class TrenoService {
 	    return ((TrenoUtility) trenoDao).filtraTreni(filtro, userId);
 	}
 
+//	 public List<Treno> findTreniByUser(long userId) {
+//	        return trenoDao.findAllTreniByUser(userId);
+//	    }
 }

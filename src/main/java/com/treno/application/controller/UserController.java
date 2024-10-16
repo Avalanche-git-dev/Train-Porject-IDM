@@ -26,25 +26,40 @@ public class UserController {
     private UserService userService;
 
     //form registrazione
-//    @GetMapping("/registrati")
-//    public String showRegistrationForm(Model model) {
-//        model.addAttribute("userDto", new UserDto());
-//        return "registrazione"; // JSP , html l'importante è smettere di mettere l'estensione
-//    }
-//
-//    //dati registrazione effettiva.
+    @GetMapping("/registrati")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "registrazione"; // JSP , html l'importante è smettere di mettere l'estensione
+    }
+
+    //dati registrazione effettiva.
 //    @PostMapping("/registrati")
 //    public String registra (@ModelAttribute("userDto") UserDto userDto, Model model) {
 //        String risultato = userService.registra(userDto);
 //        model.addAttribute("message", risultato);
 //        
 //        if (risultato.contains("successo")) {
-//            return "login"; // Se la registrazione ha successo, si rimanda alla pagina di login
+//            return "redirect:/login"; // Se la registrazione ha successo, si rimanda alla pagina di login
 //        } else {
 //            return "registrazione"; // Se fallisce, si rimanda alla stessa pagina con il messaggio d'errore
 //        }
 //    }
-
+    
+    
+    //Registrazione rifatto.
+    @PostMapping("/registrazione")
+    public String registerUser(@ModelAttribute UserDto userDto, HttpSession session) {
+        try {
+            userService.registra(userDto);
+            return "redirect:/login"; // Reindirizza al login dopo la registrazione
+        } catch (Exception e) {
+            session.setAttribute("errorMessage", "Errore durante la registrazione "+e.getMessage());
+            return "registrazione"; // Ritorna alla pagina di registrazione se c'è un errore
+        }
+    }
+    
+    
+    
     // Get = mostra facciamo prima
     @GetMapping("/login")
     public String Login(Model model) {
@@ -73,6 +88,7 @@ public class UserController {
             model.addAttribute("error", "Password errata.");
             return "login"; 
         }
+        
     }
 
     

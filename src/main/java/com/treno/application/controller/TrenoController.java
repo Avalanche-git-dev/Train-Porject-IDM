@@ -22,91 +22,82 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/treni")
 public class TrenoController {
-	
+
 	@Autowired
-	@Qualifier ("TrenoService")
+	@Qualifier("TrenoService")
 	TrenoService trenoService;
-	
-	
-	
 
-   @GetMapping
-   public String treni(HttpSession session, Model model) {
-       User utente = (User) session.getAttribute("utente");
-       
-       if (utente == null) {
-           return "redirect:/login"; 
-       }
+	// Controllo accesso pagina solo in sessione di lgoin
+	@GetMapping
+	public String treni(HttpSession session, Model model) {
+		User utente = (User) session.getAttribute("utente");
 
-       model.addAttribute("utente", utente); 
-       return "treni"; // dashboard
-   }
+		if (utente == null) {
+			return "redirect:/login";
+		}
+
+		model.addAttribute("utente", utente);
+		return "treni"; // dashboard
+	}
+
 // Metodo per mostrare la pagina per creare un nuovo treno
-   @GetMapping("/crea")
-   public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-       User utente = (User) session.getAttribute("utente");
-       
-       if (utente == null) {
-           return "redirect:/login"; 
-       }
+	@GetMapping("/crea")
+	public String mostraFormCreazioneTreno(HttpSession session, Model model) {
+		User utente = (User) session.getAttribute("utente");
 
-       model.addAttribute("treno", Treno.build()); // Aggiungi un treno vuoto per il form
-       return "crea"; 
-   }
+		if (utente == null) {
+			return "redirect:/login";
+		}
 
-   // Metodo per gestire la creazione del treno
-   @PostMapping("/crea")
-   public String creaTreno(@RequestParam("input") String input, 
-                           @RequestParam("marca") String marca, 
-                           HttpSession session, Model model) {
-       User utente = (User) session.getAttribute("utente");
-       
-       if (utente == null) {
-           return "redirect:/login";
-       }
+		model.addAttribute("treno", Treno.build()); // Aggiungi un treno vuoto per il form
+		return "crea";
+	}
 
-       // Chiama il servizio per creare il treno
-       trenoService.creaTreno(input, utente, marca);
+	// Metodo per gestire la creazione del treno
+	@PostMapping("/crea")
+	public String creaTreno(@RequestParam("input") String input, @RequestParam("marca") String marca,
+			HttpSession session, Model model) {
+		User utente = (User) session.getAttribute("utente");
 
-       return "redirect:/treni"; // Reindirizza alla lista dei treni o alla dashboard
-   }
-   
-   
-   
-   
-   
-   @GetMapping("/lista")
-   public String getListaTreni(HttpSession session, Model model) {
-       // Recupera l'utente dalla sessione
-       User utente = (User) session.getAttribute("utente");
-       
-       if (utente == null) {
-           return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
-       }
+		if (utente == null) {
+			return "redirect:/login";
+		}
 
-       // Recupera i treni dell'utente dal servizio usando il suo ID
-       List<Treno> treni = trenoService.findAllById(utente.getUserId());
+		// Chiama il servizio per creare il treno
+		trenoService.creaTreno(input, utente, marca);
 
-       model.addAttribute("treni", treni); // Passa i treni alla vista
-       model.addAttribute("utente", utente); // Passa anche l'utente alla vista per eventuali altre informazioni
-       return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
-   }
-   
-   
-   
-   @PostMapping("/listaFiltrata")
-   public String getListaFiltrata(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, HttpSession session, Model model) {
-       User utente = (User) session.getAttribute("utente");
-       if (utente == null) {
-           return "redirect:/login";
-       }
+		return "redirect:/treni"; // Reindirizza alla lista dei treni o alla dashboard
+	}
 
-       // Recupera i treni filtrati usando il filtro e l'ID dell'utente
-       List<Treno> treni = trenoService.filtraTreni(trenoFilter, utente.getUserId());
+	@GetMapping("/lista")
+	public String getListaTreni(HttpSession session, Model model) {
+		// Recupera l'utente dalla sessione
+		User utente = (User) session.getAttribute("utente");
 
-       model.addAttribute("treni", treni);
-       return "visualizzaTreni";
-   }
+		if (utente == null) {
+			return "redirect:/login"; // Reindirizza alla pagina di login se l'utente non è autenticato
+		}
 
+		// Recupera i treni dell'utente dal servizio usando il suo ID
+		List<Treno> treni = trenoService.findAllTreniByUser(utente.getUserId());
+		model.addAttribute("treni", treni); // Passa i treni alla vista
+		model.addAttribute("utente", utente); // Passa anche l'utente alla vista per eventuali altre informazioni
+		return "visualizzaTreni"; // Restituisce la vista per la lista dei treni
+	}
+
+	@PostMapping("/listaFiltrata")
+	public String getListaFiltrata(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, HttpSession session,
+			Model model) {
+		User utente = (User) session.getAttribute("utente");
+		if (utente == null) {
+			return "redirect:/login";
+		}
+
+		// Recupera i treni filtrati usando il filtro e l'ID dell'utente
+		List<Treno> treni = trenoService.filtraTreni(trenoFilter, utente.getUserId());
+
+		model.addAttribute("treni", treni);
+		return "visualizzaTreni";
+	}
 
 }
