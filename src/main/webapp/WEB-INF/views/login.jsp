@@ -68,6 +68,9 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra gli elementi del form */
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -138,7 +141,7 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index" class="home-btn">Home</a>
+        <a href="${pageContext.request.contextPath}/index" class="home-btn">Home</a>
     </div>
 
     <!-- Login form -->
@@ -151,8 +154,8 @@
         </form>
 
         <!-- Display errors if any -->
-        <c:if test="${not empty errorMessage}">
-            <div class="error-message">${errorMessage}</div>
+        <c:if test="${not empty error}">
+            <div class="error-message">${error}</div>
         </c:if>
     </div>
 

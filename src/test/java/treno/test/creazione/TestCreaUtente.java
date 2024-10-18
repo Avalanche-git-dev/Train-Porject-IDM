@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.treno.application.dao.UserUtility;
 import com.treno.application.model.User;
 import com.treno.application.service.UserService;
+import com.treno.application.utility.UserUtility;
 
 public class TestCreaUtente {
 	

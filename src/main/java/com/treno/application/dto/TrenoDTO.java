@@ -20,6 +20,8 @@ public class TrenoDTO {
     private double pesoTotale;
     private double postiTotali;
     private String nome;
+    private long idOwner;
+    private double costoTotale;
 
 
 }

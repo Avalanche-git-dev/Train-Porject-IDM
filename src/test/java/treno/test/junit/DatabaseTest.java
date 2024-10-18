@@ -11,10 +11,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.treno.application.configuration.AppConfiguration;
 import com.treno.application.dao.Dao;
-import com.treno.application.dao.UserUtility;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.builder.TBuilder;
+import com.treno.application.utility.UserUtility;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { AppConfiguration.class })

@@ -1,11 +1,13 @@
 package com.treno.application.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.treno.application.dto.UserDTO;
+import com.treno.application.utility.SessioneUtility;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -13,43 +15,45 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
+    @Autowired
+    private SessioneUtility sessioneUtility;
+
     @GetMapping
-    public String Dashboard(HttpSession session, Model model) {
-        UserDTO utente = (UserDTO) session.getAttribute("utente"); // Usa UserDTO
-        if (utente == null) {
-            return "redirect:/login"; // Reindirizza alla pagina di login
-        }
-        model.addAttribute("utente", utente); 
-        return "dashboard"; // dashboard
+    public String dashboard(HttpSession session, Model model) {
+    	
+    	// Nuova tecnica 
+        UserDTO utente = sessioneUtility.getUtenteLoggato(session);
+        
+        // L'interceptor assicura già che l'utente sia loggato, quindi l'utente non sarà mai null
+        model.addAttribute("utente", utente);
+        return "dashboard"; // Mostra la vista della dashboard
     }
 
     @GetMapping("/profilo")
-    public String Profilo(HttpSession session) {
-        if (!isUserLoggedIn(session)) {
-            return "redirect:/login";
-        }
-        return "profilo"; // profilo
+    public String profilo(HttpSession session, Model model) {
+        // Usa SessioneUtility per ottenere l'utente loggato
+        UserDTO utente = sessioneUtility.getUtenteLoggato(session);
+
+        model.addAttribute("utente", utente);
+        return "profilo"; // Mostra la vista del profilo
     }
 
     @GetMapping("/treni")
-    public String Treni(HttpSession session) {
-        if (!isUserLoggedIn(session)) {
-            return "redirect:/login";
-        }
-        return "treni"; // treni
+    public String treni(HttpSession session, Model model) {
+        // Usa SessioneUtility per ottenere l'utente loggato
+        UserDTO utente = sessioneUtility.getUtenteLoggato(session);
+
+        model.addAttribute("utente", utente);
+        return "treni"; // Mostra la vista dei treni
     }
 
     @GetMapping("/market")
-    public String Market(HttpSession session) {
-        if (!isUserLoggedIn(session)) {
-            return "redirect:/login";
-        }
-        return "market"; // market
-    }
+    public String market(HttpSession session, Model model) {
+        // Usa SessioneUtility per ottenere l'utente loggato
+        UserDTO utente = sessioneUtility.getUtenteLoggato(session);
 
-    // Metodo privato per verificare se l'utente è autenticato
-    private boolean isUserLoggedIn(HttpSession session) {
-        UserDTO utente = (UserDTO) session.getAttribute("utente"); // Usa UserDTO
-        return utente != null;
+        // L'interceptor garantisce che l'utente sia loggato
+        model.addAttribute("utente", utente);
+        return "market"; // Mostra la vista del mercato
     }
 }

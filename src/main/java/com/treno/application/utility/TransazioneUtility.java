@@ -1,7 +1,8 @@
-package com.treno.application.dao;
+package com.treno.application.utility;
 
 import java.util.List;
 
+import com.treno.application.dao.Dao;
 import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.model.Transazione;
 

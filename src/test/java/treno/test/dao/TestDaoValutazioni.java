@@ -3,7 +3,7 @@ package treno.test.dao;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.treno.application.configuration.Factory;
+import com.treno.application.Factory;
 import com.treno.application.model.Valutazione;
 import com.treno.application.model.builder.TBuilder;
 

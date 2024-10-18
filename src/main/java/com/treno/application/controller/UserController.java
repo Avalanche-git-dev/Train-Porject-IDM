@@ -16,6 +16,7 @@ import com.treno.eccezzioni.UserAlreadyExistsException;
 import com.treno.eccezzioni.UserNotFoundException;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller 
 public class UserController {
@@ -43,47 +44,38 @@ public class UserController {
         }
     }
 
-    // Mostra il form di login
+ // Mostra il form di login
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(HttpSession session, Model model) {
+        // Invalida eventuale sessione esistente
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // Aggiunge un nuovo oggetto UserDTO al modello per il form di login
         model.addAttribute("userDto", new UserDTO());
         return "login"; // JSP o altra vista per il login, utilizzare il View Resolver
     }
 
-    // Effettua il login dell'utente
-//    @PostMapping("/login")
-//    public String loginUser(@ModelAttribute("userDto") UserDTO userDto, Model model, HttpSession session) {
-//        try {
-//            userService.login(userDto);
-//            
-//            // Se il login ha successo, salva l'utente nella sessione
-//            UserDTO utente = userService.findByUsername(userDto.getUsername());
-//            session.setAttribute("utente", utente);
-//
-//            return "redirect:/dashboard"; 
-//
-//        } catch (UserNotFoundException e) {
-//            model.addAttribute("error", "Utente non trovato.");
-//            return "login"; 
-//
-//        } catch (InvalidPasswordException e) {
-//            model.addAttribute("error", "Password errata.");
-//            return "login"; 
-//        }
-//    }
-    
-    
+
+
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute("userDto") UserDTO userDto, Model model, HttpSession session) {
+    public String Dologin(@ModelAttribute("userDto") UserDTO userDto, Model model, HttpServletRequest request) {
         try {
             // Effettua il login e riceve un UserDTO se le credenziali sono corrette
             UserDTO utente = userService.login(userDto);
 
-            // Se il login ha successo, salva l'utente nella sessione
-            session.setAttribute("utente", utente);
+            // Invalida la sessione esistente e crea una nuova sessione
+            HttpSession oldSession = request.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate();
+            }
+
+            HttpSession newSession = request.getSession(true);//HTTP SERVLET PERCHé non posso springboot mannaggia..
+            newSession.setAttribute("utente", utente);
 
             // Reindirizza alla dashboard
-            return "redirect:/dashboard"; 
+            return "redirect:/dashboard";
 
         } catch (UserNotFoundException e) {
             // Se l'utente non viene trovato, mostra un messaggio di errore
@@ -97,11 +89,23 @@ public class UserController {
         }
     }
 
-
     // Effettua il logout dell'utente
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        userService.logout(session);
-        return "redirect:/login"; // Reindirizza al login dopo il logout
+        // Invalidare la sessione corrente
+        if (session != null) {
+            session.invalidate(); // Rimuove tutti gli attributi e invalida la sessione
+        }
+
+        return "redirect:/login"; // Reindirizza alla pagina di login
     }
+    @PostMapping("/logout")
+    public String Dologout(HttpSession session) {
+        if (session != null) {
+            session.invalidate(); // Invalida la sessione corrente
+        }
+        return "redirect:/login"; // Reindirizza alla pagina di login
+    }
+
+
 }

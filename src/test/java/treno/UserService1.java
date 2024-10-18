@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
-import com.treno.application.dao.UserUtility;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.model.User;
+import com.treno.application.utility.UserUtility;
 import com.treno.eccezzioni.InvalidPasswordException;
 import com.treno.eccezzioni.UserAlreadyExistsException;
 import com.treno.eccezzioni.UserNotFoundException;

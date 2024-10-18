@@ -3,7 +3,7 @@ package treno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import com.treno.application.configuration.Factory;
+import com.treno.application.Factory;
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;

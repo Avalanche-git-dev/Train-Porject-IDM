@@ -1,4 +1,4 @@
-package com.treno.application.configuration;
+package com.treno.application;
 
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;

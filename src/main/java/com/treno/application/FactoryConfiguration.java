@@ -1,4 +1,4 @@
-package com.treno.application.configuration;
+package com.treno.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

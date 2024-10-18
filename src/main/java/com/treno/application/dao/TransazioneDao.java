@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.model.Transazione;
+import com.treno.application.utility.TransazioneUtility;
 
 public class TransazioneDao extends ProxyDao<Transazione> implements TransazioneUtility {
 

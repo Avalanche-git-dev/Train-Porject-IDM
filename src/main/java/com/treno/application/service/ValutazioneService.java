@@ -1,16 +1,18 @@
 package com.treno.application.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
-import com.treno.application.dao.UtenteValutaTreno;
+import com.treno.application.dto.ValutazioneDTO;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.Valutazione;
+import com.treno.application.utility.UtenteValutaTreno;
 
 
 public class ValutazioneService {
@@ -40,7 +42,7 @@ public class ValutazioneService {
 
 	// Ottenere tutte le valutazioni di un utente
 	public List<Valutazione> getValutazioniPerUtente(Long userId) throws Exception {
-		User user = userDao.findById(userId.intValue());
+		User user = userDao.findById(userId);
 		if (user == null) {
 			throw new Exception("Utente non trovato");
 		}
@@ -82,5 +84,28 @@ public class ValutazioneService {
 		// Salva la nuova valutazione nel database
 		valutazioneDao.update(nuovaValutazione);
 	}
+	//restituisce tutte le valutazioni di un treno
+	public List<ValutazioneDTO> getAllValutazioniByTreno(Long idTreno) {
+	    List<Valutazione> valutazioni =  valutazioneDao.findValutazioniByTreno(idTreno.longValue());
+	    return valutazioni.stream()
+	                      .map(this::convertToDTO) // Converti ogni entità in DTO
+	                      .collect(Collectors.toList());
+	}
+
+	
+	
+	
+	
+	public ValutazioneDTO convertToDTO(Valutazione valutazione) {
+	    ValutazioneDTO dto = new ValutazioneDTO();
+	    dto.setIdValutazione(valutazione.getIdValutazione());
+	    dto.setUserId(valutazione.getUser().getUserId());
+	    dto.setUserNome(valutazione.getUser().getNome()); // Recupera il nome dell'utente
+	    dto.setTrenoId(valutazione.getTreno().getIdTreno());
+	    dto.setTrenoNome(valutazione.getTreno().getNome()); // Recupera il nome del treno
+	    dto.setVotazione(valutazione.getVotazione());
+	    return dto;
+	}
+
 
 }

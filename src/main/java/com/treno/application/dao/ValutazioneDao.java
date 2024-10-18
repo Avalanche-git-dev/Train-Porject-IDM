@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.model.Valutazione;
+import com.treno.application.utility.UtenteValutaTreno;
 
 public class ValutazioneDao extends ProxyDao<Valutazione> implements UtenteValutaTreno {
 
@@ -38,7 +39,14 @@ public class ValutazioneDao extends ProxyDao<Valutazione> implements UtenteValut
 	public List<Valutazione> findValutazioniByUser(long userId) {
 		return this.supportoValutazioniByUser(userId);
 	}
-	
+	// Tutte le valutazioni di un treno
+	public List<Valutazione> findValutazioniByTreno(Long trenoId) {
+	    String hql = "FROM Valutazione v WHERE v.treno.id = :trenoId";
+	    return em.createQuery(hql, Valutazione.class)
+	             .setParameter("trenoId", trenoId)
+	             .getResultList();
+	}
+
 	
 
 }

@@ -15,11 +15,10 @@
             padding: 0;
             background-color: #f9f9f9;
             color: #333;
+            height: 100vh; /* Assicura che il body riempia tutta l'altezza della finestra */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
         }
 
         .navbar {
@@ -56,8 +55,8 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            height: 100%;
             width: 100%;
+            height: 100%; /* Fa in modo che il container riempia tutto lo spazio disponibile */
         }
 
         .register-form {
@@ -66,6 +65,9 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centro all'interno del form */
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -145,7 +147,7 @@
             <input type="password" name="password" placeholder="Password" required>
             <input type="text" name="nome" placeholder="Nome" required>
             <input type="text" name="cognome" placeholder="Cognome" required>
-            <input type="text" name="numeroDiTelefono" placeholder="Numero di Telefono" required>
+            <input type="text" name="telefono" placeholder="Numero di Telefono" required>
             <input type="email" name="email" placeholder="Email" required>
             <button type="submit" class="register-btn">Registrati</button>
         </form>

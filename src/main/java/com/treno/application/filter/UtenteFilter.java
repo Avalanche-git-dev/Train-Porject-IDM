@@ -1,5 +1,7 @@
 package com.treno.application.filter;
 
+import com.treno.application.model.User.Stato;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +24,14 @@ public class UtenteFilter {
     //Filtri per admin
     private String username;
     private String password;
-    private String attivita;
+    private Stato stato;
+    
+    private String telefono;
+    private String nuovaPassword;
+    private int numeroTreni;
+    private int numeroValutazioni;
+    private int numeroTransazioni;
+    private int ammontareTotaleTransazioni;
     
     
     

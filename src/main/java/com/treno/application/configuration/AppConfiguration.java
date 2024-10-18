@@ -18,6 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.treno.application.FactoryConfiguration;
 import com.treno.application.dao.TransazioneDao;
 import com.treno.application.dao.TrenoDao;
 import com.treno.application.dao.UserDao;
@@ -34,13 +35,13 @@ import com.treno.application.service.ValutazioneService;
 
 
 
+
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc//Questo maledetto mi è costato una figura del cazzo
-@ComponentScan("com.treno.application")
 @ImportResource("classpath:/BeansConfiguration.xml")
+@ComponentScan("com.treno.application")
 public class AppConfiguration {
-	// View Resolver
 
 	// Datasource
 	@Bean(name = "dataSource")
@@ -87,13 +88,22 @@ public class AppConfiguration {
 
 	/*** transazioni ***/
 
+//	@Bean
+//	public PlatformTransactionManager getTransactionManager() {
+//		JpaTransactionManager transactionManager = new JpaTransactionManager();
+//		// transactionManager.setEntityManagerFactory(getEntityManager().getObject());
+//		// transactionManager.setNestedTransactionAllowed(false);
+//		return transactionManager;
+//	}
+	
+	
 	@Bean
 	public PlatformTransactionManager getTransactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		// transactionManager.setEntityManagerFactory(getEntityManager().getObject());
-		// transactionManager.setNestedTransactionAllowed(false);
-		return transactionManager;
+	    JpaTransactionManager transactionManager = new JpaTransactionManager();
+	    transactionManager.setEntityManagerFactory(getEntityManager().getObject());
+	    return transactionManager;
 	}
+
 
 	// Configurazione della Factory
 
@@ -102,6 +112,13 @@ public class AppConfiguration {
 		return new FactoryConfiguration();
 	}
 
+	
+	
+	
+	//<Application>
+	
+	
+	
 	// Configurazione del builder
 
 	@Bean(name = "Builder")
@@ -146,7 +163,6 @@ public class AppConfiguration {
 	// Service Bean
 
 	@Bean(name = "ValutazioneService")
-	@Scope("prototype")
 	public ValutazioneService getValutazioneService() {
 		return new ValutazioneService();
 	}
@@ -158,13 +174,11 @@ public class AppConfiguration {
 	}
 
 	@Bean(name = "UserService")
-	@Scope("prototype")
 	public UserService getUserService() {
 		return new UserService();
 	}
 
 	@Bean(name = "TransazioneService")
-	@Scope("prototype")
 	public TransazioneService getTransazioneService() {
 		return new TransazioneService();
 
@@ -178,7 +192,16 @@ public class AppConfiguration {
 		return new Transazione();
 	}
 	
-	//Application
+	//</Application>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	}

@@ -1,17 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="navbar.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Treni dell'Utente</title>
+    <title>Tutti i Treni Disponibili</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Collezione Treni dell'Utente</h1>
-        <c:forEach var="treno" items="${treniDto}">
+        <h1>Tutti i Treni Disponibili</h1>
+        <c:forEach var="treno" items="${treni}">
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">${treno.nome}</h5>

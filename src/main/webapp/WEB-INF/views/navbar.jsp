@@ -1,4 +1,3 @@
-<!-- navbar.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
@@ -14,6 +13,9 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/treni">Treni</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="${pageContext.request.contextPath}/treni/catalogo">Catalogo</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/market">Market</a>
             </li>
         </ul>
@@ -26,34 +28,64 @@
 
 <style>
     .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
         background-color: #f0f0f0; /* Grigio chiaro */
         padding: 15px;
         border-bottom: 1px solid #ddd;
     }
-    .navbar-brand, .nav-link {
+
+    .navbar-brand {
         color: #333; /* Grigio scuro */
-        transition: color 0.3s ease;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: color 0.3s ease, background-color 0.3s ease;
     }
-    .navbar-brand:hover, .nav-link:hover {
-        color: #0275d8; /* Blu */
+
+    .navbar-brand:hover {
+        color: #0275d8; /* Blu per hover */
+        background-color: #e0e0e0; /* Grigio chiaro per hover */
     }
+
+    .navbar-nav .nav-item .nav-link {
+        color: #444; /* Colore leggermente più scuro per differenziarlo da Dashboard */
+        margin-right: 20px;
+        font-size: 18px;
+        transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #0275d8; /* Blu per hover */
+        background-color: #f0f0f0; /* Grigio chiaro per hover */
+        border-radius: 5px;
+    }
+
     .logout-btn {
-        background-color: #333;
+        background-color: #777; /* Grigio più scuro per evidenziarlo */
         color: white;
+        padding: 10px 20px;
         border: none;
         border-radius: 20px;
         cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .logout-btn:hover {
-        background-color: #555;
+        background-color: #0275d8; /* Blu per hover */
+        color: #fff;
     }
+
     .settings-icon {
         font-size: 22px;
         color: #0275d8;
         margin-left: 10px;
         cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .settings-icon:hover {
+        color: #025aa5;
     }
 </style>
