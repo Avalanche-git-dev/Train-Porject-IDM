@@ -9,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-//@ToString
 @Entity
 @Table(name = "users")
 public class User extends RegisteredUser {
@@ -146,6 +145,13 @@ public class User extends RegisteredUser {
 
 	public enum Stato {
 		locked, unlocked
+	}
+
+	@Override
+	public String toString() {
+		return "User [stato=" + stato + ", listaTreni=" + listaTreni + ", transazioniAcquisto=" + transazioniAcquisto
+				+ ", transazioniVendita=" + transazioniVendita + ", valutazioni=" + valutazioni + ", portafoglio="
+				+ portafoglio + ", = " + super.toString() + "]";
 	}
 
 	

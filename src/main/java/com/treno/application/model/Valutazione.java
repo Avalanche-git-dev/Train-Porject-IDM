@@ -14,11 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "valutazioni")
 @NaturalIdCache
@@ -48,6 +45,44 @@ public class Valutazione {
 
 	public Valutazione() {
 		super();
+	}
+
+	public long getIdValutazione() {
+		return idValutazione;
+	}
+
+	public void setIdValutazione(long idValutazione) {
+		this.idValutazione = idValutazione;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Treno getTreno() {
+		return treno;
+	}
+
+	public void setTreno(Treno treno) {
+		this.treno = treno;
+	}
+
+	public int getVotazione() {
+		return votazione;
+	}
+
+	public void setVotazione(int votazione) {
+		this.votazione = votazione;
+	}
+
+	@Override
+	public String toString() {
+		return "Valutazione [idValutazione=" + idValutazione + ", user=" + user.getUsername() + ", treno=" + treno.getNome() + ", votazione="
+				+ votazione + "]";
 	}
 	
 	

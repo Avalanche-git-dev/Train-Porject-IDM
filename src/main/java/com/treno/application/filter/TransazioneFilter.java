@@ -1,11 +1,6 @@
 package com.treno.application.filter;
 
 import java.time.LocalDateTime;
-
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
 public class TransazioneFilter {
 	
 	private double importoMassimo;
@@ -19,6 +14,29 @@ public class TransazioneFilter {
 	}
 	public TransazioneFilter() {
 		super();
+	}
+	public double getImportoMassimo() {
+		return importoMassimo;
+	}
+	public void setImportoMassimo(double importoMassimo) {
+		this.importoMassimo = importoMassimo;
+	}
+	public double getImportoMinimo() {
+		return importoMinimo;
+	}
+	public void setImportoMinimo(double importoMinimo) {
+		this.importoMinimo = importoMinimo;
+	}
+	public LocalDateTime getUltimaTransazione() {
+		return ultimaTransazione;
+	}
+	public void setUltimaTransazione(LocalDateTime ultimaTransazione) {
+		this.ultimaTransazione = ultimaTransazione;
+	}
+	@Override
+	public String toString() {
+		return "TransazioneFilter [importoMassimo=" + importoMassimo + ", importoMinimo=" + importoMinimo
+				+ ", ultimaTransazione=" + ultimaTransazione + "]";
 	}
 	
 

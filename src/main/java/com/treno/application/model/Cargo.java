@@ -3,14 +3,8 @@ package com.treno.application.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "cargo")
 public class Cargo extends Vagone {
@@ -26,6 +20,19 @@ public class Cargo extends Vagone {
 			double volumeCargo) {
 		super(idVagone, peso, costo, lunghezza, marca, treno);
 		this.volumeCargo = volumeCargo;
+	}
+
+	public double getVolumeCargo() {
+		return volumeCargo;
+	}
+
+	public void setVolumeCargo(double volumeCargo) {
+		this.volumeCargo = volumeCargo;
+	}
+
+	@Override
+	public String toString() {
+		return "Cargo [volumeCargo=" + volumeCargo + ", = " + super.toString() + "]";
 	}
 	
 	

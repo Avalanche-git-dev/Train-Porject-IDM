@@ -11,30 +11,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name = "transazioni")
 public class Transazione {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_transazione")
 	private long idTransazione;
-	
+
 	@Column(name = "importo", nullable = false)
 	private Double importo;
-	
+
 	@Column(name = "transazione_data", nullable = false)
 	private LocalDateTime data;
 
-	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_treno", nullable = false)
 	private Treno treno;
@@ -47,13 +39,65 @@ public class Transazione {
 	@JoinColumn(name = "seller_id", nullable = false)
 	private User venditore;
 
-    //Costruttore vuoto 
-	
+	// Costruttore vuoto
+
 	public Transazione() {
 		super();
 	}
 
+	public long getIdTransazione() {
+		return idTransazione;
+	}
 
+	public void setIdTransazione(long idTransazione) {
+		this.idTransazione = idTransazione;
+	}
 
-	
+	public Double getImporto() {
+		return importo;
+	}
+
+	public void setImporto(Double importo) {
+		this.importo = importo;
+	}
+
+	public LocalDateTime getData() {
+		return data;
+	}
+
+	public void setData(LocalDateTime data) {
+		this.data = data;
+	}
+
+	public Treno getTreno() {
+		return treno;
+	}
+
+	public void setTreno(Treno treno) {
+		this.treno = treno;
+	}
+
+	public User getAcquirente() {
+		return acquirente;
+	}
+
+	public void setAcquirente(User acquirente) {
+		this.acquirente = acquirente;
+	}
+
+	public User getVenditore() {
+		return venditore;
+	}
+
+	public void setVenditore(User venditore) {
+		this.venditore = venditore;
+	}
+
+	@Override
+	public String toString() {
+		return "Transazione [idTransazione=" + idTransazione + ", importo=" + importo + ", data=" + data + ", treno="
+				+ treno.getIdTreno() + ", acquirente=" + acquirente.getUserId() + ", venditore=" + venditore.getUserId()
+				+ "]";
+	}
+
 }

@@ -6,17 +6,14 @@
 	<artifactId>ProgettoTreno</artifactId>
 	<version>1.0</version>
 	<name>ProgettoTreno</name>
-	<!-- Se stai creando un'applicazione web, dovresti cambiare il packaging in
-	'war' -->
 	<packaging>war</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
+
 	<build>
-
-
 		<plugins>
 			<!-- Plugin per la compilazione -->
 			<plugin>
@@ -34,29 +31,36 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.3.2</version>
-				<configuration>
-					<!--failOnMissingWebXml>false</failOnMissingWebXml-->
-				</configuration>
 			</plugin>
 
-
+			<!-- Plugin per i test con JUnit -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0-M7</version> <!-- Versione compatibile con JUnit 5 -->
+				<version>3.0.0-M7</version>
 				<configuration>
 					<includes>
 						<include>**/*Test.java</include>
 					</includes>
 					<properties>
 						<configurationParameters>
-							junit.jupiter.extensions.autodetection.enabled=true</configurationParameters>
+							junit.jupiter.extensions.autodetection.enabled=true
+						</configurationParameters>
 					</properties>
 				</configuration>
-
 			</plugin>
-			
+
+			<!-- ↘ Plugin per Hibernate Bytecode Enhancer -->
+			<plugin>
+				<groupId>org.hibernate.orm</groupId>
+				<artifactId>hibernate-enhancer-maven-plugin</artifactId>
+				<version>6.2.0.Final</version>
+			</plugin>
+
+
 		</plugins>
+
+
 	</build>
 
 	<dependencies>
@@ -79,12 +83,10 @@
 			<version>3.2.0</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>6.1.3</version> <!-- La stessa versione di Spring che stai
-			usando -->
+			<version>6.1.3</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -105,6 +107,18 @@
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
 			<version>3.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>jakarta.el</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.1.Final</version>
 		</dependency>
 
 		<!-- Dipendenza per le API di Persistence (JPA) -->
@@ -134,7 +148,6 @@
 			<groupId>jakarta.servlet.jsp.jstl</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 			<version>3.0.1</version>
-			<!--scope>provided</scope-->
 		</dependency>
 
 		<dependency>
@@ -146,8 +159,7 @@
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jasper</artifactId>
-			<version>10.1.0</version> <!-- Usa una versione compatibile con il
-			tuo Tomcat -->
+			<version>10.1.0</version>
 		</dependency>
 
 		<dependency>
@@ -157,8 +169,6 @@
 		</dependency>
 
 		<!-- Altre dipendenze -->
-
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>

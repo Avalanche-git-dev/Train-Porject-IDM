@@ -3,13 +3,7 @@ package com.treno.application.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
 @Entity
 @Table(name= "passeggeri")
 public class Passeggero extends Vagone {
@@ -31,6 +25,33 @@ public class Passeggero extends Vagone {
 		super(idVagone, peso, costo, lunghezza, marca, treno);
 		this.numeroPosti = numeroPosti;
 		this.classe = classe;
+	}
+
+
+	public int getNumeroPosti() {
+		return numeroPosti;
+	}
+
+
+	public void setNumeroPosti(int numeroPosti) {
+		this.numeroPosti = numeroPosti;
+	}
+
+
+	public String getClasse() {
+		return classe;
+	}
+
+
+	public void setClasse(String classe) {
+		this.classe = classe;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Passeggero [numeroPosti=" + numeroPosti + ", classe=" + classe + ", = " + super.toString() + "]";
+				
 	}
 
 

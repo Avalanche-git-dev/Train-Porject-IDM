@@ -35,8 +35,11 @@ public class Treno {
 	 * strategy di auto-incremento. Non c'è bisogno di specificare Column(...) come
 	 * per gli altri attributi perché la sua creazione è garantita da GeneratedValue
 	 */
+	
+	
 	private long idTreno;
-	@Column(name = "nome")
+	
+	@Column(name = "nome" , unique = true)
     private String nome;
 	
 	
@@ -44,8 +47,6 @@ public class Treno {
 	public String getNome() {
 		return nome;
 	}
-
-
 
 
 	public void setNome(String nome) {
@@ -76,17 +77,9 @@ public class Treno {
 	}
 
 
-
-
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-
-
-
-
-
-
 
 
 	public Set<Transazione> getTransazioni() {
@@ -376,6 +369,16 @@ public class Treno {
 		
 	}
 
+
+	@Override
+	public String toString() {
+		return "Treno [idTreno=" + idTreno + ", nome=" + nome + ", sigla=" + sigla + ", immagine=" + immagine
+				+ ", InVendita=" + InVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", vagoni="
+				+ vagoni + ", valutazioni=" + valutazioni + ", owner=" + owner.getUserId() + ", transazioni=" + transazioni + "]";
+	}
+
+	
+	
 
 
 

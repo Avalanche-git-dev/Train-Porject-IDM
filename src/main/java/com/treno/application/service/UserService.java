@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.model.User;
 import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
 import com.treno.eccezzioni.InvalidPasswordException;
-import com.treno.eccezzioni.UserAlreadyExistsException;
 import com.treno.eccezzioni.UserNotFoundException;
 
 public class UserService {
@@ -33,18 +33,20 @@ public class UserService {
 
 	// Metodo registrazione
 	@Transactional
-	public String registra(UserDTO userDto) {
-		// Controlla se l'utente esiste già
-		User utenteEsistente = userDao.findById(userDto.getUserId());
-		if (utenteEsistente != null) {
-			// Se l'utente esiste, restituisci un messaggio di errore
-			throw new UserAlreadyExistsException("Utente già registrato con questo username!");
-		}
-
-		// Crea un nuovo oggetto User a partire dai dati del DTO
+	public void registra(UserDTO userDto) {
+		  User utenteEsistente = userDao.findByUsername(userDto.getUsername());
+	        if (utenteEsistente != null) {
+	            throw new UserAlreadyExistsException("Utente già registrato con questo username!");
+	        }
+	        
+	        // Controlla se esiste già un utente con la stessa email
+	        User utenteEsistenteEmail = userDao.findByEmail(userDto.getEmail());
+	        if (utenteEsistenteEmail != null) {
+	            throw new UserAlreadyExistsException("Esiste già un account con questa email!");
+	        }
 		User user = new User();
 		user.setUsername(userDto.getUsername());
-		user.setPassword(userDto.getPassword()); // Aggiungi qui la logica di hashing se necessario
+		user.setPassword(userDto.getPassword()); 
 		user.setNome(userDto.getNome());
 		user.setCognome(userDto.getCognome());
 		user.setTelefono(userDto.getTelefono());
@@ -52,10 +54,11 @@ public class UserService {
 		user.setPortafoglio(0);
 		user.setStato(Stato.unlocked);
 		userDao.save(user);
-		
-		// Aggiungere il controllo della presenza dell'utente
-		return "Registrazione avvenuta con successo!";
+		 //meglio boolean piu facile con i controller.
 	}
+	
+	
+	
 	
 	
     //Login

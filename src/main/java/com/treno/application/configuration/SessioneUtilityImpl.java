@@ -12,16 +12,17 @@ public class SessioneUtilityImpl implements SessioneUtility {
 
     @Override
     public UserDTO getUtenteLoggato(HttpSession session) {
-        return (UserDTO) session.getAttribute("utente");
+        return (UserDTO) session.getAttribute("utenteLoggato");
     }
     //bella idea questa, grazie Alessandro, è anche vero che sto imparando alla velocità della luce :)
     @Override
     public boolean isUtenteLoggato(HttpSession session) {
         return getUtenteLoggato(session) != null;
     }
+    
     @Override
     public void setUtenteLoggato(HttpSession session, UserDTO userDto) {
-        session.setAttribute("utente", userDto);
-        System.out.println("SessionUtility.setUtenteLoggato: userDto = " + userDto);
+        session.setAttribute("utenteLoggato", userDto);
+        //System.out.println("SessionUtility.setUtenteLoggato: userDto = " + userDto);
     }
 }
