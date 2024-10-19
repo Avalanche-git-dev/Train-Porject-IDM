@@ -1,4 +1,4 @@
-package com.treno.application.controller;
+/* package com.treno.application.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,5 +68,6 @@ public class HomeController {
     	
 
 }
+*/
 
 
