@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.InvalidPasswordException;
+import com.treno.application.exception.UserAlreadyExistsException;
+import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.model.User;
 import com.treno.application.utility.UserUtility;
-import com.treno.eccezzioni.InvalidPasswordException;
-import com.treno.eccezzioni.UserAlreadyExistsException;
-import com.treno.eccezzioni.UserNotFoundException;
 
 @Service
 public class UserService1 {

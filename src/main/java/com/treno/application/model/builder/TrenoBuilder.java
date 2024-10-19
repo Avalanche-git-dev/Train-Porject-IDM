@@ -1,14 +1,14 @@
 package com.treno.application.model.builder;
 
+import com.treno.application.exception.MotriceInMezzoException;
+import com.treno.application.exception.MotricenonInTestaException;
+import com.treno.application.exception.TroppiRistorantiException;
+import com.treno.application.exception.VagoniIncompatibiliException;
 import com.treno.application.model.Cargo;
 import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.Treno;
-import com.treno.eccezzioni.MotriceInMezzoException;
-import com.treno.eccezzioni.MotricenonInTestaException;
-import com.treno.eccezzioni.TroppiRistorantiException;
-import com.treno.eccezzioni.VagoniIncompatibiliException;
 
 public abstract class TrenoBuilder {
 	

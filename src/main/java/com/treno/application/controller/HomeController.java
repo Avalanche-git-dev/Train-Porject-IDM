@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.treno.application.configuration.SessioneUtilityImpl;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.service.UserService;
-import com.treno.eccezzioni.UserAlreadyExistsException;
 
 import jakarta.servlet.http.HttpSession;
 

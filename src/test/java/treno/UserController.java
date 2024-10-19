@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.InvalidPasswordException;
+import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.service.UserService;
-import com.treno.eccezzioni.InvalidPasswordException;
-import com.treno.eccezzioni.UserNotFoundException;
 
 import jakarta.servlet.http.HttpSession;
 
