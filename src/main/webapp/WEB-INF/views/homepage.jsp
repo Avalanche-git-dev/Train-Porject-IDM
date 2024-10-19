@@ -1,80 +1,61 @@
+<!-- dashboard.jsp -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="${pageContext.request.contextPath}/treni/catalogo">Catalogo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-    	<form class="form-inline" action="${pageContext.request.contextPath}/login" method="get">
-        	<button class="btn login-btn my-2 my-sm-0" type="submit">Login</button>
-    	</form>
-    	<form class="form-inline" action="${pageContext.request.contextPath}/registrazione" method="get" style="margin-left: 10px;">
-        	<button class="btn register-btn my-2 my-sm-0" type="submit">Registrazione</button>
-    	</form>
-    	<i class="fas fa-cog settings-icon" title="Impostazioni" style="margin-left: 10px;"></i>
-	</div>
-</nav>
+<%@ include file="navbarhome.jsp" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: #ffffff;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        footer {
+            background-color: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            color: #333;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
 
-<style>
-    .navbar {
-        background-color: #f0f0f0; /* Grigio chiaro */
-        padding: 15px;
-        border-bottom: 1px solid #ddd;
-    }
+<!-- Main content -->
+<div class="main">
+    <h1>Benvenuto, ${utente.username}</h1>
+    <p>Questa è la tua dashboard personale.</p>
+</div>
 
-    .navbar-brand {
-        color: #333; /* Grigio scuro */
-        padding: 10px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: color 0.3s ease, background-color 0.3s ease;
-    }
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 YourWebsite. All rights reserved.</p>
+</footer>
 
-    .navbar-brand:hover {
-        color: #0275d8; /* Blu per hover */
-        background-color: #e0e0e0; /* Grigio chiaro per hover */
-    }
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-    .navbar-nav .nav-item .nav-link {
-        color: #444; /* Colore leggermente più scuro per differenziarlo da Dashboard */
-        margin-right: 20px;
-        font-size: 18px;
-        transition: color 0.3s ease, background-color 0.3s ease;
-    }
-
-    .navbar-nav .nav-item .nav-link:hover {
-        color: #0275d8; /* Blu per hover */
-        background-color: #f0f0f0; /* Grigio chiaro per hover */
-        border-radius: 5px;
-    }
-
-    .logout-btn {
-        background-color: #777; /* Grigio più scuro per evidenziarlo */
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .logout-btn:hover {
-        background-color: #0275d8; /* Blu per hover */
-        color: #fff;
-    }
-
-    .settings-icon {
-        font-size: 22px;
-        color: #0275d8;
-        margin-left: 10px;
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
-
-    .settings-icon:hover {
-        color: #025aa5;
-    }
-</style>
+</body>
+</html>
