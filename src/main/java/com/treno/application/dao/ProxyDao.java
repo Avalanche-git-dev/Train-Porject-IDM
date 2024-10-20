@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-public class ProxyDao<T> implements Dao<T> {
+public abstract class ProxyDao<T> implements Dao<T> {
 	
 	@PersistenceContext
 	protected EntityManager em;

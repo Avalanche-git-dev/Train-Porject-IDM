@@ -58,12 +58,23 @@
 			</plugin>
 
 
-		</plugins>
+			
 
+		</plugins>
 
 	</build>
 
+
 	<dependencies>
+
+		<!-- ByteCodeEnhancer-->
+
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.14.0</version>
+		</dependency>
+
 		<!-- Dipendenze Spring Framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>

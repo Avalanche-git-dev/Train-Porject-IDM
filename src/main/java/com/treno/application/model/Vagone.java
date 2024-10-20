@@ -2,6 +2,7 @@ package com.treno.application.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +32,7 @@ public abstract class Vagone {
     @Column(name= "marca")
     private String marca;
 
-    @ManyToOne/*(fetch = FetchType.LAZY)*/
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_treno") // La chiave esterna per collegare i vagoni al treno + nome della chiave esterna con la convenzione.
     private Treno treno;
 

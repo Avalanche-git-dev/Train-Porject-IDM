@@ -141,7 +141,7 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <a href="${pageContext.request.contextPath}/index" class="home-btn">Home</a>
+        <a href="${pageContext.request.contextPath}/" class="home-btn">Home</a>
     </div>
 
     <!-- Login form -->

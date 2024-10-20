@@ -42,6 +42,7 @@ com\treno\application\exception\MotriceInMezzoException.class
 com\treno\application\exception\UserAlreadyExistsException.class
 com\treno\application\filter\TrenoFilter.class
 com\treno\application\service\UserService.class
+com\treno\application\exception\AlreadyExistEmail.class
 com\treno\application\model\Motrice.class
 com\treno\application\model\Valutazione.class
 com\treno\application\configuration\package-info.class
@@ -56,6 +57,7 @@ com\treno\package-info.class
 com\treno\application\exception\UserNotFoundException.class
 com\treno\application\dto\TransazioneDTO.class
 com\treno\application\dto\UserGuest.class
+com\treno\application\exception\InvalidPhoneNumberException.class
 com\treno\application\dao\Dao.class
 com\treno\application\exception\VenditoreAcquirenteNonTrovatoException.class
 com\treno\application\Factory.class
@@ -77,6 +79,7 @@ com\treno\application\dao\package-info.class
 com\treno\application\utility\TransazioneUtility.class
 com\treno\application\exception\ValutazioneException.class
 com\treno\application\dao\UserDao.class
+com\treno\application\controller\ValutazioneController.class
 com\treno\application\model\RegisteredUser.class
 com\treno\application\dao\TransazioneDao.class
 com\treno\application\model\User$Stato.class
