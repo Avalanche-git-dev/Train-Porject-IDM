@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
+import com.treno.application.exception.FondiInsufficientiException;
+import com.treno.application.exception.VenditoreAcquirenteNonTrovatoException;
 import com.treno.application.model.Transazione;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.utility.TrenoUtility;
-import com.treno.eccezzioni.FondiInsufficientiException;
-import com.treno.eccezzioni.VenditoreAcquirenteNonTrovatoException;
 
 
 public class TransazioneService {

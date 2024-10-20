@@ -539,10 +539,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.InvalidPasswordException;
+import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.service.UserService;
 import com.treno.application.utility.SessioneUtility;
-import com.treno.eccezzioni.InvalidPasswordException;
-import com.treno.eccezzioni.UserNotFoundException;
 
 import jakarta.servlet.http.HttpSession;
 
