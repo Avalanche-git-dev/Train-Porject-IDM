@@ -223,5 +223,10 @@ public class TrenoService {
 
 		    return treno;
 		}
+	 
+	 public List<TrenoDTO> findTreniInVendita() {
+		    List<Treno> treniInVendita = ((TrenoUtility) trenoDao).findAllInVendita();
+		    return treniInVendita.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+		}
 
 }

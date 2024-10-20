@@ -31,10 +31,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     @Transactional
     public List<Treno> findAllInVendita() {
         // HQL con JOIN FETCH per caricare anche valutazioni e transazioni dei treni in vendita
-        String hql = "SELECT DISTINCT t FROM Treno t " +
-                     "LEFT JOIN FETCH t.valutazioni " +
-                     "LEFT JOIN FETCH t.transazioni " +
-                     "WHERE t.inVendita = true";
+        String hql = "SELECT DISTINCT t FROM Treno t WHERE t.InVendita = true";
         
         // Esegui la query e restituisci la lista di treni in vendita
         return super.em.createQuery(hql, Treno.class).getResultList();
