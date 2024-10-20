@@ -157,6 +157,11 @@
             <div class="error-message">${errorMessage}</div>
         </c:if>
     </div>
+    
+     <c:if test="${not empty sessionScope.errorMessage}">
+        <div class="error-message">${sessionScope.errorMessage}</div>
+        <c:remove var="errorMessage" scope="session" />
+    </c:if>
 
 </body>
 </html>

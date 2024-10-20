@@ -30,13 +30,14 @@ public class TrenoController {
     TrenoService trenoService;
 
     @Autowired
+    @Qualifier("Sessione")
     private SessioneUtility sessioneUtility;
 
     // Pagina Treni (login interceptor + sessione utility per recuperare sempre userDTO dalla sessione
     @GetMapping
     public String treni(HttpSession session, Model model) {
         UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-        model.addAttribute("utente", utenteDto);
+        model.addAttribute("utenteLoggato", utenteDto);
         return "treni";
     }
 
@@ -44,7 +45,7 @@ public class TrenoController {
     @GetMapping("/crea")
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
         UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-        model.addAttribute("utente", utenteDto);
+        model.addAttribute("utenteLoggato", utenteDto);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";
     }

@@ -7,6 +7,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.treno.application.utility.SessioneUtility;
+
 @Configuration
 @EnableWebMvc // Abilita le configurazioni MVC, se non è già abilitato da qualche altra parte
 public class WebConfig implements WebMvcConfigurer {
@@ -16,15 +18,14 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registraLogin) {
-		registraLogin.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login",
-				"/resources/**", "/css/**", "/js/**");
+		registraLogin.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/", "/user/registrati", "/user/login", "/resources/**", "/css/**", "/js/**");
 	}
 
 	// <WEB Application>
 
 	// Sessione
 	@Bean("Sessione")
-	public SessioneUtilityImpl getSessione() {
+	public SessioneUtility getSessione() {
 		return new SessioneUtilityImpl();
 	}
 

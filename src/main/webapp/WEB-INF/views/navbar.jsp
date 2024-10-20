@@ -19,7 +19,7 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/market">Market</a>
             </li>
         </ul>
-        <form class="form-inline" action="${pageContext.request.contextPath}/logout" method="post">
+        <form class="form-inline" action="${pageContext.request.contextPath}/user/logout"method="post">
             <button class="btn logout-btn my-2 my-sm-0" type="submit">Logout</button>
             <i class="fas fa-cog settings-icon" title="Impostazioni"></i>
         </form>

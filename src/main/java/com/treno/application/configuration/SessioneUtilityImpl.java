@@ -25,4 +25,9 @@ public class SessioneUtilityImpl implements SessioneUtility {
         session.setAttribute("utenteLoggato", userDto);
         //System.out.println("SessionUtility.setUtenteLoggato: userDto = " + userDto);
     }
+    
+	@Override
+	public String redirectTologin() {
+		return "redirect:/user/login";
+	}
 }

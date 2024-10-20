@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.InvalidCredentialsException;
 import com.treno.application.exception.InvalidPasswordException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
@@ -54,7 +55,6 @@ public class UserService {
 		user.setPortafoglio(0);
 		user.setStato(Stato.unlocked);
 		userDao.save(user);
-		 //meglio boolean piu facile con i controller.
 	}
 	
 	
@@ -69,6 +69,10 @@ public class UserService {
 	    // Verifica se l'utente esiste
 	    if (user == null) {
 	        throw new UserNotFoundException("Utente non trovato");
+	    }
+	    
+	    if(!user.getUsername().equals(userDto.getUsername())) {
+	    	throw new InvalidCredentialsException("Credenziali sbagliate, ricontrolla password o username.");
 	    }
 
 	    // Verifica se la password fornita è corretta

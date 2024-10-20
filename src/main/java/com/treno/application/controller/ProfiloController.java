@@ -531,6 +531,7 @@
 package com.treno.application.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -551,25 +552,28 @@ import jakarta.servlet.http.HttpSession;
 public class ProfiloController {
 
 	@Autowired
+	@Qualifier("UserService")
 	private UserService userService;
 
 	@Autowired
-	private SessioneUtility sessioneUtility;
+	@Qualifier("Sessione")
+	private SessioneUtility sessione;
 
 	// Mostra la vista del profilo utente
 	@GetMapping
 	public String visualizzaProfilo(HttpSession session, Model model) {
 
-		UserDTO userInfo = sessioneUtility.getUtenteLoggato(session);
+		UserDTO userInfo = sessione.getUtenteLoggato(session);
+		if(!sessione.isUtenteLoggato(session)) {
+			return sessione.redirectTologin();
+		}
 		try {
 			userInfo = userService.findById(userInfo.getUserId());
 			session.setAttribute("utente", userInfo);
 			model.addAttribute("userInfo", userInfo);
-//			UtenteFilter userFiltro = new UtenteFilter();
-//			model.addAttribute("userFiltro", userFiltro);
 		} catch (UserNotFoundException e) {
-			model.addAttribute("error", "Utente non trovato. Per favore, prova ad effettuare nuovamente il login.");
-			return "redirect:/login";
+			model.addAttribute("error", e.getMessage());
+			return sessione.redirectTologin();
 		}
 		return "profilo";
 	}
@@ -577,41 +581,67 @@ public class ProfiloController {
 	// Elimina l'account dell'utente e reindirizza alla pagina di login
 	@GetMapping("/elimina")
 	public String eliminaAccount(HttpSession session) {
-		UserDTO user = sessioneUtility.getUtenteLoggato(session);
+		UserDTO user = sessione.getUtenteLoggato(session);
 		try {
 			userService.cancellaAccount(user);
 			session.invalidate();
 		} catch (UserNotFoundException e) {
-			return "redirect:/login";
+			return sessione.redirectTologin();
 		}
-		return "redirect:/login";
+		return sessione.redirectTologin();
 	}
 
-	// Modifica
+//	// Modifica
+//	@PostMapping("/portafoglio/aggiungi")
+//	public String aggiungiDenaro(@RequestParam("importo") double importo, HttpSession session, Model model) {
+//		UserDTO user = sessione.getUtenteLoggato(session);
+//
+//		if (importo <= 0) {
+//			model.addAttribute("error", "L'importo deve essere maggiore di zero.");
+//			return "profilo";
+//		}
+//
+//		try {
+//			user.setPortafoglio(user.getPortafoglio() + importo);
+//			userService.update(user); // Questo chiamerà il metodo `update()` con la logica aggiornata
+//			session.setAttribute("utente", user);
+//		} catch (UserNotFoundException e) {
+//			model.addAttribute("error",
+//					"Utente non trovato durante l'aggiornamento del portafoglio. Per favore, prova ad effettuare nuovamente il login.");
+//			return "profilo";
+//		}
+//
+//		return "redirect:/profilo";
+//	}
+
 	@PostMapping("/portafoglio/aggiungi")
 	public String aggiungiDenaro(@RequestParam("importo") double importo, HttpSession session, Model model) {
-		UserDTO user = sessioneUtility.getUtenteLoggato(session);
-		if (user == null) {
-			model.addAttribute("error", "Utente non trovato. Per favore, prova ad effettuare nuovamente il login.");
-			return "redirect:/login";
-		}
+	    UserDTO user = sessione.getUtenteLoggato(session);
+	    if (user == null) {
+	        model.addAttribute("error", "Utente non trovato. Per favore, prova ad effettuare nuovamente il login.");
+	        return sessione.redirectTologin();
+	    }
 
-		if (importo <= 0) {
-			model.addAttribute("error", "L'importo deve essere maggiore di zero.");
-			return "profilo";
-		}
+	    if (importo <= 0) {
+	        model.addAttribute("error", "L'importo deve essere maggiore di zero.");
+	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per la vista
+	        return "profilo";
+	    }
 
-		try {
-			user.setPortafoglio(user.getPortafoglio() + importo);
-			userService.update(user); // Questo chiamerà il metodo `update()` con la logica aggiornata
-			session.setAttribute("utente", user);
-		} catch (UserNotFoundException e) {
-			model.addAttribute("error",
-					"Utente non trovato durante l'aggiornamento del portafoglio. Per favore, prova ad effettuare nuovamente il login.");
-			return "profilo";
-		}
+	    try {
+	        user.setPortafoglio(user.getPortafoglio() + importo);
+	        userService.update(user); // Questo chiamerà il metodo `update()` con la logica aggiornata
+	        session.setAttribute("utente", user); // Aggiorna la sessione
+	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per aggiornare la vista immediatamente
+	    } catch (UserNotFoundException e) {
+	        model.addAttribute("error", "Utente non trovato durante l'aggiornamento del portafoglio. Per favore, prova ad effettuare nuovamente il login.");
+	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per la vista
+	        return "profilo";
+	    }
 
-		return "redirect:/profilo";
+	    // Aggiungi messaggio di successo e ritorna la vista del profilo direttamente
+	    model.addAttribute("successMessage", "Denaro aggiunto con successo al portafoglio.");
+	    return "profilo";
 	}
 
 
@@ -626,11 +656,11 @@ public class ProfiloController {
 	                              HttpSession session, Model model) throws Exception {
 
 	    // Verifica se l'utente è loggato
-	    if (!sessioneUtility.isUtenteLoggato(session)) {
-	        return "redirect:/login";
+	    if (!sessione.isUtenteLoggato(session)) {
+	        return sessione.redirectTologin();
 	    }
 
-	    UserDTO currentUser = sessioneUtility.getUtenteLoggato(session);
+	    UserDTO currentUser = sessione.getUtenteLoggato(session);
 	    boolean hasErrors = false;
 	    StringBuilder errorMessage = new StringBuilder();
 
@@ -669,10 +699,10 @@ public class ProfiloController {
 	        // Aggiorna l'utente con i parametri forniti
 	        UserDTO updatedUser = userService.updateUserWithParams(currentUser.getUserId(), passwordVecchia, passwordNuova, email, telefono);
 	        // Aggiorna l'utente nella sessione
-	        sessioneUtility.setUtenteLoggato(session, updatedUser);
+	        sessione.setUtenteLoggato(session, updatedUser);
 
 	        // Aggiungi messaggio di successo
-	        model.addAttribute("success", "Profilo aggiornato con successo.");
+	        model.addAttribute("error", "Profilo aggiornato con successo.");
 	    } catch (UserNotFoundException e) {
 	        // Gestisci l'eccezione se l'utente non viene trovato
 	        model.addAttribute("error", "Aggiornamento fallito: " + e.getMessage());
