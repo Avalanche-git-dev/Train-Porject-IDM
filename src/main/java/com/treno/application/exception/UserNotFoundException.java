@@ -1,6 +1,6 @@
 package com.treno.application.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends InvalidCredentialsException {
     private static final long serialVersionUID = 1L;
 
 	public UserNotFoundException(String message) {
