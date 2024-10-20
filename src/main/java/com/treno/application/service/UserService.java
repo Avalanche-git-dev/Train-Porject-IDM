@@ -13,6 +13,7 @@ import com.treno.application.exception.InvalidPasswordException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
+import com.treno.application.model.Ruolo;
 import com.treno.application.model.User;
 import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
@@ -353,4 +354,17 @@ public class UserService {
 
 	    return user;
 	}
+	
+	
+	public void registraGuest(User guest) {
+		guest.setRuolo(Ruolo.GUEST);
+		userDao.save(guest);
+	}
+	
+	public void removeGuest(long guestId) {
+		User user = userDao.findById(guestId);
+		if(user != null)
+			userDao.delete(user);
+	}
+	
 }
