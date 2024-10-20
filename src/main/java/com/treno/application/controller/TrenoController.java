@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
-import com.treno.application.filter.TrenoFilter;
 import com.treno.application.service.TrenoService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -31,12 +30,17 @@ public class TrenoController {
 
     @Autowired
     @Qualifier("Sessione")
-    private SessioneUtility sessioneUtility;
+    private SessioneUtility sessione;
 
     // Pagina Treni (login interceptor + sessione utility per recuperare sempre userDTO dalla sessione
     @GetMapping
-    public String treni(HttpSession session, Model model) {
-        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
+    public String mostraTreni(HttpSession session, Model model) {
+        UserDTO utenteDto = sessione.getUtenteLoggato(session);
+        
+        if(!sessione.isUtenteLoggato(session)) {
+        	return sessione.redirectTologin();
+        }
+        
         model.addAttribute("utenteLoggato", utenteDto);
         return "treni";
     }
@@ -44,8 +48,13 @@ public class TrenoController {
     // Mostra il form per la creazione di un nuovo treno
     @GetMapping("/crea")
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-        model.addAttribute("utenteLoggato", utenteDto);
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+        
+        if(!sessione.isUtenteLoggato(session)) {
+        	return sessione.redirectTologin();
+        }
+        
+        model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";
     }
@@ -54,52 +63,69 @@ public class TrenoController {
     @PostMapping("/crea")
     public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
                             @RequestParam("marca") String marca, HttpSession session) {
-        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-        TrenoDTO trenoDto = new TrenoDTO();
-        trenoDto.setNome(nomeTreno);
-        trenoDto.setSigla(input);
-        trenoDto.setMarca(marca);
-        trenoService.creaTreno(trenoDto, utenteDto);
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+        TrenoDTO trenoCreato = new TrenoDTO();
+        trenoCreato.setNome(nomeTreno);
+        trenoCreato.setSigla(input);
+        trenoCreato.setMarca(marca);
+        trenoService.creaTreno(trenoCreato, utenteLoggato);
         return "redirect:/treni";
     }
 
-    // Visualizza i treni di un utente specifico
+    // Visualizza i TUTTI treni di un utente specifico
     @GetMapping("/visualizza")
     public String visualizzaTreniPerUtente(Model model, HttpSession session) {
-        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-        Long userId = utenteDto.getUserId();
-        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(userId);
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+        if (!sessione.isUtenteLoggato(session)) {
+            return sessione.redirectTologin();
+        }
+        Long OwnerId = utenteLoggato.getUserId();
+        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
         model.addAttribute("treniDto", treniDto);
-        model.addAttribute("ownerId", userId);
+        model.addAttribute("ownerId", OwnerId);
         return "visualizzaTreni";
     }
 
     // Visualizza tutti i treni disponibili
-    @GetMapping("/catalogo")
-    public String getAllTreni(Model model, HttpSession session) {
-        sessioneUtility.getUtenteLoggato(session);
-        List<TrenoDTO> treniDto = trenoService.getAllTreni();
-        model.addAttribute("treni", treniDto);
-        return "catalogo";
+//    @GetMapping("/catalogo")
+//    public String getAllTreni(Model model, HttpSession session) {
+//        sessione.getUtenteLoggato(session);
+//        List<TrenoDTO> treniDto = trenoService.getAllTreni();
+//        model.addAttribute("treni", treniDto);
+//        return "catalogo";
+//    }
+
+
+    
+    
+    @GetMapping("/visualizza/treno")
+    public String visualizzaTreno(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
+        // Verifica che l'utente sia loggato
+        if (!sessione.isUtenteLoggato(session)) {
+            return sessione.redirectTologin();
+        }
+        
+        if (trenoSelezionato == null) {
+        	model.addAttribute("errorMessage","Il treno da te cercato non è piu disponibile, contatta l'admin. ");// Se non ci sono informazioni sul treno, reindirizza al catalogo
+            return "redirect:/catalogo";
+        }
+       // TrenoDTO trenoSelezionato = trenoService.findById(trenoSelezionato.getIdTreno());
+
+        model.addAttribute("treno", trenoSelezionato);
+        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+        return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
     }
 
-    // Mostra i dettagli del treno
-    @GetMapping("/dettagli/{idTreno}")
-    public String dettagliTreno(@PathVariable("idTreno") Long idTreno, Model model, HttpSession session) {
-        sessioneUtility.getUtenteLoggato(session);
-        TrenoDTO trenoDto = trenoService.findById(idTreno);
-        if (trenoDto == null) {
-            return "redirect:/treni/catalogo";
-        }
-        model.addAttribute("treno", trenoDto);
-        model.addAttribute("ownerId", trenoDto.getIdOwner());
-        return "dettagliTreno";
-    }
+    
+    
+    
+    
+    
 
     // Modifica un treno
-    @GetMapping("/modifica/{idTreno}")
+    @GetMapping("/modifica/treno")
     public String modificaTreno(@PathVariable Long idTreno, Model model, HttpSession session) {
-        sessioneUtility.getUtenteLoggato(session);
+        sessione.getUtenteLoggato(session);
         TrenoDTO trenoDto = trenoService.findById(idTreno);
         if (trenoDto == null) {
             return "redirect:/treni/catalogo";
@@ -115,60 +141,10 @@ public class TrenoController {
         return "redirect:/treni/dettagli/" + trenoDto.getIdTreno();
     }
 
-    // Applica il filtro sui treni
-    @GetMapping("/filtro")
-    public String filtraTreni(@ModelAttribute("filtro") TrenoFilter filtro, Model model, HttpSession session) {
-        sessioneUtility.getUtenteLoggato(session);
-        List<TrenoDTO> treniDto = trenoService.filtraTreni(filtro);
-        model.addAttribute("treniDto", treniDto);
-        model.addAttribute("filtro", filtro);
-        return "visualizzaTreni";
-    }
+  
 
-    // Filtra tutti i treni disponibili
-    @GetMapping("/tutti/filtro")
-    public String filtraTreniTutti(@ModelAttribute("filtro") TrenoFilter filtro, Model model, HttpSession session) {
-        sessioneUtility.getUtenteLoggato(session);
-        List<TrenoDTO> treniDto = trenoService.filtraTreni(filtro);
-        model.addAttribute("treni", treniDto);
-        return "tutti";
-    }
     
     
-    
-//    @GetMapping("/dettagli/{idTreno}/valutazioni")
-//    public String getAllValutazioniByTreno(@PathVariable("idTreno") Long idTreno, Model model, HttpSession session) {
-//        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-//        
-//        // Recupera tutte le valutazioni del treno tramite il service
-//        //List<ValutazioneDTO> valutazioniDto = trenoService.getAllValutazioniByTreno(idTreno);
-//        
-//        model.addAttribute("utente", utenteDto);
-//        model.addAttribute("valutazioni", valutazioniDto);
-//        model.addAttribute("idTreno", idTreno);
-//        
-//        return "valutazioniTreno"; // Vista che mostra le valutazioni del treno
-//    }
-    
-    
-//    @PostMapping("/dettagli/{idTreno}/valuta")
-//    public String valutaTreno(@PathVariable("idTreno") Long idTreno,
-//                              @RequestParam("valutazione") int valutazione,
-//                              @RequestParam("commento") String commento,
-//                              HttpSession session) {
-//        UserDTO utenteDto = sessioneUtility.getUtenteLoggato(session);
-//
-//        ValutazioneDTO valutazioneDto = new ValutazioneDTO();
-//        valutazioneDto.setIdTreno(idTreno);
-//        valutazioneDto.setIdUtente(utenteDto.getUserId());
-//        valutazioneDto.setValutazione(valutazione);
-//        valutazioneDto.setCommento(commento);
-//        
-//        // Salva la valutazione tramite il service
-//        trenoService.valutaTreno(valutazioneDto);
-//        
-//        return "redirect:/treni/dettagli/" + idTreno; // Ritorna ai dettagli del treno
-//    }
 
 
     

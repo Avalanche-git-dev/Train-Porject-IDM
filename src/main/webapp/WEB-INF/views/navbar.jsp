@@ -13,7 +13,7 @@
                 <a class="nav-link" href="${pageContext.request.contextPath}/treni">Treni</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/treni/catalogo">Catalogo</a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/catalogo">Catalogo</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/market">Market</a>

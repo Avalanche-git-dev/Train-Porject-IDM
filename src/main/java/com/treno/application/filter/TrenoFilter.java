@@ -7,23 +7,39 @@ public class TrenoFilter {
 	private Double lunghezzaMin, lunghezzaMax;
 	private String sigla;
 	private String marca;
-	private Double Valutazioni;
-	private Double prezzoVendita;
+	private Double valutazioni;
+	private Double prezzoVendita;//inteso come Max
 	private Double ammontareTotale;
 	private boolean inVendita;
 	private String nome;
+	private String nomeOwner;
 	
 	
 	
+	public String getNomeOwner() {
+		return nomeOwner;
+	}
+
+
+
+	public void setNomeOwner(String nomeOwner) {
+		this.nomeOwner = nomeOwner;
+	}
+
+
+
 	public TrenoFilter() {
 		super();
 	}
 
 
 
+
+
+
 	public TrenoFilter(Double prezzoMin, Double prezzoMax, Double pesoMin, Double pesoMax, Double lunghezzaMin,
 			Double lunghezzaMax, String sigla, String marca, Double valutazioni, Double prezzoVendita,
-			Double ammontareTotale, boolean inVendita, String nome) {
+			Double ammontareTotale, boolean inVendita, String nome, String nomeOwner) {
 		super();
 		this.prezzoMin = prezzoMin;
 		this.prezzoMax = prezzoMax;
@@ -33,11 +49,12 @@ public class TrenoFilter {
 		this.lunghezzaMax = lunghezzaMax;
 		this.sigla = sigla;
 		this.marca = marca;
-		Valutazioni = valutazioni;
+		this.valutazioni = valutazioni;
 		this.prezzoVendita = prezzoVendita;
 		this.ammontareTotale = ammontareTotale;
 		this.inVendita = inVendita;
 		this.nome = nome;
+		this.nomeOwner = nomeOwner;
 	}
 
 
@@ -138,14 +155,16 @@ public class TrenoFilter {
 
 
 
+
+
 	public Double getValutazioni() {
-		return Valutazioni;
+		return valutazioni;
 	}
 
 
 
 	public void setValutazioni(Double valutazioni) {
-		Valutazioni = valutazioni;
+		this.valutazioni = valutazioni;
 	}
 
 

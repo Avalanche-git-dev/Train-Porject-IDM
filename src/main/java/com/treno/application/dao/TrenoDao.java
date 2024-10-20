@@ -52,10 +52,102 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
                      .getResultList();
     }
 
+//    @SuppressWarnings("unchecked")
+//	@Transactional
+//    public List<Treno> filtraTreni(TrenoFilter filtro) {
+//        StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
+//
+//        // Aggiunta dinamica delle condizioni di filtro
+//        if (filtro.getPrezzoMin() != null) {
+//            hql.append(" AND t.prezzoVendita >= :prezzoMin");
+//        }
+//        if (filtro.getPrezzoMax() != null) {
+//            hql.append(" AND t.prezzoVendita <= :prezzoMax");
+//        }
+//        if (filtro.getPesoMin() != null) {
+//            hql.append(" AND t.peso >= :pesoMin");
+//        }
+//        if (filtro.getPesoMax() != null) {
+//            hql.append(" AND t.peso <= :pesoMax");
+//        }
+//        if (filtro.getLunghezzaMin() != null) {
+//            hql.append(" AND t.lunghezza >= :lunghezzaMin");
+//        }
+//        if (filtro.getLunghezzaMax() != null) {
+//            hql.append(" AND t.lunghezza <= :lunghezzaMax");
+//        }
+//        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+//            hql.append(" AND t.sigla = :sigla");
+//        }
+//        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+//            hql.append(" AND t.marca = :marca");
+//        }
+//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
+//            hql.append(" AND t.valutazioneTotale >= :valutazioni");
+//        }
+//        if (filtro.getPrezzoVendita() != null) {
+//            hql.append(" AND t.prezzoVendita = :prezzoVendita");
+//        }
+//        if (filtro.getAmmontareTotale() != null) {
+//            hql.append(" AND t.ammontareTotale = :ammontareTotale");
+//        }
+//        if (Boolean.TRUE.equals(filtro.isInVendita())) {
+//            hql.append(" AND t.inVendita = true");
+//        } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
+//            hql.append(" AND t.inVendita = false");
+//        }
+//
+//        Query query = em.createQuery(hql.toString());
+//
+//        // Impostazione dei parametri
+//        if (filtro.getPrezzoMin() != null) {
+//            query.setParameter("prezzoMin", filtro.getPrezzoMin());
+//        }
+//        if (filtro.getPrezzoMax() != null) {
+//            query.setParameter("prezzoMax", filtro.getPrezzoMax());
+//        }
+//        if (filtro.getPesoMin() != null) {
+//            query.setParameter("pesoMin", filtro.getPesoMin());
+//        }
+//        if (filtro.getPesoMax() != null) {
+//            query.setParameter("pesoMax", filtro.getPesoMax());
+//        }
+//        if (filtro.getLunghezzaMin() != null) {
+//            query.setParameter("lunghezzaMin", filtro.getLunghezzaMin());
+//        }
+//        if (filtro.getLunghezzaMax() != null) {
+//            query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
+//        }
+//        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+//            query.setParameter("sigla", filtro.getSigla());
+//        }
+//        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+//            query.setParameter("marca", filtro.getMarca());
+//        }
+//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
+//            query.setParameter("valutazioni", filtro.getValutazioni());
+//        }
+//        if (filtro.getPrezzoVendita() != null) {
+//            query.setParameter("prezzoVendita", filtro.getPrezzoVendita());
+//        }
+//        if (filtro.getAmmontareTotale() != null) {
+//            query.setParameter("ammontareTotale", filtro.getAmmontareTotale());
+//        }
+//
+//        return query.getResultList();
+//    }
+    
+    
+    
+    
     @SuppressWarnings("unchecked")
-	@Transactional
+    @Transactional
     public List<Treno> filtraTreni(TrenoFilter filtro) {
-        StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
+        // Creazione della query HQL con JOIN FETCH per valutazioni e transazioni
+        StringBuilder hql = new StringBuilder("SELECT DISTINCT t FROM Treno t ");
+        hql.append("LEFT JOIN FETCH t.valutazioni v ");
+        hql.append("LEFT JOIN FETCH t.transazioni tr ");
+        hql.append("WHERE 1=1");
 
         // Aggiunta dinamica delle condizioni di filtro
         if (filtro.getPrezzoMin() != null) {
@@ -97,6 +189,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             hql.append(" AND t.inVendita = false");
         }
 
+        // Creazione della query
         Query query = em.createQuery(hql.toString());
 
         // Impostazione dei parametri
@@ -136,6 +229,9 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
         return query.getResultList();
     }
+
+    
+    
     
     @Override
     @Transactional

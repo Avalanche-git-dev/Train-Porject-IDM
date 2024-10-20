@@ -22,19 +22,19 @@
     <div class="card">
         <div class="card-body">
             <h3 class="card-title">Nome: ${treno.nome}</h3>
-            <p class="card-text">ID Treno: ${treno.idTreno}</p>
+            <%-- <p class="card-text">ID Treno: ${treno.idTreno}</p> --%>
             <p class="card-text">Marca: ${treno.marca}</p>
             <p class="card-text">Sigla: ${treno.sigla}</p>
             <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
             <p class="card-text">Costo Totale: €${treno.costoTotale}</p>
             <p class="card-text">Posti Totali: ${treno.postiTotali}</p>
             <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
-            <c:if test="${ownerId != null}">
+            <%-- <c:if test="${ownerId != null}">
                 <p class="card-text">Proprietario: Utente ID ${ownerId}</p>
-            </c:if>
+            </c:if> --%>
         </div>
     </div>
-    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza/${ownerId}'">Torna ai treni dell'utente</button>
+    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza/'">Torna ai treni dell'utente</button>
 </div>
 
 </body>

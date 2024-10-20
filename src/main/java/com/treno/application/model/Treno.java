@@ -64,7 +64,7 @@ public class Treno {
 //    @JoinColumn(name = "id_market") // Chiave esterna che collega Treno con Market
 //    private Market market; 
 	@Column(name = "in_vendita")
-	private boolean InVendita;
+	private boolean inVendita;
 
 	@Column(name = "prezzo_vendita")
 	private double prezzoVendita;
@@ -161,7 +161,7 @@ public class Treno {
 	    this.vagoni = new LinkedList<Vagone>();         // Collezione di tipo List
 	    this.valutazioni = new HashSet<Valutazione>();  // Collezione di tipo Set
 	    this.transazioni = new HashSet<Transazione>(); 
-	    this.InVendita= false; // Collezione di tipo Set
+	    this.inVendita= false; // Collezione di tipo Set
 	}
 
 	// Vagoni
@@ -296,19 +296,22 @@ public class Treno {
 	}
 
 	// In Vendita ( boolean per gestione market )
-	public void setInVendita(boolean InVendita) {
-		this.InVendita = InVendita;
-	}
-
-	public boolean getInVendita() {
-		return this.InVendita;
-	}
 
 	// Id Treno
 
 	public Long getIdTreno() {
 		return idTreno;
 	}
+
+	public boolean isInVendita() {
+		return inVendita;
+	}
+
+
+	public void setInVendita(boolean inVendita) {
+		this.inVendita = inVendita;
+	}
+
 
 	public void setIdTreno(Long idTreno) {
 		this.idTreno = idTreno;
@@ -373,7 +376,7 @@ public class Treno {
 	@Override
 	public String toString() {
 		return "Treno [idTreno=" + idTreno + ", nome=" + nome + ", sigla=" + sigla + ", immagine=" + immagine
-				+ ", InVendita=" + InVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", vagoni="
+				+ ", InVendita=" + inVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", vagoni="
 				+ vagoni + ", valutazioni=" + valutazioni + ", owner=" + owner.getUserId() + ", transazioni=" + transazioni + "]";
 	}
 

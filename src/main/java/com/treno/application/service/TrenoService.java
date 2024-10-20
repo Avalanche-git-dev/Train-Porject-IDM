@@ -1,6 +1,7 @@
 package com.treno.application.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,10 +100,21 @@ public class TrenoService {
 		}
 	}
     //Filtra treni da passare al Dao
-	public List<TrenoDTO> filtraTreni(TrenoFilter filtro) {
+//	public List<TrenoDTO> filtraTreni(TrenoFilter filtro) {
+//	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
+//	    return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+//	}
+	
+	// Proviamo con hasset
+	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
 	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
-	    return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+
+	    // Convertire la lista in un set per evitare duplicati
+	    return treniFiltrati.stream()
+	                        .map(this::convertToTrenoDTO)
+	                        .collect(Collectors.toSet());
 	}
+
 	
     //Classico da override di Interfacia
 	public TrenoDTO findById(Long id) {
@@ -181,7 +193,7 @@ public class TrenoService {
 	        trenoDTO.setNome(treno.getNome());
 	        trenoDTO.setSigla(treno.getSigla());
 	        trenoDTO.setImmagine(treno.getImmagine());
-	        trenoDTO.setInVendita(treno.getInVendita());
+	        trenoDTO.setInVendita(treno.isInVendita());
 	        trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
 	        trenoDTO.setMarca(treno.getMarca());
 	        trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
