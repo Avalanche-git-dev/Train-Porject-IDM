@@ -204,20 +204,11 @@ public class TrenoService {
 		    treno.setInVendita(trenoDTO.isInVendita());
 		    treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
 		    treno.setMarca(trenoDTO.getMarca());
-		    
-		    
-		    
-		    
-		    
-		    
 		    if ((Long) ( trenoDTO.getIdOwner()) != null) {
 		    //Conversione dell'utente e assegnazione.
 		    UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
 		    treno.setOwner(userService.convertToUserEntity(Owner));
-		    
 		    }
-		    
-		   
 		    // Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
 		    // a meno che non le passi esplicitamente.
 

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="navbar.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,99 +10,34 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-<style>
-body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #ffffff;
-	color: #333; /* Grigio scuro */
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-}
-
-.main {
-	text-align: center;
-	padding: 80px 20px;
-	background-color: #ffffff;
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-
-.main h1 {
-	font-size: 48px;
-	color: #333;
-	margin-bottom: 30px;
-}
-
-.main .btn-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 30px;
-}
-
-.cta-btn {
-	background-color: #0275d8;
-	color: white;
-	padding: 20px 40px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 18px;
-	width: 300px;
-}
-
-.cta-btn:hover {
-	background-color: #025aa5;
-}
-
-footer {
-	background-color: #f0f0f0;
-	padding: 20px;
-	text-align: center;
-	border-top: 1px solid #ddd;
-	color: #333;
-	width: 100%;
-}
-
-footer p {
-	margin: 0;
-}
-
-.spacer {
-	margin-top: 50px;
-}
-
-.card {
-	text-align: left;
-}
-</style>
 </head>
 <body>
 
 	<!-- Sezione per visualizzare tutti i treni disponibili -->
 	<div class="container">
-		<h1>Tutti i treni in vendita</h1>
-		<c:forEach var="treno" items="${treni}">
-			<div class="card mb-3">
-				<div class="card-body">
-					<h5 class="card-title">${treno.nome}</h5>
-					<p class="card-text">Marca: ${treno.marca}</p>
-					<p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
-					<a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
-				</div>
-			</div>
-		</c:forEach>
+    <h1>Tutti i treni in vendita</h1>
+    <c:forEach var="treno" items="${treniInVendita}">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">${treno.nome}</h5>
+                <p class="card-text">Marca: ${treno.marca}</p> <!-- Gestione dei valori nulli -->
+                <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
+                
+                <!-- Contenitore per i pulsanti -->
+                <div>
+                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                    <form action="${pageContext.request.contextPath}/transazione" method="post" style="display: inline;">
+                        <input type="hidden" name="idTreno" value="${treno.idTreno}" />
+                        <button type="submit" class="btn btn-primary">Acquista Treno</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </c:forEach>
 	</div>
 
 	<!-- Footer -->
-	<footer>
+	<footer class="text-center">
 		<p>&copy; 2024 YourWebsite. All rights reserved.</p>
 	</footer>
 
