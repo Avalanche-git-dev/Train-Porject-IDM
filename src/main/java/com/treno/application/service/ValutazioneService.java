@@ -51,40 +51,85 @@ public class ValutazioneService {
 		// Usa il metodo del DAO per ottenere tutte le valutazioni dell'utente
 		return valutazioneDao.findValutazioniByUser(userId);
 	}
-
+//
+	
+	//Versione ByUser
+	
+//	@Transactional
+//	public void UserValutaTreno(long userId, long trenoId, int voto) throws ValutazioneException {
+//		User user = userDao.findById(userId);
+//		Treno treno = trenoDao.findById(trenoId);
+//
+//		if (user == null) {
+//			throw new ValutazioneException("Utente non trovato");
+//		}
+//		if (treno == null) {
+//			throw new ValutazioneException("Treno non trovato");
+//		}
+//
+//		List<Valutazione> valutazioniUtente = valutazioneDao.findValutazioniByUser(userId);
+//       
+	
+	 //Al posto di cercarla per compratore, possiamo tranquillamente cercarla tramite valutazioni, where treno.idtreno=valutazioni.idtreno ( tiro fuori una lista di valutazioni di un treno e controllo se l'id utente compare in quella lista )
+//		
+//		// Controlla se l'utente ha già valutato questo treno
+//		for (Valutazione v : valutazioniUtente) {
+//			if (v.getTreno().getIdTreno() == trenoId) {
+//				throw new ValutazioneException("L'utente ha già valutato questo treno e non può modificarlo.");
+//			}
+//		}
+	
+	
+	
+	
+	
+//
+//		Valutazione nuovaValutazione = new Valutazione();
+//		nuovaValutazione.setUser(user);
+//		nuovaValutazione.setTreno(treno);
+//		nuovaValutazione.setVotazione(voto);
+//
+//
+//		// Salva la nuova valutazione nel database
+//		valutazioneDao.update(nuovaValutazione);
+//	}
+	
 	@Transactional
 	public void UserValutaTreno(long userId, long trenoId, int voto) throws ValutazioneException {
-		User user = userDao.findById(userId);
-		Treno treno = trenoDao.findById(trenoId);
+	    // Recupera l'utente
+	    User user = userDao.findById(userId);
+	    if (user == null) {
+	        throw new ValutazioneException("Utente non trovato");
+	    }
 
-		if (user == null) {
-			throw new ValutazioneException("Utente non trovato");
-		}
-		if (treno == null) {
-			throw new ValutazioneException("Treno non trovato");
-		}
+	    // Recupera il treno
+	    Treno treno = trenoDao.findById(trenoId);
+	    if (treno == null) {
+	        throw new ValutazioneException("Treno non trovato");
+	    }
 
-		List<Valutazione> valutazioniUtente = valutazioneDao.findValutazioniByUser(userId);
+	    // Recupera le valutazioni dell'utente per il treno specifico
+	    List<Valutazione> valutazioniUtentePerTreno = valutazioneDao.findValutazioniByTrenoAndUser(trenoId, userId);
 
-		
-		// Controlla se l'utente ha già valutato questo treno
-		for (Valutazione v : valutazioniUtente) {
-			if (v.getTreno().getIdTreno() == trenoId) {
-				// Se l'utente ha già valutato questo treno, lancia un'eccezione o restituisci
-				// un messaggio
-				throw new ValutazioneException("L'utente ha già valutato questo treno e non può modificarlo.");
-			}
-		}
+	    // Controlla se l'utente ha già valutato il treno
+	    if (!valutazioniUtentePerTreno.isEmpty()) {
+	        throw new ValutazioneException("L'utente ha già valutato questo treno e non può modificarlo.");
+	    }
 
-		Valutazione nuovaValutazione = new Valutazione();
-		nuovaValutazione.setUser(user);
-		nuovaValutazione.setTreno(treno);
-		nuovaValutazione.setVotazione(voto);
+	    // Crea e salva una nuova valutazione
+	    Valutazione nuovaValutazione = new Valutazione();
+	    nuovaValutazione.setUser(user);
+	    nuovaValutazione.setTreno(treno);
+	    nuovaValutazione.setVotazione(voto);
 
-
-		// Salva la nuova valutazione nel database
-		valutazioneDao.update(nuovaValutazione);
+	    // Salva la nuova valutazione
+	    valutazioneDao.update(nuovaValutazione);
 	}
+
+	
+	
+	
+	
 	
 	
 	

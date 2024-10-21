@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
@@ -48,7 +49,18 @@ public class CatalogoController {
 	
 	
 	
-	
+//	String plaintext = "your text here";
+//	MessageDigest m = MessageDigest.getInstance("MD5");
+//	m.reset();
+//	m.update(plaintext.getBytes());
+//	byte[] digest = m.digest();
+//	BigInteger bigInt = new BigInteger(1,digest);            <----------------------------- Soluzione url con query string criptata.
+//	String hashtext = bigInt.toString(16);     
+//	// Now we need to zero pad it if you actually want the full 32 chars.
+//	while(hashtext.length() < 32 ){
+//	  hashtext = "0"+hashtext;
+//	}
+//	
 	
 	    @GetMapping
 	    public String getAllTreni(Model model, HttpSession session) {
@@ -130,7 +142,7 @@ public class CatalogoController {
 	    
 	    
 	    
-	    
+	    //Prima versione
 //	    
 //	    @PostMapping("/valutaTreno")
 //	    public String valutaTreno(HttpSession session,
@@ -175,49 +187,102 @@ public class CatalogoController {
 //
 //	        return "redirect:/treni/visualizza/treno"; // Reindirizza alla vista del treno
 //	    }
-//
-//	    
+
 	    
+	    
+	    
+	    //Versione Finale.
+	    
+	    
+	    
+	    
+//	    
+//	    @PostMapping("/valutaTreno")
+//	    public String valutaTreno(HttpSession session,
+//	                              @RequestParam("trenoId") Long trenoId,
+//	                              @RequestParam("voto") int voto,
+//	                              Model model) {
+//
+//	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//	       
+//	        try {
+//	        	
+//	        TrenoDTO trenoSelezionato = trenoService.findById(trenoId);
+//	        if (trenoSelezionato == null || trenoSelezionato.getIdTreno() == 0) {
+//	        	model.addAttribute("errorMessage", "Il Treno da te selezionato non è al momento disponbile.");
+//	        }
+//
+//	        
+//	            valutazione.UserValutaTreno(utenteLoggato.getUserId(), trenoSelezionato.getIdTreno(), voto);
+//
+//	            
+//	            
+//	            // Aggiorna i dati del treno e dell'utente dopo la valutazione
+//	            TrenoDTO trenoAggiornato = trenoService.findById(trenoSelezionato.getIdTreno());
+//	            UserDTO utenteAggiornato = userService.findById(utenteLoggato.getUserId());
+//
+//	            // Aggiungi i dati aggiornati al modello
+//	            model.addAttribute("treno", trenoAggiornato);
+//	            model.addAttribute("utenteLoggato", utenteAggiornato);
+//	            model.addAttribute("successMessage", "Il treno è stato valutato con successo");
+//
+//	            // Aggiorna i dati dell'utente nella sessione
+//	            sessione.setUtenteLoggato(session, utenteAggiornato);
+//
+//	        } catch (ValutazioneException e) {
+//	            model.addAttribute("errorMessage", e.getMessage());
+//	           // model.addAttribute("erroreValutazioneId", trenoId);
+//	            return "redirect:/catalogo";
+//	        }
+//
+//	        return "redirect:/catalogo"; // Reindirizza alla vista del treno
+//	    }
+
+	    
+	    
+	    //Versione redirect attributes per mandarmi i messaggi alla prossima vista , è colpa del redirect se i messaggi non vengono visualizzati correttamente 
+	    
+//	    
 	    @PostMapping("/valutaTreno")
 	    public String valutaTreno(HttpSession session,
 	                              @RequestParam("trenoId") Long trenoId,
 	                              @RequestParam("voto") int voto,
-	                              Model model) {
+	                              Model model,
+	                              RedirectAttributes redirectAttributes) {
 
-	        // Verifica se l'utente è loggato
 	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-	        if (utenteLoggato == null) {
-	            return "redirect:/login"; // Reindirizza alla pagina di login se non è loggato
-	        }
-
-	        // Cerca il treno tramite l'ID
-	        TrenoDTO trenoSelezionato = trenoService.findById(trenoId);
-	        if (trenoSelezionato == null || trenoSelezionato.getIdTreno() == 0) {
-	            throw new ValutazioneException("Il treno da te selezionato non è al momento presente.");
-	        }
 
 	        try {
-	            // Chiama il metodo per la valutazione
+	            TrenoDTO trenoSelezionato = trenoService.findById(trenoId);
+	            if (trenoSelezionato == null || trenoSelezionato.getIdTreno() == 0) {
+	                redirectAttributes.addFlashAttribute("errorMessage", "Il Treno da te selezionato non è al momento disponibile.");
+	                return "redirect:/catalogo";
+	            }
+
 	            valutazione.UserValutaTreno(utenteLoggato.getUserId(), trenoSelezionato.getIdTreno(), voto);
 
 	            // Aggiorna i dati del treno e dell'utente dopo la valutazione
-	            TrenoDTO trenoAggiornato = trenoService.findById(trenoSelezionato.getIdTreno());
+	            //TrenoDTO trenoAggiornato = trenoService.findById(trenoSelezionato.getIdTreno()); // una varaibile in meno
 	            UserDTO utenteAggiornato = userService.findById(utenteLoggato.getUserId());
+	            
+	            long idTreno = trenoService.findById(trenoSelezionato.getIdTreno()).getIdTreno();
+	            
+	            
 
-	            // Aggiungi i dati aggiornati al modello
-	            model.addAttribute("treno", trenoAggiornato);
-	            model.addAttribute("utente", utenteAggiornato);
-	            model.addAttribute("success", "Il treno è stato valutato con successo");
+	            // Passa i messaggi di successo come flash attribute
+	            redirectAttributes.addFlashAttribute("successMessage", "Il treno è stato valutato con successo.");
+	            redirectAttributes.addFlashAttribute("idTreno", idTreno);
 
 	            // Aggiorna i dati dell'utente nella sessione
 	            sessione.setUtenteLoggato(session, utenteAggiornato);
 
 	        } catch (ValutazioneException e) {
-	            model.addAttribute("errorMessage", e.getMessage());
-	            return "redirect:/treni/visualizza/treno";
+	            // Passa i messaggi di errore come flash attribute
+	            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+	            return "redirect:/catalogo";
 	        }
 
-	        return "redirect:/treni/visualizza/treno"; // Reindirizza alla vista del treno
+	        return "redirect:/catalogo"; // Reindirizza alla vista del catalogo
 	    }
 
 	    

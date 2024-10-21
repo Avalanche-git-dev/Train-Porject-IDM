@@ -46,6 +46,19 @@ public class ValutazioneDao extends ProxyDao<Valutazione> implements UtenteValut
 	             .setParameter("trenoId", trenoId)
 	             .getResultList();
 	}
+	
+	
+	
+	///ALLORAAAAA
+	@Override
+	public List<Valutazione> findValutazioniByTrenoAndUser(long trenoId, long userId) {
+	    String hql = "FROM Valutazione v WHERE v.treno.idTreno = :trenoId AND v.user.userId = :userId";
+	    return em.createQuery(hql, Valutazione.class)
+	             .setParameter("trenoId", trenoId)
+	             .setParameter("userId", userId)
+	             .getResultList();
+	}
+
 
 	
 

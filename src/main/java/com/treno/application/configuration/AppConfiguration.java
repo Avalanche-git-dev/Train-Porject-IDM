@@ -16,7 +16,6 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.treno.application.FactoryConfiguration;
 import com.treno.application.dao.TransazioneDao;
@@ -38,7 +37,7 @@ import com.treno.application.service.ValutazioneService;
 
 @Configuration
 @EnableTransactionManagement
-@EnableWebMvc//Questo maledetto mi è costato una figura del cazzo
+//Questo maledetto mi è costato una figura del cazzo
 @ImportResource("classpath:/BeansConfiguration.xml")
 @ComponentScan("com.treno.application")
 public class AppConfiguration {

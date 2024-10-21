@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.InvalidCredentialsException;
@@ -61,17 +62,40 @@ public class UserController {
     }
 
     // mostraLogin
+//    @GetMapping("/login")
+//    public String mostralogin(HttpSession session, Model model) {
+//        // Invalida eventuale sessione esistente
+//        if (session != null) {
+//            session.invalidate();
+//        }
+//        
+//        
+//
+//        // Aggiunge un nuovo oggetto UserDTO al modello per il form di login
+//        model.addAttribute("userDto", new UserDTO());
+//        return "login"; // JSP o altra vista per il login, utilizzare il View Resolver
+//    }
+    
+    
+    
+    // mostraLogin + ricevi messaggio di sessioneScaduta dall'interceptor in caso.
     @GetMapping("/login")
-    public String mostralogin(HttpSession session, Model model) {
+    public String mostralogin(@RequestParam(value = "sessioneScaduta", required = false) String sessioneScaduta, HttpSession session, Model model) {
         // Invalida eventuale sessione esistente
         if (session != null) {
             session.invalidate();
         }
 
+        // Aggiungi un messaggio al modello se la sessione è scaduta
+        if ("true".equals(sessioneScaduta)) {
+            model.addAttribute("messaggio", "La tua sessione è scaduta. Effettua nuovamente il login.");
+        }
+
         // Aggiunge un nuovo oggetto UserDTO al modello per il form di login
         model.addAttribute("userDto", new UserDTO());
-        return "login"; // JSP o altra vista per il login, utilizzare il View Resolver
+        return "login"; // Nome della vista JSP per il login
     }
+
 
     // doLogin
     @PostMapping("/login")

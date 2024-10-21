@@ -32,7 +32,6 @@ public class TrenoController {
     @Qualifier("Sessione")
     private SessioneUtility sessione;
 
-    // Pagina Treni (login interceptor + sessione utility per recuperare sempre userDTO dalla sessione
     @GetMapping
     public String mostraTreni(HttpSession session, Model model) {
         UserDTO utenteDto = sessione.getUtenteLoggato(session);
@@ -86,40 +85,119 @@ public class TrenoController {
         return "visualizzaTreni";
     }
 
-    // Visualizza tutti i treni disponibili
-//    @GetMapping("/catalogo")
-//    public String getAllTreni(Model model, HttpSession session) {
-//        sessione.getUtenteLoggato(session);
-//        List<TrenoDTO> treniDto = trenoService.getAllTreni();
-//        model.addAttribute("treni", treniDto);
-//        return "catalogo";
+
+
+    
+//    // Visualizzazione di un treno.
+//    @GetMapping("/visualizza/treno")
+//    public String visualizzaTreno(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
+//        // Verifica che l'utente sia loggato
+//        if (!sessione.isUtenteLoggato(session)) {
+//            return sessione.redirectTologin();
+//        }
+//        
+//        if (trenoSelezionato == null) {
+//        	model.addAttribute("errorMessage","Il treno da te cercato non è piu disponibile, contatta l'admin. ");// Se non ci sono informazioni sul treno, reindirizza al catalogo
+//            return "redirect:/catalogo";
+//        }
+//        
+//        trenoSelezionato = trenoService.findById(trenoSelezionato.getIdTreno());
+//
+//        model.addAttribute("treno", trenoSelezionato);
+//        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+//        return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
 //    }
-
-
     
     
+    // O post con il dto o get con id tramite post nascosto  .
     @GetMapping("/visualizza/treno")
-    public String visualizzaTreno(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
-        // Verifica che l'utente sia loggato
-        if (!sessione.isUtenteLoggato(session)) {
-            return sessione.redirectTologin();
-        }
-        
-        if (trenoSelezionato == null) {
-        	model.addAttribute("errorMessage","Il treno da te cercato non è piu disponibile, contatta l'admin. ");// Se non ci sono informazioni sul treno, reindirizza al catalogo
+    public String visualizzaTreno(HttpSession session, Model model) {
+        // Recupera l'ID del treno dalla sessione
+        Long idTreno = (Long) session.getAttribute("trenoSelezionato");
+
+        if (idTreno == null) {
+            model.addAttribute("errorMessage", "Seleziona un treno dalla collezione.");
             return "redirect:/catalogo";
         }
-       // TrenoDTO trenoSelezionato = trenoService.findById(trenoSelezionato.getIdTreno());
 
+        // Recupera i dettagli del treno tramite il servizio
+        TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
+        if (trenoSelezionato == null) {
+            model.addAttribute("errorMessage", "Il treno non è più disponibile.");
+            return "redirect:/catalogo";
+        }
+
+        // Aggiungi i dettagli del treno al modello
         model.addAttribute("treno", trenoSelezionato);
         model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+
         return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
     }
 
     
+    @PostMapping("/visualizza/treno")
+    public String selezionaTreno(@RequestParam("idTreno") Long idTreno, HttpSession session) {
+        // Salva l'ID del treno nella sessione
+        session.setAttribute("trenoSelezionato", idTreno);
+        // Reindirizza alla pagina che mostra i dettagli del treno senza esporre l'ID nell'URL
+        return "redirect:/treni/visualizza/treno";
+    }
+
+
     
     
     
+//    @PostMapping("/visualizza/treno")
+//    public String visualizzaTrenoPost(@RequestParam("idTreno") Long idTreno,
+//                                      @RequestParam("nome") String nome,
+//                                      @RequestParam("marca") String marca,
+//                                      @RequestParam("mediaValutazioni") Double mediaValutazioni,
+//                                      Model model, HttpSession session) {
+//        // Verifica che l'utente sia loggato
+//        if (!sessione.isUtenteLoggato(session)) {
+//            return sessione.redirectTologin();
+//        }
+//
+//        // Recupera il treno dal servizio tramite l'ID per verificare i dettagli completi
+//        TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
+//        
+//        if (trenoSelezionato == null) {
+//            model.addAttribute("errorMessage", "Il treno non è più disponibile.");
+//            return "redirect:/catalogo";
+//        }
+//
+//        // Aggiungi i dettagli del treno al modello per visualizzarli
+//        model.addAttribute("treno", trenoSelezionato);
+//        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+//
+//        return "dettagliTreno";  // Restituisce la vista dettagli del treno
+//    }
+    
+//    
+//    @PostMapping("/visualizza/treno")
+//    public String visualizzaTrenoPost(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
+//        if (!sessione.isUtenteLoggato(session)) {
+//            return sessione.redirectTologin();
+//        }
+//
+//        
+//
+//        if (trenoSelezionato == null) {
+//            model.addAttribute("errorMessage", "Il treno non è più disponibile.");
+//            return "redirect:/catalogo";  
+//        }
+//        TrenoDTO trenoView = trenoService.findById(trenoSelezionato.getIdTreno());
+//
+//        model.addAttribute("treno", trenoView);
+//        model.addAttribute("ownerId", trenoView.getIdOwner());
+//
+//        return "dettagliTreno";  
+//    }
+
+
+
+    
+////////////////////////////// FUNZIONALITA IN PROVA.     
     
 
     // Modifica un treno
