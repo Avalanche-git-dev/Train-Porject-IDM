@@ -13,9 +13,9 @@ public class UserDTO {
     private String telefono;
     private String stato;
     private double portafoglio;
-    private Ruolo ruolo; // Aggiunta
+    private String ruolo; // Aggiunta
 	public UserDTO(long userId, String username, String password, String email, String nome, String cognome,
-			String telefono, String stato, double portafoglio, Ruolo ruolo) {
+			String telefono, String stato, double portafoglio, String ruolo) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -86,10 +86,10 @@ public class UserDTO {
 	public void setPortafoglio(double portafoglio) {
 		this.portafoglio = portafoglio;
 	}
-	public Ruolo getRuolo() {
+	public String getRuolo() {
 		return ruolo;
 	}
-	public void setRuolo(Ruolo ruolo) {
+	public void setRuolo(String ruolo) {
 		this.ruolo = ruolo;
 	}
 	@Override

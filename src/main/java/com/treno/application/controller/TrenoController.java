@@ -115,12 +115,24 @@ public class TrenoController {
         model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
         return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
     }
-
     
-    
-    
-    
-    
+    @GetMapping("/dettagli/{idTreno}")
+    public String visualizzaDettagliTreno(@PathVariable("idTreno") Long idTreno, Model model, HttpSession session) {
+        // Verifica che l'utente sia loggato
+        if (!sessione.isUtenteLoggato(session)) {
+            return sessione.redirectTologin();
+        }
+        // Recupera il treno dal servizio usando l'ID
+        TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
+        // Se il treno non esiste, mostra un messaggio di errore
+        if (trenoSelezionato == null) {
+            model.addAttribute("errorMessage", "Il treno da te cercato non è disponibile, contatta l'amministratore.");
+            return "redirect:/catalogo"; // Reindirizza alla pagina del catalogo
+        }
+        model.addAttribute("treno", trenoSelezionato);
+        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+        return "dettagliTreno";
+    }
 
     // Modifica un treno
     @GetMapping("/modifica/treno")

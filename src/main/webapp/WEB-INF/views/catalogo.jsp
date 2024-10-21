@@ -78,7 +78,7 @@
                     <p class="card-text">Marca: ${treno.marca}</p>
                     <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni}</p>
                     <!-- Pulsante per Vedere i Dettagli del Treno -->
-                    <a href="${pageContext.request.contextPath}/treni/visualizza/treno/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
                     <!-- Pulsante "Valuta" -->
                     <a href="${pageContext.request.contextPath}/valutazioni/valutaTreno/${treno.idTreno}" class="btn btn-success ml-2">Valuta</a>
                 </div>
