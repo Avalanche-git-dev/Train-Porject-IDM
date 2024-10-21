@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.ValutazioneException;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
@@ -104,9 +107,9 @@ public class CatalogoController {
 	    @GetMapping("/filtro")
 	    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
 	        // Verifica che l'utente sia loggato
-	        if (!sessione.isUtenteLoggato(session)) {
-	            return sessione.redirectTologin();
-	        }
+//	        if (!sessione.isUtenteLoggato(session)) {
+//	            return sessione.redirectTologin();
+//	        }
 
 	        // Recupera l'utente loggato
 	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
@@ -116,7 +119,6 @@ public class CatalogoController {
 	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
 	        
 	        
-
 	        // Aggiungi la lista dei treni filtrati al modello
 	        model.addAttribute("treni", treniFiltrati);
 	        model.addAttribute("utenteLoggato", utenteLoggato);
@@ -125,5 +127,105 @@ public class CatalogoController {
 	        // Restituisci la vista del catalogo
 	        return "catalogo";
 	    }
+	    
+	    
+	    
+	    
+//	    
+//	    @PostMapping("/valutaTreno")
+//	    public String valutaTreno(HttpSession session,
+//	                              @ModelAttribute("treno") TrenoDTO trenoSelezionato,
+//	                              @RequestParam("voto") int voto,
+//	                              Model model) {
+//
+//	        // Verifica se l'utente è loggato
+//	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//	        if (utenteLoggato == null) {
+//	            return "redirect:/login"; // Reindirizza alla pagina di login se non è loggato
+//	        }
+//	        
+//	        trenoSelezionato = trenoService.findById(trenoSelezionato.getIdTreno());
+//	        
+//
+//	        // Controlla se il treno è stato selezionato correttamente
+//	        if (trenoSelezionato == null || trenoSelezionato.getIdTreno()==0) {
+//	            throw new ValutazioneException("Il treno da te selezionato non è al momento presente.");
+//	        }
+//
+//	        try {
+//	            // Chiama il metodo per la valutazione
+//	            valutazione.UserValutaTreno(utenteLoggato.getUserId(), trenoSelezionato.getIdTreno(), voto);
+//
+//	            // Aggiorna i dati del treno e dell'utente dopo la valutazione
+//	            TrenoDTO trenoAggiornato = trenoService.findById(trenoSelezionato.getIdTreno());
+//	            UserDTO utenteAggiornato = userService.findById(utenteLoggato.getUserId());
+//
+//	            // Aggiungi i dati aggiornati al modello
+//	            model.addAttribute("treno", trenoAggiornato);
+//	            model.addAttribute("utente", utenteAggiornato);
+//	            model.addAttribute("succes", "Il treno è stato valutato con successo");
+//
+//	            // Aggiorna i dati dell'utente nella sessione
+//	            sessione.setUtenteLoggato(session, utenteAggiornato);
+//
+//	        } catch (ValutazioneException e) {
+//	            model.addAttribute("errorMessage", e.getMessage());
+//	            return "redirect:/treni/visualizza/treno";
+//	        }
+//
+//	        return "redirect:/treni/visualizza/treno"; // Reindirizza alla vista del treno
+//	    }
+//
+//	    
+	    
+	    @PostMapping("/valutaTreno")
+	    public String valutaTreno(HttpSession session,
+	                              @RequestParam("trenoId") Long trenoId,
+	                              @RequestParam("voto") int voto,
+	                              Model model) {
 
+	        // Verifica se l'utente è loggato
+	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+	        if (utenteLoggato == null) {
+	            return "redirect:/login"; // Reindirizza alla pagina di login se non è loggato
+	        }
+
+	        // Cerca il treno tramite l'ID
+	        TrenoDTO trenoSelezionato = trenoService.findById(trenoId);
+	        if (trenoSelezionato == null || trenoSelezionato.getIdTreno() == 0) {
+	            throw new ValutazioneException("Il treno da te selezionato non è al momento presente.");
+	        }
+
+	        try {
+	            // Chiama il metodo per la valutazione
+	            valutazione.UserValutaTreno(utenteLoggato.getUserId(), trenoSelezionato.getIdTreno(), voto);
+
+	            // Aggiorna i dati del treno e dell'utente dopo la valutazione
+	            TrenoDTO trenoAggiornato = trenoService.findById(trenoSelezionato.getIdTreno());
+	            UserDTO utenteAggiornato = userService.findById(utenteLoggato.getUserId());
+
+	            // Aggiungi i dati aggiornati al modello
+	            model.addAttribute("treno", trenoAggiornato);
+	            model.addAttribute("utente", utenteAggiornato);
+	            model.addAttribute("success", "Il treno è stato valutato con successo");
+
+	            // Aggiorna i dati dell'utente nella sessione
+	            sessione.setUtenteLoggato(session, utenteAggiornato);
+
+	        } catch (ValutazioneException e) {
+	            model.addAttribute("errorMessage", e.getMessage());
+	            return "redirect:/treni/visualizza/treno";
+	        }
+
+	        return "redirect:/treni/visualizza/treno"; // Reindirizza alla vista del treno
+	    }
+
+	    
+	    
+	    
+	    
 }
+	    
+	    
+
+

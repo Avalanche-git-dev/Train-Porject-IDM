@@ -9,6 +9,7 @@ import com.treno.application.model.Treno;
 import com.treno.application.model.Vagone;
 import com.treno.application.utility.TrenoUtility;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 
 public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
@@ -19,14 +20,27 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
     /////////////////// FIND
     //Override
-    @Transactional
-    @Override
+//    @Transactional
+//    @Override
+//    public Treno findById(long id) {
+//        String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
+//        return em.createQuery(hql, Treno.class)
+//                 .setParameter("id", id)
+//                 .getSingleResult();
+//    }
+    
+    
     public Treno findById(long id) {
-        String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
-        return em.createQuery(hql, Treno.class)
-                 .setParameter("id", id)
-                 .getSingleResult();
+        try {
+            String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
+            return super.em.createQuery(hql, Treno.class)
+                                .setParameter("id", id)
+                                .getSingleResult();
+        } catch (NoResultException e) {
+            return null;  
+        }
     }
+
 
     @Transactional
     public List<Treno> findAllInVendita() {
@@ -52,10 +66,17 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
                      .getResultList();
     }
 
+    
+    
+    
 //    @SuppressWarnings("unchecked")
-//	@Transactional
+//    @Transactional
 //    public List<Treno> filtraTreni(TrenoFilter filtro) {
-//        StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
+//        // Creazione della query HQL con JOIN FETCH per valutazioni e transazioni
+//        StringBuilder hql = new StringBuilder("SELECT DISTINCT t FROM Treno t ");
+//        hql.append("LEFT JOIN FETCH t.valutazioni v ");
+//        hql.append("LEFT JOIN FETCH t.transazioni tr ");
+//        hql.append("WHERE 1=1");
 //
 //        // Aggiunta dinamica delle condizioni di filtro
 //        if (filtro.getPrezzoMin() != null) {
@@ -97,6 +118,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 //            hql.append(" AND t.inVendita = false");
 //        }
 //
+//        // Creazione della query
 //        Query query = em.createQuery(hql.toString());
 //
 //        // Impostazione dei parametri
@@ -139,7 +161,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     
     
     
-    
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Treno> filtraTreni(TrenoFilter filtro) {
@@ -174,19 +195,36 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
             hql.append(" AND t.marca = :marca");
         }
-        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
-            hql.append(" AND t.valutazioneTotale >= :valutazioni");
-        }
         if (filtro.getPrezzoVendita() != null) {
             hql.append(" AND t.prezzoVendita = :prezzoVendita");
         }
-        if (filtro.getAmmontareTotale() != null) {
-            hql.append(" AND t.ammontareTotale = :ammontareTotale");
+        if (filtro.getPrezzoVenditaMax() != null) {
+            hql.append(" AND t.prezzoVendita <= :prezzoVenditaMax");
         }
         if (Boolean.TRUE.equals(filtro.isInVendita())) {
             hql.append(" AND t.inVendita = true");
         } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
             hql.append(" AND t.inVendita = false");
+        }
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+            hql.append(" AND t.nome = :nome");
+        }
+        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
+            hql.append(" AND t.owner.username = :nomeOwner");
+        }
+
+        // Aggiunta della media delle valutazioni
+        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
+            hql.append(" GROUP BY t ");
+            hql.append(" HAVING AVG(v.punteggio) >= :valutazioni");
+        }
+
+        // Aggiunta della somma delle transazioni per ammontare totale
+        if (filtro.getAmmontareTotale() != null) {
+            if (!hql.toString().contains("GROUP BY")) {
+                hql.append(" GROUP BY t ");
+            }
+            hql.append(" HAVING SUM(tr.importo) >= :ammontareTotale");
         }
 
         // Creazione della query
@@ -223,13 +261,27 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         if (filtro.getPrezzoVendita() != null) {
             query.setParameter("prezzoVendita", filtro.getPrezzoVendita());
         }
+        if (filtro.getPrezzoVenditaMax() != null) {
+            query.setParameter("prezzoVenditaMax", filtro.getPrezzoVenditaMax());
+        }
         if (filtro.getAmmontareTotale() != null) {
             query.setParameter("ammontareTotale", filtro.getAmmontareTotale());
+        }
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+            query.setParameter("nome", filtro.getNome());
+        }
+        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
+            query.setParameter("nomeOwner", filtro.getNomeOwner());
         }
 
         return query.getResultList();
     }
 
+
+    
+    
+    
+    
     
     
     

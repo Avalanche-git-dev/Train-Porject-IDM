@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.ValutazioneDTO;
+import com.treno.application.exception.ValutazioneException;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
 import com.treno.application.model.Valutazione;
@@ -52,15 +53,15 @@ public class ValutazioneService {
 	}
 
 	@Transactional
-	public void UserValutaTreno(long userId, long trenoId, int voto) throws Exception {
+	public void UserValutaTreno(long userId, long trenoId, int voto) throws ValutazioneException {
 		User user = userDao.findById(userId);
 		Treno treno = trenoDao.findById(trenoId);
 
 		if (user == null) {
-			throw new Exception("Utente non trovato");
+			throw new ValutazioneException("Utente non trovato");
 		}
 		if (treno == null) {
-			throw new Exception("Treno non trovato");
+			throw new ValutazioneException("Treno non trovato");
 		}
 
 		List<Valutazione> valutazioniUtente = valutazioneDao.findValutazioniByUser(userId);
@@ -71,7 +72,7 @@ public class ValutazioneService {
 			if (v.getTreno().getIdTreno() == trenoId) {
 				// Se l'utente ha già valutato questo treno, lancia un'eccezione o restituisci
 				// un messaggio
-				throw new Exception("L'utente ha già valutato questo treno e non può modificarlo.");
+				throw new ValutazioneException("L'utente ha già valutato questo treno e non può modificarlo.");
 			}
 		}
 
@@ -84,6 +85,9 @@ public class ValutazioneService {
 		// Salva la nuova valutazione nel database
 		valutazioneDao.update(nuovaValutazione);
 	}
+	
+	
+	
 	//restituisce tutte le valutazioni di un treno
 	public List<ValutazioneDTO> getAllValutazioniByTreno(Long idTreno) {
 	    List<Valutazione> valutazioni =  valutazioneDao.findValutazioniByTreno(idTreno.longValue());

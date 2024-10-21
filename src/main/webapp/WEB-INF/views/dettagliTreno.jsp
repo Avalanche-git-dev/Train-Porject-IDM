@@ -34,7 +34,7 @@
             </c:if> --%>
         </div>
     </div>
-    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza/'">Torna ai treni dell'utente</button>
+    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza'">Torna ai treni dell'utente</button>
 </div>
 
 </body>

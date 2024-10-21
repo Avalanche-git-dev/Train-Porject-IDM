@@ -99,13 +99,8 @@ public class TrenoService {
 			throw new IllegalArgumentException("Treno non trovato con l'ID: " + idTreno);
 		}
 	}
-    //Filtra treni da passare al Dao
-//	public List<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-//	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
-//	    return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
-//	}
-	
-	// Proviamo con hasset
+
+	// Proviamo con hasHset
 	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
 	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
 

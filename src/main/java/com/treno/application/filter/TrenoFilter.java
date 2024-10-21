@@ -8,23 +8,21 @@ public class TrenoFilter {
 	private String sigla;
 	private String marca;
 	private Double valutazioni;
-	private Double prezzoVendita;//inteso come Max
+	private Double prezzoVenditaMax; //inteso come Max
 	private Double ammontareTotale;
 	private boolean inVendita;
 	private String nome;
 	private String nomeOwner;
+	private Double prezzoVendita;
 	
 	
 	
-	public String getNomeOwner() {
-		return nomeOwner;
-	}
+	
 
 
 
-	public void setNomeOwner(String nomeOwner) {
-		this.nomeOwner = nomeOwner;
-	}
+
+
 
 
 
@@ -37,9 +35,15 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
 	public TrenoFilter(Double prezzoMin, Double prezzoMax, Double pesoMin, Double pesoMax, Double lunghezzaMin,
-			Double lunghezzaMax, String sigla, String marca, Double valutazioni, Double prezzoVendita,
-			Double ammontareTotale, boolean inVendita, String nome, String nomeOwner) {
+			Double lunghezzaMax, String sigla, String marca, Double valutazioni, Double prezzoVenditaMax,
+			Double ammontareTotale, boolean inVendita, String nome, String nomeOwner, Double prezzoVendita) {
 		super();
 		this.prezzoMin = prezzoMin;
 		this.prezzoMax = prezzoMax;
@@ -50,12 +54,22 @@ public class TrenoFilter {
 		this.sigla = sigla;
 		this.marca = marca;
 		this.valutazioni = valutazioni;
-		this.prezzoVendita = prezzoVendita;
+		this.prezzoVenditaMax = prezzoVenditaMax;
 		this.ammontareTotale = ammontareTotale;
 		this.inVendita = inVendita;
 		this.nome = nome;
 		this.nomeOwner = nomeOwner;
+		this.prezzoVendita = prezzoVendita;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -65,9 +79,23 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
 	public void setPrezzoMin(Double prezzoMin) {
 		this.prezzoMin = prezzoMin;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -77,9 +105,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setPrezzoMax(Double prezzoMax) {
 		this.prezzoMax = prezzoMax;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -89,9 +135,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setPesoMin(Double pesoMin) {
 		this.pesoMin = pesoMin;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -101,9 +165,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setPesoMax(Double pesoMax) {
 		this.pesoMax = pesoMax;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -113,9 +195,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setLunghezzaMin(Double lunghezzaMin) {
 		this.lunghezzaMin = lunghezzaMin;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -125,9 +225,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setLunghezzaMax(Double lunghezzaMax) {
 		this.lunghezzaMax = lunghezzaMax;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,15 +255,42 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
 	}
 
 
 
+
+
+
+
+
+
+
+
+
 	public String getMarca() {
 		return marca;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -157,9 +302,25 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
 	public Double getValutazioni() {
 		return valutazioni;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -169,15 +330,42 @@ public class TrenoFilter {
 
 
 
-	public Double getPrezzoVendita() {
-		return prezzoVendita;
+
+
+
+
+
+
+
+
+
+	public Double getPrezzoVenditaMax() {
+		return prezzoVenditaMax;
 	}
 
 
 
-	public void setPrezzoVendita(Double prezzoVendita) {
-		this.prezzoVendita = prezzoVendita;
+
+
+
+
+
+
+
+
+
+	public void setPrezzoVenditaMax(Double prezzoVenditaMax) {
+		this.prezzoVenditaMax = prezzoVenditaMax;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -187,9 +375,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setAmmontareTotale(Double ammontareTotale) {
 		this.ammontareTotale = ammontareTotale;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -199,9 +405,27 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setInVendita(boolean inVendita) {
 		this.inVendita = inVendita;
 	}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -211,9 +435,80 @@ public class TrenoFilter {
 
 
 
+
+
+
+
+
+
+
+
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+	public String getNomeOwner() {
+		return nomeOwner;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setNomeOwner(String nomeOwner) {
+		this.nomeOwner = nomeOwner;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	public Double getPrezzoVendita() {
+		return prezzoVendita;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setPrezzoVendita(Double prezzoVendita) {
+		this.prezzoVendita = prezzoVendita;
+	}
+
+
 
 
 
