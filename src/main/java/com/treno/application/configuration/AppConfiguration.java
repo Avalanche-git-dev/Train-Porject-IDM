@@ -26,6 +26,7 @@ import com.treno.application.dao.VagoneDao;
 import com.treno.application.dao.ValutazioneDao;
 import com.treno.application.model.Transazione;
 import com.treno.application.model.builder.TBuilder;
+//import com.treno.application.service.AdminService;
 import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
@@ -191,6 +192,11 @@ public class AppConfiguration {
 	public Transazione getTransazione() {
 		return new Transazione();
 	}
+	
+	/* @Bean(name = "AdminService")
+	public AdminService getAdminService() {
+		return new AdminService();
+	} */
 	
 	//</Application>
 	

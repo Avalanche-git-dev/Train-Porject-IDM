@@ -39,6 +39,21 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         // Esegui la query e restituisci la lista di treni in vendita
         return super.em.createQuery(hql, Treno.class).getResultList();
     }
+    
+    @Transactional
+    public List<Treno> findByOwnerIdAndInVenditaFalse(Long ownerId) {
+        String hql = "SELECT DISTINCT t FROM Treno t " +
+                     "LEFT JOIN FETCH t.valutazioni " +
+                     "LEFT JOIN FETCH t.transazioni " +
+                     "WHERE t.owner.id = :ownerId " +
+                     "AND t.inVendita = false";        
+        // Esegui la query e restituisci la lista di treni che non sono in vendita
+        return super.em.createQuery(hql, Treno.class)
+                       .setParameter("ownerId", ownerId)
+                       .getResultList();
+    }
+
+
 
 
     @Transactional

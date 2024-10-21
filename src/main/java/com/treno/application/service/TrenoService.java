@@ -228,8 +228,14 @@ public class TrenoService {
 		}
 	 
 	 public List<TrenoDTO> findTreniInVendita() {
-		    List<Treno> treniInVendita = ((TrenoUtility) trenoDao).findAllInVendita();
+		    List<Treno> treniInVendita = trenoDao.findAllInVendita();
 		    return treniInVendita.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
 		}
+	 
+	 public List<TrenoDTO> findTreniByUserEscludiInVendita(Long ownerId) {
+		    List<Treno> treniUtente = trenoDao.findByOwnerIdAndInVenditaFalse(ownerId);
+		    return treniUtente.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+	 }
+
 
 }

@@ -79,10 +79,11 @@ public class TrenoController {
         if (!sessione.isUtenteLoggato(session)) {
             return sessione.redirectTologin();
         }
-        Long OwnerId = utenteLoggato.getUserId();
-        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
+        Long ownerId = utenteLoggato.getUserId();
+        // List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
+        List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
         model.addAttribute("treniDto", treniDto);
-        model.addAttribute("ownerId", OwnerId);
+        model.addAttribute("ownerId", ownerId);
         return "visualizzaTreni";
     }
 

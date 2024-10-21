@@ -17,7 +17,16 @@
                     <h5 class="card-title">${treno.nome}</h5>
                     <p class="card-text">Marca: ${treno.marca}</p>
                     <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
-                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                    <!-- Contenitore per i pulsanti -->
+                	<div>
+                    	<a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                    	<form action="${pageContext.request.contextPath}/mettiInVendita" method="POST">
+						    <input type="hidden" name="idTreno" value="${treno.idTreno}">
+						    <label for="prezzoVendita">Prezzo di Vendita:</label>
+						    <input type="number" name="prezzoVendita" step="0.01" min="0" required>
+						    <button type="submit" class="btn btn-success">Metti in Vendita</button>
+						</form>
+                	</div>
                 </div>
             </div>
         </c:forEach>
