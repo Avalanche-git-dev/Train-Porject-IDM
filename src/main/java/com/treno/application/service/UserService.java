@@ -330,16 +330,4 @@ public class UserService {
 	    return user;
 	}
 	
-	
-	public void registraGuest(User guest) {
-		guest.setRuolo(Ruolo.GUEST);
-		userDao.save(guest);
-	}
-	
-	public void removeGuest(long guestId) {
-		User user = userDao.findById(guestId);
-		if(user != null)
-			userDao.delete(user);
-	}
-	
 }

@@ -7,6 +7,40 @@
     <meta charset="UTF-8">
     <title>Treni dell'Utente</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function chiediPrezzo(idTreno) {
+            // Chiedi all'utente di inserire il prezzo di vendita
+            const prezzoVendita = prompt("Inserisci il prezzo di vendita:");
+
+            // Verifica se l'input è un numero valido e maggiore di zero
+            if (prezzoVendita !== null && !isNaN(prezzoVendita) && parseFloat(prezzoVendita) > 0) {
+                // Crea un form nascosto per inviare i dati
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "${pageContext.request.contextPath}/market/mettiInVendita";
+
+                // Crea un input per l'ID del treno
+                const inputId = document.createElement("input");
+                inputId.type = "hidden";
+                inputId.name = "idTreno";
+                inputId.value = idTreno;
+                form.appendChild(inputId);
+
+                // Crea un input per il prezzo di vendita
+                const inputPrezzo = document.createElement("input");
+                inputPrezzo.type = "hidden";
+                inputPrezzo.name = "prezzoVendita";
+                inputPrezzo.value = prezzoVendita;
+                form.appendChild(inputPrezzo);
+
+                // Aggiungi il form al body e invialo
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+            	
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -17,16 +51,10 @@
                     <h5 class="card-title">${treno.nome}</h5>
                     <p class="card-text">Marca: ${treno.marca}</p>
                     <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
-                    <!-- Contenitore per i pulsanti -->
-                	<div>
-                    	<a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
-                    	<form action="${pageContext.request.contextPath}/mettiInVendita" method="POST">
-						    <input type="hidden" name="idTreno" value="${treno.idTreno}">
-						    <label for="prezzoVendita">Prezzo di Vendita:</label>
-						    <input type="number" name="prezzoVendita" step="0.01" min="0" required>
-						    <button type="submit" class="btn btn-success">Metti in Vendita</button>
-						</form>
-                	</div>
+                    <div>
+                        <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                        <button class="btn btn-success" onclick="chiediPrezzo(${treno.idTreno})">Metti in Vendita</button>
+                    </div>
                 </div>
             </div>
         </c:forEach>

@@ -48,7 +48,7 @@
         <h1>Tutti i Treni Disponibili</h1>
 
         <!-- Form di Filtro per il Catalogo dei Treni -->
-        <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="mb-4">
+        <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="mb-4">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="nome">Nome del Treno</label>

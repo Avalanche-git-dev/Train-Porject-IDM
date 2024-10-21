@@ -83,7 +83,7 @@ public class MarketController {
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("trenoFilter", trenoFilter);
         // Restituisci la vista del catalogo
-        return "catalogoMarket";
+        return "market";
     }
 	
 }

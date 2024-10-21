@@ -200,6 +200,7 @@ public class TrenoService {
 	        trenoDTO.setPesoTotale(treno.getPeso());
 	        trenoDTO.setPostiTotali(treno.getPostiTotali());
 	        trenoDTO.setCostoTotale(treno.getCosto());
+	        trenoDTO.setLunghezzaTotale(treno.getLunghezza());
 	        trenoDTO.setIdOwner(treno.getOwner().getUserId());
 
 	        return trenoDTO;

@@ -184,7 +184,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             hql.append(" AND t.lunghezza <= :lunghezzaMax");
         }
         if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-            hql.append(" AND t.sigla = :sigla");
+            hql.append(" AND t.sigla LIKE :sigla"); // Cambiato a LIKE per corrispondenza parziale
         }
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
             hql.append(" AND t.marca = :marca");
@@ -197,11 +197,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         }
         if (filtro.getAmmontareTotale() != null) {
             hql.append(" AND t.ammontareTotale = :ammontareTotale");
-        }
-        if (Boolean.TRUE.equals(filtro.isInVendita())) {
-            hql.append(" AND t.inVendita = true");
-        } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
-            hql.append(" AND t.inVendita = false");
         }
 
         // Creazione della query
@@ -227,7 +222,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
         }
         if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-            query.setParameter("sigla", filtro.getSigla());
+            query.setParameter("sigla", "%" + filtro.getSigla() + "%"); // Aggiunto jolly per corrispondenza parziale
         }
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
             query.setParameter("marca", filtro.getMarca());
@@ -242,8 +237,12 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             query.setParameter("ammontareTotale", filtro.getAmmontareTotale());
         }
 
+        System.out.println("HQL Query: " + hql.toString()); // Stampa la query per il debug
+
         return query.getResultList();
     }
+
+
 
     
     

@@ -21,20 +21,24 @@
         <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="mb-4">
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="nome">Nome del Treno</label>
-                    <input type="text" id="nome" name="nome" value="${trenoFilter.nome}" class="form-control"/>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca" name="marca" value="${trenoFilter.marca}" class="form-control"/>
+                    <label for="nome">Sigla del Treno</label>
+                    <input type="text" id="sigla" name="sigla" value="${trenoFilter.sigla}" class="form-control"/>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="prezzoVendita">Prezzo di Vendita (massimo)</label>
                     <input type="number" id="prezzoVendita" name="prezzoVendita" value="${trenoFilter.prezzoVendita}" class="form-control"/>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="valutazioneMassima">Media Valutazioni (massimo)</label>
-                    <input type="number" id="valutazioneMassima" name="valutazioneMassima" value="${trenoFilter.valutazioni}" class="form-control"/>
+                    <label for="marca">Peso (massimo)</label>
+                    <input type="text" id="peso" name="pesoMax" value="${trenoFilter.pesoMax}" class="form-control"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="lunghezza">Lunghezza (massima)</label>
+                    <input type="number" id="lunghezza" name="lunghezzaMax" value="${trenoFilter.lunghezzaMax}" class="form-control"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="lunghezza">Utente</label>
+                    <input type="number" id="nome" name="nomeOwner" value="${trenoFilter.nomeOwner}" class="form-control"/>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Applica Filtro</button>
@@ -50,9 +54,9 @@
                 <!-- Contenitore per i pulsanti -->
                 <div>
                     <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
-                    <form action="${pageContext.request.contextPath}/acquista" method="post" style="display: inline;">
+                    <form action="${pageContext.request.contextPath}/market/acquista" method="post" style="display: inline;">
                         <input type="hidden" name="idTreno" value="${treno.idTreno}" />
-                        <button type="submit" class="btn btn-primary">Acquista Treno</button>
+                        <button type="submit" class="btn btn-success ml-2">Acquista Treno</button>
                     </form>
                 </div>
             </div>

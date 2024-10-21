@@ -9,12 +9,13 @@ public class TrenoDTO {
     private String marca;
     private double mediaValutazioni;
     private double pesoTotale;
+    private double lunghezzaTotale;
     private double postiTotali;
     private String nome;
     private long idOwner;
     private double costoTotale;
 	public TrenoDTO(long idTreno, String sigla, String immagine, boolean inVendita, double prezzoVendita, String marca,
-			double mediaValutazioni, double pesoTotale, double postiTotali, String nome, long idOwner,
+			double mediaValutazioni, double pesoTotale, double lunghezzaTotale, double postiTotali, String nome, long idOwner,
 			double costoTotale) {
 		super();
 		this.idTreno = idTreno;
@@ -25,6 +26,7 @@ public class TrenoDTO {
 		this.marca = marca;
 		this.mediaValutazioni = mediaValutazioni;
 		this.pesoTotale = pesoTotale;
+		this.lunghezzaTotale = lunghezzaTotale;
 		this.postiTotali = postiTotali;
 		this.nome = nome;
 		this.idOwner = idOwner;
@@ -82,6 +84,12 @@ public class TrenoDTO {
 	public void setPesoTotale(double pesoTotale) {
 		this.pesoTotale = pesoTotale;
 	}
+	public double getLunghezzaTotale() {
+		return lunghezzaTotale;
+	}
+	public void setLunghezzaTotale(double lunghezzaTotale) {
+		this.lunghezzaTotale = lunghezzaTotale;
+	}
 	public double getPostiTotali() {
 		return postiTotali;
 	}
@@ -110,8 +118,9 @@ public class TrenoDTO {
 	public String toString() {
 		return "TrenoDTO [idTreno=" + idTreno + ", sigla=" + sigla + ", immagine=" + immagine + ", inVendita="
 				+ inVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", mediaValutazioni="
-				+ mediaValutazioni + ", pesoTotale=" + pesoTotale + ", postiTotali=" + postiTotali + ", nome=" + nome
-				+ ", idOwner=" + idOwner + ", costoTotale=" + costoTotale + "]";
+				+ mediaValutazioni + ", pesoTotale=" + pesoTotale + ", lunghezzaTotale=" + lunghezzaTotale 
+				+ ", postiTotali=" + postiTotali + ", nome=" + nome + ", idOwner=" + idOwner + ", costoTotale=" 
+				+ costoTotale + "]";
 	}
 
 

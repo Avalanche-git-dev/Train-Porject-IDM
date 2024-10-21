@@ -51,8 +51,8 @@
         <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="mb-4">
             <div class="form-row">
                 <div class="form-group col-md-3">
-                    <label for="nome">Nome del Treno</label>
-                    <input type="text" id="nome" name="nome" value="${trenoFilter.nome}" class="form-control"/>
+                    <label for="nome">Sigla del Treno</label>
+                    <input type="text" id="nome" name="sigla" value="${trenoFilter.sigla}" class="form-control"/>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="marca">Marca</label>
@@ -66,6 +66,7 @@
                     <label for="valutazioneMassima">Media Valutazioni (massimo)</label>
                     <input type="number" id="valutazioneMassima" name="valutazioneMassima" value="${trenoFilter.valutazioni}" class="form-control"/>
                 </div>
+                
             </div>
             <button type="submit" class="btn btn-primary">Applica Filtro</button>
         </form>

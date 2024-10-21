@@ -26,9 +26,11 @@
             <p class="card-text">Marca: ${treno.marca}</p>
             <p class="card-text">Sigla: ${treno.sigla}</p>
             <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
-            <p class="card-text">Costo Totale: €${treno.costoTotale}</p>
+            <p class="card-text">Lunghezza Totale: ${treno.lunghezzaTotale} m</p>
+            <p class="card-text">Costo Totale: €${treno.costoTotale}€</p>
             <p class="card-text">Posti Totali: ${treno.postiTotali}</p>
             <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
+            <p class="card-text">Id Proprietario: ${treno.idOwner}</p>
             <%-- <c:if test="${ownerId != null}">
                 <p class="card-text">Proprietario: Utente ID ${ownerId}</p>
             </c:if> --%>
