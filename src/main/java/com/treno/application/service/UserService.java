@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.InvalidPasswordException;
+import com.treno.application.exception.AlreadyExistEmail;
+import com.treno.application.exception.InvalidCredentialsException;
+import com.treno.application.exception.InvalidPhoneNumberException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
@@ -55,7 +58,6 @@ public class UserService {
 		user.setPortafoglio(0);
 		user.setStato(Stato.unlocked);
 		userDao.save(user);
-		 //meglio boolean piu facile con i controller.
 	}
 	
 	
@@ -70,6 +72,10 @@ public class UserService {
 	    // Verifica se l'utente esiste
 	    if (user == null) {
 	        throw new UserNotFoundException("Utente non trovato");
+	    }
+	    
+	    if(!user.getUsername().equals(userDto.getUsername())) {
+	    	throw new InvalidCredentialsException("Credenziali sbagliate, ricontrolla password o username.");
 	    }
 
 	    // Verifica se la password fornita è corretta
@@ -97,109 +103,78 @@ public class UserService {
 	
 	
 	
+
+//	
 //	@Transactional
-//	public void updateModify(Long userId, UserDTO userDto) {
+//	public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws Exception {
 //	    User user = userDao.findById(userId);
-//	    if (user != null) {
-//	        user.setNome(userDto.getNome());
-//	        user.setEmail(userDto.getEmail());
-//	        user.setPortafoglio(userDto.getPortafoglio());
-//	        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-//	            user.setPassword(userDto.getPassword());
+//	    
+//	    // Verifica della password
+//	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
+//	        // Controllo se la vecchia password è corretta
+//	        if (passwordVecchia == null || !passwordVecchia.equals(user.getPassword())) {
+//	            throw new Exception("La vecchia password non è corretta.");
 //	        }
-//	        userDao.save(user);
-//	        System.out.println("UserService.updateUser: user updated = " + user);
-//	        //return convertToUserDTO(user);
+//	        // Imposta la nuova password solo se la vecchia è corretta
+//	        user.setPassword(passwordNuova);
 //	    }
 //	    
-//	    System.out.println("UserService.updateUser: user not found for id = " + userId);
-//	   // return null;
+//	    // Aggiornamento email se cambiata
+//	    if (email != null && !email.isEmpty() && !email.equals(user.getEmail())) {
+//	        // Esegui qui il controllo sull'esistenza dell'email se necessario
+//	        user.setEmail(email);
+//	    }
+//	    
+//	    // Aggiornamento telefono se fornito
+//	    if (telefono != null && !telefono.isEmpty()) {
+//	        user.setTelefono(telefono);
+//	    }
+//	    
+//	    userDao.update(user);
+//	    
+//	    return convertToUserDTO(user);
 //	}
 	
-//	   public UserDTO updateUserWithFiltro(Long userId, UtenteFilter userFiltro) throws UserNotFoundException {
-//	        // Recupera l'utente dal database
-//	        Optional<User> optionalUser = Optional.of(userDao.findById(userId));
-//	        if (!optionalUser.isPresent()) {
-//	            throw new UserNotFoundException("Utente non trovato con ID: " + userId);
-//	        }
-//
-//	        User user = optionalUser.get();
-//	        System.out.println("UserService.updateUserWithFiltro: user prima aggiornamento = " + user);
-//
-//	        // Applica i campi non vuoti del filtro all'utente
-//	        if (userFiltro.getNome() != null && !userFiltro.getNome().isEmpty()) {
-//	            user.setNome(userFiltro.getNome());
-//	        }
-//
-//	        if (userFiltro.getEmail() != null && !userFiltro.getEmail().isEmpty()) {
-//	            user.setEmail(userFiltro.getEmail());
-//	        }
-//
-//	        if (userFiltro.getPassword() != null && !userFiltro.getPassword().isEmpty()) {
-//	            user.setPassword(userFiltro.getPassword()); // Assicurati di gestire la cifratura della password
-//	        }
-//
-//	        // Aggiorna altri campi se presenti
-//
-//	        // Salva l'utente aggiornato nel database
-//	        userDao.save(user);
-//	        System.out.println("UserService.updateUserWithFiltro: user dopo aggiornamento = " + user);
-//
-//	        // Converti l'entità aggiornata in DTO
-//	        return convertToUserDTO(user);
-//	    }
-//	   @Transactional
-//	   public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws Exception {
-//		    User user = userDao.findById(userId);
-//		    if (passwordNuova != null && !passwordNuova.isEmpty()) {
-//		        if (!passwordVecchia.equals((user.getPassword()))) {
-//		            throw new Exception("Password vecchia errata.");
-//		        }
-//		        user.setPassword(passwordNuova);
-//		    }
-//		    if (email != null && !email.isEmpty() && !email.equals((user.getEmail()))) {
-////		        User existingUser = userDao.findByEmail(email);
-////		        if (existingUser != null) {
-////		            throw new Exception("Email già in uso.");
-////		        }
-//		        user.setEmail(email);
-//		    }
-//		    if (telefono != null && !telefono.isEmpty()) {
-//		        user.setTelefono(telefono);
-//		    }
-//		    userDao.update(user);
-//		    return convertToUserDTO(user);
-//		}
-	
 	@Transactional
-	public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws Exception {
+	public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws InvalidCredentialsException {
+	    // Recupera l'utente dal database
 	    User user = userDao.findById(userId);
-	    
-	    // Verifica della password
-	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
-	        // Controllo se la vecchia password è corretta
-	        if (passwordVecchia == null || !passwordVecchia.equals(user.getPassword())) {
-	            throw new Exception("La vecchia password non è corretta.");
-	        }
-	        // Imposta la nuova password solo se la vecchia è corretta
-	        user.setPassword(passwordNuova);
+	    if (user == null) {
+	        throw new UserNotFoundException("L'utente con ID " + userId + " non è stato trovato.");
 	    }
-	    
+
+	    // Verifica della password vecchia
+	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
+	        if (passwordVecchia == null || !passwordVecchia.equals(user.getPassword())) {
+	            throw new InvalidPasswordException("La vecchia password non è corretta.");
+	        }
+	        user.setPassword(passwordNuova); // Imposta la nuova password solo se la vecchia è corretta
+	    }
+
 	    // Aggiornamento email se cambiata
 	    if (email != null && !email.isEmpty() && !email.equals(user.getEmail())) {
-	        // Esegui qui il controllo sull'esistenza dell'email se necessario
+	        // Esegui un controllo sull'esistenza dell'email se necessario
+	        if (userDao.findByEmail(email) != null) {
+	            throw new AlreadyExistEmail("L'email " + email + " è già in uso.");
+	        }
 	        user.setEmail(email);
 	    }
-	    
+
 	    // Aggiornamento telefono se fornito
 	    if (telefono != null && !telefono.isEmpty()) {
+	        if (!telefono.matches("\\d{10}")) {
+	            throw new InvalidPhoneNumberException("Il numero di telefono inserito non è valido.");
+	        }
 	        user.setTelefono(telefono);
 	    }
-	    
+
+	    // Aggiorna l'utente nel database
 	    userDao.update(user);
-	    
+
+	    // Restituisce l'oggetto UserDTO aggiornato
 	    return convertToUserDTO(user);
 	}
+
 
 
 	   

@@ -136,12 +136,12 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <a href="index" class="home-btn">Home</a>
+        <a href="<c:url value='/' />" class="home-btn">Home</a>
     </div>
 
     <!-- Register form -->
     <div class="register-container">
-        <form class="register-form" action="${pageContext.request.contextPath}/registrazione" method="post">
+        <form class="register-form" action="<c:url value= '/user/registrati' />" method="post">
             <h2>Registrazione</h2>
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
@@ -157,6 +157,11 @@
             <div class="error-message">${errorMessage}</div>
         </c:if>
     </div>
+    
+     <c:if test="${not empty sessionScope.errorMessage}">
+        <div class="error-message">${sessionScope.errorMessage}</div>
+        <c:remove var="errorMessage" scope="session" />
+    </c:if>
 
 </body>
 </html>

@@ -22,6 +22,7 @@ com\treno\application\model\builder\package-info.class
 com\treno\application\configuration\WebConfig.class
 com\treno\application\model\User.class
 com\treno\application\exception\TroppiRistorantiException.class
+com\treno\application\controller\CatalogoController.class
 com\treno\application\dto\TrenoDTO.class
 com\treno\application\utility\UtenteValutaTreno.class
 com\treno\application\model\Admin.class
@@ -54,11 +55,19 @@ com\treno\application\utility\SessioneUtility.class
 com\treno\package-info.class
 com\treno\application\exception\UserNotFoundException.class
 com\treno\application\dto\TransazioneDTO.class
+<<<<<<< HEAD
+=======
+com\treno\application\dto\UserGuest.class
+>>>>>>> 384d3e5eeb738ff57405a94caad2a2df058b5e21
 com\treno\application\dao\Dao.class
 com\treno\application\exception\VenditoreAcquirenteNonTrovatoException.class
 com\treno\application\Factory.class
 com\treno\application\service\ValutazioneService.class
 com\treno\application\filter\TransazioneFilter.class
+<<<<<<< HEAD
+=======
+com\treno\application\exception\InvalidCredentialsException.class
+>>>>>>> 384d3e5eeb738ff57405a94caad2a2df058b5e21
 com\treno\application\configuration\AppConfiguration.class
 com\treno\application\dao\ProxyDao.class
 com\treno\application\exception\TrenoCreazioneException.class
