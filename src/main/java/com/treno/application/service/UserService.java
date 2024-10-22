@@ -16,7 +16,6 @@ import com.treno.application.exception.InvalidPhoneNumberException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
-import com.treno.application.model.Ruolo;
 import com.treno.application.model.User;
 import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
@@ -322,12 +321,24 @@ public class UserService {
 	    user.setUsername(userDto.getUsername());
 	    user.setEmail(userDto.getEmail());
 	    user.setPortafoglio(userDto.getPortafoglio());
-
-	    if (userDto.getStato() != null) {
-	        user.setStato(Stato.valueOf(userDto.getStato()));
-	    }
-
+	    user.setStato(userDto.getStato());
 	    return user;
+	}
+	
+	public List<UserDTO> findAllUsers() {
+		return userDao.findAllUsers();
+	}
+	
+	public void bloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.locked);
+		userDao.update(user);
+	}
+	
+	public void sbloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.unlocked);
+		userDao.update(user);
 	}
 	
 }

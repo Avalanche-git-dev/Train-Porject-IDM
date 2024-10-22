@@ -80,7 +80,7 @@ public class UserService1 {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPortafoglio(userDto.getPortafoglio());
-        user.setStato(User.Stato.valueOf(userDto.getStato()));
+        user.setStato(userDto.getStato());
         userDao.update(user);
     }
 
@@ -117,7 +117,7 @@ public class UserService1 {
         userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
         userDto.setPortafoglio(user.getPortafoglio());
-        userDto.setStato(user.getStato().name());
+        userDto.setStato(user.getStato());
         return userDto;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
+import com.treno.application.dto.TrenoDTO;
 import com.treno.application.exception.FondiInsufficientiException;
 import com.treno.application.exception.VenditoreAcquirenteNonTrovatoException;
 import com.treno.application.model.Transazione;
@@ -48,49 +49,52 @@ public class TransazioneService {
     // Metodo per comprare un treno, mantiene i parametri originali
     @Transactional
     public void compraTreno(long Iduser, long idtreno) throws VenditoreAcquirenteNonTrovatoException, FondiInsufficientiException {
-
-        Treno treno = trenoDao.findById(idtreno); // Recupera il treno dal DAO
-        User venditore = treno.getOwner(); // Trova il venditore dal treno
-        User acquirente = userDao.findById(Iduser); // Trova l'acquirente dall'ID utente
-
-        // Recupera il prezzo del treno
-        Double prezzo = treno.getPrezzoVendita();
+        // Recupera le entità necessarie
+        Treno treno = trenoDao.findById(idtreno);
         
+        User venditore = treno.getOwner();
+        User acquirente = userDao.findById(Iduser);
+
+        // Controlla se venditore e acquirente esistono
         if (venditore == null || acquirente == null) {
-            throw new VenditoreAcquirenteNonTrovatoException("Venditore o acquirente non trovato."); // Eccezione custom
+            throw new VenditoreAcquirenteNonTrovatoException("Venditore o acquirente non trovato.");
         }
 
-        // Verifica che l'acquirente abbia abbastanza fondi
+        // Controlla il prezzo e i fondi
+        Double prezzo = treno.getPrezzoVendita();
         if (acquirente.getPortafoglio() < prezzo) {
-            throw new FondiInsufficientiException("Fondi insufficienti per completare l'acquisto!"); // Eccezione custom
+            throw new FondiInsufficientiException("Fondi insufficienti per completare l'acquisto!");
         }
 
         // Inizializzazione di lazy collections
         Hibernate.initialize(venditore.getPortafoglio());
         Hibernate.initialize(acquirente.getPortafoglio());
 
-        // Transazione economica
+        // Aggiornamento dei portafogli
         acquirente.setPortafoglio(acquirente.getPortafoglio() - prezzo);
         venditore.setPortafoglio(venditore.getPortafoglio() + prezzo);
 
-        // Trasferisci il treno all'acquirente
+        // Trasferimento del treno
         treno.setOwner(acquirente);
         treno.setInVendita(false);
-        treno.setPrezzoVendita(0); // Il treno non è più in vendita
-
-        // Crea la transazione
+        treno.setPrezzoVendita(0);
+        
+        // Crea una nuova transazione
+        Transazione nuovaTransazione = new Transazione(); // Crea una nuova istanza
         nuovaTransazione.setAcquirente(acquirente);
         nuovaTransazione.setVenditore(venditore);
         nuovaTransazione.setTreno(treno);
         nuovaTransazione.setImporto(prezzo);
         nuovaTransazione.setData(LocalDateTime.now());
-
-        // Aggiorna il database con tutte le modifiche
-        transazioneDao.save(nuovaTransazione); // Salva la nuova transazione
-        trenoDao.update(treno); // Aggiorna il treno
-        userDao.update(acquirente); // Aggiorna l'acquirente
-        userDao.update(venditore); // Aggiorna il venditore
+       
+        // Salva la nuova transazione
+        transazioneDao.save(nuovaTransazione);
+        // Aggiorna il treno e gli utenti
+        trenoDao.update(treno);
+        userDao.update(acquirente);
+        userDao.update(venditore);
     }
+
 
     // Metodo per mettere un treno in vendita
     @Transactional

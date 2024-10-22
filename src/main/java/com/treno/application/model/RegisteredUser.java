@@ -43,7 +43,7 @@ public abstract class RegisteredUser {
 	private String cognome;
 
 	@Column(name = "ruolo")
-	private String ruolo;
+	private Ruolo ruolo;
 
 	public RegisteredUser() {
 		super();
@@ -134,12 +134,12 @@ public abstract class RegisteredUser {
 	}
 
 	
-	public String getRuolo() {
+	public Ruolo getRuolo() {
 		return ruolo;
 	}
 	
 	
-	public void setRuolo(String ruolo) {
+	public void setRuolo(Ruolo ruolo) {
 		this.ruolo = ruolo;
 	}
 

@@ -1,7 +1,9 @@
 package com.treno.application.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.model.User;
 import com.treno.application.utility.UserUtility;
@@ -15,6 +17,27 @@ public class UserDao extends ProxyDao<User> implements UserUtility {
         super(User.class);
     }
 
+
+    public List<UserDTO> findAllUsers() {
+        List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            UserDTO dto = new UserDTO();
+            dto.setUserId(user.getUserId());
+            dto.setUsername(user.getUsername());
+            dto.setEmail(user.getEmail());
+            dto.setNome(user.getNome());
+            dto.setCognome(user.getCognome());
+            dto.setTelefono(user.getTelefono());
+            dto.setStato(user.getStato());
+            dto.setPortafoglio(user.getPortafoglio());
+            dto.setRuolo(user.getRuolo());
+            userDTOs.add(dto);
+        }
+        return userDTOs;
+    }
+
+    
     @Override
     public User findByUsername(String username) {
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
