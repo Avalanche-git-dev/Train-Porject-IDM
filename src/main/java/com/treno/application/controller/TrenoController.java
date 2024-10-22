@@ -145,54 +145,7 @@ public class TrenoController {
 
 
     
-    
-    
-//    @PostMapping("/visualizza/treno")
-//    public String visualizzaTrenoPost(@RequestParam("idTreno") Long idTreno,
-//                                      @RequestParam("nome") String nome,
-//                                      @RequestParam("marca") String marca,
-//                                      @RequestParam("mediaValutazioni") Double mediaValutazioni,
-//                                      Model model, HttpSession session) {
-//        // Verifica che l'utente sia loggato
-//        if (!sessione.isUtenteLoggato(session)) {
-//            return sessione.redirectTologin();
-//        }
-//
-//        // Recupera il treno dal servizio tramite l'ID per verificare i dettagli completi
-//        TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
-//        
-//        if (trenoSelezionato == null) {
-//            model.addAttribute("errorMessage", "Il treno non è più disponibile.");
-//            return "redirect:/catalogo";
-//        }
-//
-//        // Aggiungi i dettagli del treno al modello per visualizzarli
-//        model.addAttribute("treno", trenoSelezionato);
-//        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
-//
-//        return "dettagliTreno";  // Restituisce la vista dettagli del treno
-//    }
-    
-//    
-//    @PostMapping("/visualizza/treno")
-//    public String visualizzaTrenoPost(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
-//        if (!sessione.isUtenteLoggato(session)) {
-//            return sessione.redirectTologin();
-//        }
-//
-//        
-//
-//        if (trenoSelezionato == null) {
-//            model.addAttribute("errorMessage", "Il treno non è più disponibile.");
-//            return "redirect:/catalogo";  
-//        }
-//        TrenoDTO trenoView = trenoService.findById(trenoSelezionato.getIdTreno());
-//
-//        model.addAttribute("treno", trenoView);
-//        model.addAttribute("ownerId", trenoView.getIdOwner());
-//
-//        return "dettagliTreno";  
-//    }
+
 
 
 

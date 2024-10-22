@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.InvalidCredentialsException;
@@ -61,22 +62,7 @@ public class UserController {
         }
     }
 
-    // mostraLogin
-//    @GetMapping("/login")
-//    public String mostralogin(HttpSession session, Model model) {
-//        // Invalida eventuale sessione esistente
-//        if (session != null) {
-//            session.invalidate();
-//        }
-//        
-//        
-//
-//        // Aggiunge un nuovo oggetto UserDTO al modello per il form di login
-//        model.addAttribute("userDto", new UserDTO());
-//        return "login"; // JSP o altra vista per il login, utilizzare il View Resolver
-//    }
-    
-    
+
     
     // mostraLogin + ricevi messaggio di sessioneScaduta dall'interceptor in caso.
     @GetMapping("/login")
@@ -132,10 +118,12 @@ public class UserController {
     
     // Logout
     @PostMapping("/logout")
-    public String Dologout(HttpSession session) {
+    public String Dologout(HttpSession session, RedirectAttributes redirectAttributes) {
         if (session != null) {
             session.invalidate(); // Invalida la sessione corrente
         }
+        // Aggiungi un messaggio di conferma del logout
+        redirectAttributes.addFlashAttribute("logoutMessage", "Logout effettuato con successo.");
         return sessione.redirectTologin(); // Reindirizza alla pagina di login
     }
 

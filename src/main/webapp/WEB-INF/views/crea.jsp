@@ -107,7 +107,7 @@
 
     <!-- Bottone per modificare un treno esistente -->
     <button class="btn btn-modifica mt-4" onclick="toggleModificaTreno()">Modifica Treno</button>
-
+    <button class="btn btn-primary back-button" onclick="window.history.back()"> Indietro </button>
     <!-- Pannello per la modifica del treno -->
     <div id="modificaPanel" style="display: none;">
         <form id="modificaTrenoForm" action="${pageContext.request.contextPath}/treni/modifica" method="post" onsubmit="confermaModifica(event)">
@@ -126,11 +126,14 @@
                 <input type="text" class="form-control" id="modificaInput" name="modificaInput" required
                        title="La stringa del treno deve iniziare con 'H', contenere una sola 'R', e la seconda lettera deve essere 'P' o 'C'."
                        placeholder="Es. HPPPP o HCCCCC, una R">
+                       
             </div>
             <button type="submit" class="btn btn-success">Salva Modifiche</button>
         </form>
     </div>
+    
 </div>
+
 
 </body>
 </html>

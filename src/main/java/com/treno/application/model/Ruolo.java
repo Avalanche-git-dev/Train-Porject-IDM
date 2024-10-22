@@ -5,5 +5,6 @@ import lombok.ToString;
 @ToString
 public enum Ruolo {
 	REGISTERED_USER,
-	ADMIN
+	ADMIN,
+	GUEST
 }
