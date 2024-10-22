@@ -13,9 +13,10 @@ public class TrenoDTO {
     private String nome;
     private long idOwner;
     private double costoTotale;
+    private double lunghezza;
 	public TrenoDTO(long idTreno, String sigla, String immagine, boolean inVendita, double prezzoVendita, String marca,
 			double mediaValutazioni, double pesoTotale, double postiTotali, String nome, long idOwner,
-			double costoTotale) {
+			double costoTotale, double lunghezza) {
 		super();
 		this.idTreno = idTreno;
 		this.sigla = sigla;
@@ -29,6 +30,7 @@ public class TrenoDTO {
 		this.nome = nome;
 		this.idOwner = idOwner;
 		this.costoTotale = costoTotale;
+		this.lunghezza = lunghezza;
 	}
 	public TrenoDTO() {
 		super();
@@ -112,6 +114,12 @@ public class TrenoDTO {
 				+ inVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", mediaValutazioni="
 				+ mediaValutazioni + ", pesoTotale=" + pesoTotale + ", postiTotali=" + postiTotali + ", nome=" + nome
 				+ ", idOwner=" + idOwner + ", costoTotale=" + costoTotale + "]";
+	}
+	public double getLunghezza() {
+		return lunghezza;
+	}
+	public void setLunghezza(double lunghezza) {
+		this.lunghezza = lunghezza;
 	}
 
 

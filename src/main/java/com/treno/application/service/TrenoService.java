@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
@@ -27,19 +28,16 @@ public class TrenoService {
 	@Autowired
 	@Qualifier("TrenoDao")
 	private TrenoUtility trenoDao;
-	
-	
+
 	@Autowired
-	@Qualifier ("UserService")
+	@Qualifier("UserService")
 	private UserService userService;
-	
+
 	@Autowired
-	@Qualifier ("ValutazioneDao")
+	@Qualifier("ValutazioneDao")
 	private UtenteValutaTreno valutazioneDao;
 
-	
-	
-	//Creazione del treno
+	// Creazione del treno
 	@Transactional
 	public void creaTreno(TrenoDTO trenoDto, UserDTO utenteDto) {
 		// Utilizza il builder per creare un treno basato sui dati del DTO
@@ -57,44 +55,41 @@ public class TrenoService {
 		// Salva il treno tramite DAO
 		trenoDao.save(treno);
 	}
-	
 
 	// classico by uiser
 	@Transactional
 	public List<TrenoDTO> findAllTreniByUser(long userId) {
-	    // Recupera tutti i treni di un utente specifico dal DAO
-	    List<Treno> treni = trenoDao.findAllTreniByUser(userId);
+		// Recupera tutti i treni di un utente specifico dal DAO
+		List<Treno> treni = trenoDao.findAllTreniByUser(userId);
 
-	    // Converte ogni Treno in TrenoDTO usando il metodo convertToDTO
-	    return treni.stream()
-	                .map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
-	                .collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
+		// Converte ogni Treno in TrenoDTO usando il metodo convertToDTO
+		return treni.stream().map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
+				.collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
 	}
-	
-	
-	//Get ALL
-	public List<TrenoDTO> getAllTreni() {
-	    // Recupera tutti i treni dal DAO
-	    List<Treno> treni = trenoDao.findAll();
 
-	    // Converte ogni Treno in TrenoDTO usando il metodo convertToDTO
-	    return treni.stream()
-	                .map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
-	                .collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
+	// Get ALL
+	public List<TrenoDTO> getAllTreni() {
+		// Recupera tutti i treni dal DAO
+		List<Treno> treni = trenoDao.findAll();
+
+		// Converte ogni Treno in TrenoDTO usando il metodo convertToDTO
+		return treni.stream().map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
+				.collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
 	}
 
 	// Aggiorna un treno
 	@Transactional
 	public void update(TrenoDTO trenoDTO) {
-	    Treno treno = convertToEntity(trenoDTO); // Converte il DTO in entità
-	    trenoDao.update(treno);
+		Treno treno = convertToEntity(trenoDTO); // Converte il DTO in entità
+		trenoDao.update(treno);
 	}
+
 	// cancella un treno no DTO
 	@Transactional
 	public void cancellaTreno(Long idTreno) {
 		Treno treno = trenoDao.findById(idTreno); // Trova il treno tramite l'ID
 		if (treno != null) {
-			trenoDao.delete(treno); 
+			trenoDao.delete(treno);
 		} else {
 			throw new IllegalArgumentException("Treno non trovato con l'ID: " + idTreno);
 		}
@@ -102,29 +97,22 @@ public class TrenoService {
 
 	// Proviamo con hasHset
 	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
+		List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
 
-	    // Convertire la lista in un set per evitare duplicati
-	    return treniFiltrati.stream()
-	                        .map(this::convertToTrenoDTO)
-	                        .collect(Collectors.toSet());
+		// Convertire la lista in un set per evitare duplicati
+		return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toSet());
 	}
 
-	
-    //Classico da override di Interfacia
+	// Classico da override di Interfacia
 	public TrenoDTO findById(Long id) {
-	    Treno treno = trenoDao.findById(id);
-	    return convertToTrenoDTO(treno);
+		Treno treno = trenoDao.findById(id);
+		return convertToTrenoDTO(treno);
 	}
-	
-	
-	
-	//Metodi di servizio per non fare query impossibili........ non si puo gestire questo tipo di calcolo a livello db .
-	/*<------------------------------------>*/
-	
-	
-	
-	
+
+	// Metodi di servizio per non fare query impossibili........ non si puo gestire
+	// questo tipo di calcolo a livello db .
+	/* <------------------------------------> */
+
 	// Calcola il numero totale di valutazioni
 	public double getValutazioneTotale(Treno treno) {
 		return treno.getValutazioneTotale();
@@ -160,75 +148,116 @@ public class TrenoService {
 		return treno.getPostiTotali();
 	}
 
-	
-	//Lista converitta
+	// Lista converitta
 	public List<TrenoDTO> convertToDTOList(List<Treno> treni) {
-        return treni.stream()
-                    .map(this::convertToTrenoDTO)
-                    .collect(Collectors.toList());
-    }
-	
+		return treni.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+	}
 
-	 
-//	 public void valutaTreno(ValutazioneDTO valutazioneDto) {
-//	        Valutazione valutazione = new Valutazione();
-//	        valutazione.setIdTreno(valutazioneDto.getIdTreno());
-//	        valutazione.setIdUtente(valutazioneDto.getIdUtente());
-//	        valutazione.setValutazione(valutazioneDto.getValutazione());
-//	        valutazioneDao.save(valutazione);
-//	    }
+	// Converti dto
+	public TrenoDTO convertToTrenoDTO(Treno treno) {
+		TrenoDTO trenoDTO = new TrenoDTO();
 
-	
-	//Converti dto
-	 public TrenoDTO convertToTrenoDTO(Treno treno) {
-	        TrenoDTO trenoDTO = new TrenoDTO();
-	        
-	        // Mappa i campi dall'entità Treno al DTO
-	        trenoDTO.setIdTreno(treno.getIdTreno());
-	        trenoDTO.setNome(treno.getNome());
-	        trenoDTO.setSigla(treno.getSigla());
-	        trenoDTO.setImmagine(treno.getImmagine());
-	        trenoDTO.setInVendita(treno.isInVendita());
-	        trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
-	        trenoDTO.setMarca(treno.getMarca());
-	        trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
-	        trenoDTO.setPesoTotale(treno.getPeso());
-	        trenoDTO.setPostiTotali(treno.getPostiTotali());
-	        trenoDTO.setCostoTotale(treno.getCosto());
-	        trenoDTO.setIdOwner(treno.getOwner().getUserId());
+		// Mappa i campi dall'entità Treno al DTO
+		trenoDTO.setIdTreno(treno.getIdTreno());
+		trenoDTO.setNome(treno.getNome());
+		trenoDTO.setSigla(treno.getSigla());
+		trenoDTO.setImmagine(treno.getImmagine());
+		trenoDTO.setInVendita(treno.isInVendita());
+		trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
+		trenoDTO.setMarca(treno.getMarca());
+		trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
+		trenoDTO.setPesoTotale(treno.getPeso());
+		trenoDTO.setPostiTotali(treno.getPostiTotali());
+		trenoDTO.setCostoTotale(treno.getCosto());
+		trenoDTO.setIdOwner(treno.getOwner().getUserId());
 
-	        return trenoDTO;
-	    }
-	 //Contrario
-	 public Treno convertToEntity(TrenoDTO trenoDTO) {
-		    Treno treno = new Treno();
+		return trenoDTO;
+	}
 
-		    // Mappa i campi dal DTO all'entità
-		    treno.setIdTreno(trenoDTO.getIdTreno());
-		    treno.setNome(trenoDTO.getNome());
-		    treno.setSigla(trenoDTO.getSigla());
-		    treno.setImmagine(trenoDTO.getImmagine());
-		    treno.setInVendita(trenoDTO.isInVendita());
-		    treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
-		    treno.setMarca(trenoDTO.getMarca());
-		    
-		    
-		    
-		    
-		    
-		    
-		    if ((Long) ( trenoDTO.getIdOwner()) != null) {
-		    //Conversione dell'utente e assegnazione.
-		    UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
-		    treno.setOwner(userService.convertToUserEntity(Owner));
-		    
-		    }
-		    
-		   
-		    // Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
-		    // a meno che non le passi esplicitamente.
+	// Contrario
+	public Treno convertToEntity(TrenoDTO trenoDTO) {
+		Treno treno = new Treno();
 
-		    return treno;
+		// Mappa i campi dal DTO all'entità
+		treno.setIdTreno(trenoDTO.getIdTreno());
+		treno.setNome(trenoDTO.getNome());
+		treno.setSigla(trenoDTO.getSigla());
+		treno.setImmagine(trenoDTO.getImmagine());
+		treno.setInVendita(trenoDTO.isInVendita());
+		treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
+		treno.setMarca(trenoDTO.getMarca());
+
+		if ((Long) (trenoDTO.getIdOwner()) != null) {
+			// Conversione dell'utente e assegnazione.
+			UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
+			treno.setOwner(userService.convertToUserEntity(Owner));
+
 		}
+
+		// Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
+		// a meno che non le passi esplicitamente.
+
+		return treno;
+	}
+
+	@Transactional
+	public List<TrenoDTO> findTreniByUsername(String username) {
+		// Recupera l'utente dal DAO usando lo username
+		UserDTO user = userService.findByUsername(username);
+
+		// Controlla se l'utente esiste
+		if (user == null) {
+			throw new UserNotFoundException("Utente non trovato con username: " + username);
+		}
+
+		// Recupera tutti i treni dell'utente specifico dal DAO
+		List<Treno> treni = trenoDao.findAllTreniByUser(user.getUserId());
+
+		// Converte ogni Treno in TrenoDTO usando il metodo convertToDTO
+		return treni.stream().map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
+				.collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
+	}
+	
+	
+	
+	
+	
+//	@Transactional
+//	public TrenoDTO copiaTreno(Long idTreno) {
+//	    // Recupera il treno originale dal DAO
+//	    Treno trenoOriginale = trenoDao.findById(idTreno);
+//
+//	    // Se il treno non esiste, lancia un'eccezione
+//	    if (trenoOriginale == null) {
+//	        throw new IllegalArgumentException("Treno non trovato con l'ID: " + idTreno);
+//	    }
+//
+//	    // Crea una nuova istanza di Treno
+//	    Treno trenoCopia = new Treno();
+//	    
+//	    // Copia i dati dal treno originale, ma lascia l'ID nullo per creare un nuovo treno
+//	    trenoCopia.setNome(trenoOriginale.getNome());
+//	    trenoCopia.setSigla(trenoOriginale.getSigla());
+//	    trenoCopia.setImmagine(trenoOriginale.getImmagine());
+//	    trenoCopia.setInVendita(trenoOriginale.isInVendita());
+//	    trenoCopia.setPrezzoVendita(trenoOriginale.getPrezzoVendita());
+//	    trenoCopia.setMarca(trenoOriginale.getMarca());
+//	    trenoCopia.setPeso(trenoOriginale.getPeso());
+//	    trenoCopia.setLunghezza(trenoOriginale.getLunghezza());
+//	    trenoCopia.setCosto(trenoOriginale.getCosto());
+//	    trenoCopia.setPostiTotali(trenoOriginale.getPostiTotali());
+//	    trenoCopia.setOwner(trenoOriginale.getOwner()); // L'owner rimane lo stesso
+//	    
+//	    // Nota: l'ID rimane null per far sì che venga generato un nuovo ID al momento del salvataggio
+//	    // Non copiando l'ID si assicura che il nuovo treno sia completamente distinto dall'originale
+//
+//	    // Salva la copia del treno nel database tramite il DAO
+//	    trenoDao.save(trenoCopia);
+//	    
+//	    // Ritorna il nuovo treno come TrenoDTO
+//	    return convertToTrenoDTO(trenoCopia);
+//	}
+
+
 
 }

@@ -103,37 +103,7 @@ public class UserService {
 	
 	
 
-//	
-//	@Transactional
-//	public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws Exception {
-//	    User user = userDao.findById(userId);
-//	    
-//	    // Verifica della password
-//	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
-//	        // Controllo se la vecchia password è corretta
-//	        if (passwordVecchia == null || !passwordVecchia.equals(user.getPassword())) {
-//	            throw new Exception("La vecchia password non è corretta.");
-//	        }
-//	        // Imposta la nuova password solo se la vecchia è corretta
-//	        user.setPassword(passwordNuova);
-//	    }
-//	    
-//	    // Aggiornamento email se cambiata
-//	    if (email != null && !email.isEmpty() && !email.equals(user.getEmail())) {
-//	        // Esegui qui il controllo sull'esistenza dell'email se necessario
-//	        user.setEmail(email);
-//	    }
-//	    
-//	    // Aggiornamento telefono se fornito
-//	    if (telefono != null && !telefono.isEmpty()) {
-//	        user.setTelefono(telefono);
-//	    }
-//	    
-//	    userDao.update(user);
-//	    
-//	    return convertToUserDTO(user);
-//	}
-	
+
 	@Transactional
 	public UserDTO updateUserWithParams(Long userId, String passwordVecchia, String passwordNuova, String email, String telefono) throws InvalidCredentialsException {
 	    // Recupera l'utente dal database
@@ -151,9 +121,9 @@ public class UserService {
 	    }
 
 	    // Aggiornamento email se cambiata
-	    if (email != null && !email.isEmpty() && !email.equals(user.getEmail())) {
+	    if (email != null && !email.isEmpty()) {
 	        // Esegui un controllo sull'esistenza dell'email se necessario
-	        if (userDao.findByEmail(email) != null) {
+	        if ((user.getEmail()).equals(email)) {
 	            throw new AlreadyExistEmail("L'email " + email + " è già in uso.");
 	        }
 	        user.setEmail(email);
@@ -161,7 +131,7 @@ public class UserService {
 
 	    // Aggiornamento telefono se fornito
 	    if (telefono != null && !telefono.isEmpty()) {
-	        if (!telefono.matches("\\d{10}")) {
+	        if ((!telefono.matches("\\d{10}"))||(user.getTelefono().equals(telefono))) {
 	            throw new InvalidPhoneNumberException("Il numero di telefono inserito non è valido.");
 	        }
 	        user.setTelefono(telefono);

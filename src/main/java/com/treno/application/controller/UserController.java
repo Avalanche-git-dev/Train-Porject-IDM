@@ -87,10 +87,10 @@ public class UserController {
         }
 
         // Aggiungi un messaggio al modello se la sessione è scaduta
-        if ("true".equals(sessioneScaduta)) {
-            model.addAttribute("messaggio", "La tua sessione è scaduta. Effettua nuovamente il login.");
-        }
-
+		/*
+		 * if ("true".equals(sessioneScaduta)) { model.addAttribute("messaggio",
+		 * "La tua sessione è scaduta. Effettua nuovamente il login."); }
+		 */
         // Aggiunge un nuovo oggetto UserDTO al modello per il form di login
         model.addAttribute("userDto", new UserDTO());
         return "login"; // Nome della vista JSP per il login

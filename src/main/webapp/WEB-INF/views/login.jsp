@@ -154,10 +154,20 @@
         </form>
 
         <!-- Display errors if any -->
-        <c:if test="${not empty error}">
-            <div class="error-message">${error}</div>
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">${errorMessage}</div>
         </c:if>
     </div>
+    
+    <% 
+    String sessioneScaduta = request.getParameter("sessioneScaduta");
+    if ("true".equals(sessioneScaduta)) {
+%>
+    <div class="alert alert-warning">La tua sessione è scaduta. Per favore, accedi di nuovo.</div>
+<% 
+    } 
+%>
+    
 
 </body>
 </html>
