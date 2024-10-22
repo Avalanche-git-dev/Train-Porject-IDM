@@ -330,10 +330,10 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <div class="left-buttons">
-            <!-- Tasto "Catalogo" in alto a sinistra -->
-            <button>Catalogo</button>
-        </div>
+       <form action="${pageContext.request.contextPath}/catalogo" method="get">
+    <button type="submit">Vai al Catalogo</button>
+</form>
+
 
         <div class="right-buttons">
             <!-- Pulsanti "Registrati" e "Login" a destra con stile modificato -->

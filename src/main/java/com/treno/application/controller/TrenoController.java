@@ -49,10 +49,10 @@ public class TrenoController {
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
         UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
         
-        if(!sessione.isUtenteLoggato(session)) {
-        	return sessione.redirectTologin();
-        }
-        
+//        if(!sessione.isUtenteLoggato(session)) {
+//        	return sessione.redirectTologin();
+//        }
+//        
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";

@@ -13,4 +13,6 @@ public interface SessioneUtility {
 	void setUtenteLoggato(HttpSession session, UserDTO updatedUser);
 
 	String redirectTologin();
+
+	boolean isUtenteGuest(HttpSession session);
 }

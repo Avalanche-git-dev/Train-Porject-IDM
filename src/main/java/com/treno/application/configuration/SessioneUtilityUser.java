@@ -1,14 +1,25 @@
 package com.treno.application.configuration;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import com.treno.application.dto.UserDTO;
+import com.treno.application.dto.UserGuest;
 import com.treno.application.utility.SessioneUtility;
 
 import jakarta.servlet.http.HttpSession;
 
 
 
-public class SessioneUtilityImpl implements SessioneUtility {
+public class SessioneUtilityUser implements SessioneUtility {
+	
+	
+	
+	@Autowired
+	@Qualifier("Guest")
+	private UserGuest guest;
+	
 
     @Override
     public UserDTO getUtenteLoggato(HttpSession session) {
@@ -29,5 +40,12 @@ public class SessioneUtilityImpl implements SessioneUtility {
 	@Override
 	public String redirectTologin() {
 		return "redirect:/user/login";
+	}
+	
+	//UtenteGuest
+	@Override
+	public boolean isUtenteGuest(HttpSession session) {
+		session.setAttribute("guest", guest);
+		return getUtenteLoggato(session) instanceof UserGuest;
 	}
 }

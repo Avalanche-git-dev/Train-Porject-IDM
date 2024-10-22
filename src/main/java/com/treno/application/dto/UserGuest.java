@@ -1,26 +1,41 @@
 package com.treno.application.dto;
 
+import java.util.UUID;
+
 public class UserGuest extends UserDTO {
-	private String ruolo;
-	private boolean permessi;
-    // Costruttore e funzionalità specifiche per l'utente guest
+
+    private String id;
+    private String guest;
+
+    // Costruttore
     public UserGuest() {
-        // Imposta eventuali valori di default, ad esempio nome o permessi limitati
-        this.setNome("Guest");
-        this.setRuolo("Guest");
-        this.setPermessi(true);  // Un esempio di permesso
+        // Genera un ID unico e assegna lo username "Guest"
+        this.id = UUID.randomUUID().toString();  // Genera un ID random unico
+        this.guest="Guest";
     }
-	public String getRuolo() {
-		return ruolo;
+
+    // Getter per l'ID
+    public String getId() {
+        return id;
+    }
+
+    // Getter per lo username
+
+    // Setter opzionale per l'ID (se non vuoi permettere di modificarlo, puoi rimuoverlo)
+    public void setId(String id) {
+        this.id = id;
+    }
+
+	public String getGuest() {
+		return guest;
 	}
-	public void setRuolo(String ruolo) {
-		this.ruolo = ruolo;
+
+	public void setGuest(String guest) {
+		this.guest = guest;
 	}
-	public boolean isPermessi() {
-		return permessi;
-	}
-	public void setPermessi(boolean permessi) {
-		this.permessi = permessi;
-	}
-    
+
+    // Setter opzionale per lo username (puoi rimuoverlo se non vuoi permettere modifiche)
+  
+
+   
 }

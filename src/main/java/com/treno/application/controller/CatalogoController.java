@@ -49,6 +49,7 @@ public class CatalogoController {
 	
 	
 	
+	
 //	String plaintext = "your text here";
 //	MessageDigest m = MessageDigest.getInstance("MD5");
 //	m.reset();
@@ -66,9 +67,18 @@ public class CatalogoController {
 	    public String getAllTreni(Model model, HttpSession session) {
 	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
 	        
-	        if(!sessione.isUtenteLoggato(session)) {
-	        	return sessione.redirectTologin();
+//	        if(!sessione.isUtenteLoggato(session)) {
+//	        	return sessione.redirectTologin();
+//	        }
+	        
+	        
+	        if(sessione.isUtenteGuest(session)) {
+	        	boolean permessi = false;
+	        	model.addAttribute(permessi);
 	        }
+	        	
+	        	
+	        	
 	        List<TrenoDTO> treniDto = trenoService.getAllTreni();
 	        model.addAttribute("treni", treniDto);
 	        model.addAttribute("utenteLoggato",utenteLoggato);
