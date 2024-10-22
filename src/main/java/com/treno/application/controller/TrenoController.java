@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.dto.UserGuest;
 import com.treno.application.service.TrenoService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -36,9 +37,12 @@ public class TrenoController {
     public String mostraTreni(HttpSession session, Model model) {
         UserDTO utenteDto = sessione.getUtenteLoggato(session);
         
-        if(!sessione.isUtenteLoggato(session)) {
-        	return sessione.redirectTologin();
-        }
+//        if(!sessione.isUtenteLoggato(session)) {
+//        	return sessione.redirectTologin();
+//        }
+        
+       	
+        	
         
         model.addAttribute("utenteLoggato", utenteDto);
         return "treni";
@@ -49,14 +53,26 @@ public class TrenoController {
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
         UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
         
-//        if(!sessione.isUtenteLoggato(session)) {
-//        	return sessione.redirectTologin();
-//        }
-//        
+        if(sessione.isUtenteGuest(session)) {
+        	UserGuest guest = (UserGuest) sessione.getUtenteLoggato(session);
+        	boolean permessi = false;
+        	model.addAttribute(permessi);
+        	model.addAttribute(guest);
+        	return "crea";
+        }
+        
+        else {
+        
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";
+        }
     }
+    
+    
+    
+    
+    
 
     // Gestisce la creazione del treno
     @PostMapping("/crea")
