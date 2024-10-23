@@ -49,10 +49,9 @@ public class AppConfiguration {
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
 		ds.setPassword("momo");
-		ds.setUrl("jdbc:mysql://localhost:3308/hibernate_db");
+		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
 		return ds;
 	}
-
 	// E' come se fosse un context per l'entity manager.
 	@Bean
 	public LocalContainerEntityManagerFactoryBean getEntityManager() {
