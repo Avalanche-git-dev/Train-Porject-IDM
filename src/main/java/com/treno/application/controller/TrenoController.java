@@ -64,6 +64,7 @@ public class TrenoController {
         	
         
        
+       
         model.addAttribute("treno", new TrenoDTO());
         model.addAttribute("guest", guest);
         sessione.setUtenteLoggato(session, guest);
