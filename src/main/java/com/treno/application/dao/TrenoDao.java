@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.treno.application.dto.TrenoDTO;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.Vagone;
@@ -24,6 +25,21 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     public Treno findById(long id) {
         String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
         return em.createQuery(hql, Treno.class)
+                 .setParameter("id", id)
+                 .getSingleResult();
+    }
+    
+    @Transactional
+    @Override
+    public TrenoDTO findByTrenoId(long id) {
+        String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
+        // Recupera l'oggetto Treno
+        Treno treno = em.createQuery(hql, Treno.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+        // Stampa l'oggetto Treno per verificare i dati
+        System.out.println("Oggetto Treno: " + treno);
+        return em.createQuery(hql, TrenoDTO.class)
                  .setParameter("id", id)
                  .getSingleResult();
     }

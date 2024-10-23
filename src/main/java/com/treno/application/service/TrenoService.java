@@ -1,5 +1,6 @@
 package com.treno.application.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
+import com.treno.application.model.Vagone;
 import com.treno.application.model.builder.TBuilder;
 import com.treno.application.model.builder.TrenoBuilder;
 import com.treno.application.utility.TrenoUtility;

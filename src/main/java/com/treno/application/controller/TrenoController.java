@@ -124,14 +124,14 @@ public class TrenoController {
             return sessione.redirectTologin();
         }
         // Recupera il treno dal servizio usando l'ID
-        TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
-        // Se il treno non esiste, mostra un messaggio di errore
-        if (trenoSelezionato == null) {
-            model.addAttribute("errorMessage", "Il treno da te cercato non è disponibile, contatta l'amministratore.");
-            return "redirect:/catalogo"; // Reindirizza alla pagina del catalogo
+        TrenoDTO sel = new TrenoDTO();
+        List<TrenoDTO> treniDto = trenoService.getAllTreni();
+        for(TrenoDTO t: treniDto) {
+        	if(t.getIdTreno() == idTreno)
+        		sel = t;
         }
-        model.addAttribute("treno", trenoSelezionato);
-        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
+        model.addAttribute("treno", sel);
+        model.addAttribute("ownerId", sel.getIdOwner());
         return "dettagliTreno";
     }
 

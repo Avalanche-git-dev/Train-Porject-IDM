@@ -45,7 +45,7 @@
         </form>
     
     <c:forEach var="treno" items="${treniInVendita}">
-        <div class="card mb-3">
+	        <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">${treno.nome}</h5>
                 <p class="card-text">Marca: ${treno.marca}</p> <!-- Gestione dei valori nulli -->

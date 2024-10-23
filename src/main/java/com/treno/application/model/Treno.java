@@ -370,7 +370,7 @@ public class Treno {
 	public double setLunghezza() {
 		return this.getLunghezza();
 	}
-
+	
 
 	@Override
 	public String toString() {

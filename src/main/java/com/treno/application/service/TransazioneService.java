@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
-import com.treno.application.dto.TrenoDTO;
 import com.treno.application.exception.FondiInsufficientiException;
 import com.treno.application.exception.VenditoreAcquirenteNonTrovatoException;
 import com.treno.application.model.Transazione;

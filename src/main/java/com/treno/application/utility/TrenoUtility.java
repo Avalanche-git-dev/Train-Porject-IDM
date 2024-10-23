@@ -18,6 +18,8 @@ public interface TrenoUtility extends Dao <Treno> {
 	public List<Treno> findAllInVendita();
 
 	public List<Treno> findByOwnerIdAndInVenditaFalse(Long ownerId);
+	
+	public TrenoDTO findByTrenoId(long id);
 
 
 }
