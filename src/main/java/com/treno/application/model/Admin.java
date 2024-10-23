@@ -1,4 +1,4 @@
-package com.treno.application.model;
+/* package com.treno.application.model;
 
 import com.treno.application.model.User.Stato;
 
@@ -27,4 +27,4 @@ public class Admin extends RegisteredUser {
 		user.setStato(Stato.unlocked);
 	}
 
-}
+} */

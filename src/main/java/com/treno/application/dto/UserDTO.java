@@ -1,5 +1,11 @@
 package com.treno.application.dto;
 
+import java.util.List;
+
+import com.treno.application.model.Ruolo;
+import com.treno.application.model.Treno;
+import com.treno.application.model.User.Stato;
+
 public class UserDTO {
 	
 	private long userId;
@@ -9,10 +15,11 @@ public class UserDTO {
     private String nome;
     private String cognome;
     private String telefono;
-    private String stato;
+    private Stato stato;
     private double portafoglio;
+    private Ruolo ruolo; // Aggiunta
 	public UserDTO(long userId, String username, String password, String email, String nome, String cognome,
-			String telefono, String stato, double portafoglio) {
+			String telefono, Stato stato, double portafoglio, Ruolo ruolo, List<Treno> treni) {
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -23,6 +30,7 @@ public class UserDTO {
 		this.telefono = telefono;
 		this.stato = stato;
 		this.portafoglio = portafoglio;
+		this.ruolo = ruolo;
 	}
 	public UserDTO() {
 		super();
@@ -73,10 +81,10 @@ public class UserDTO {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public String getStato() {
+	public Stato getStato() {
 		return stato;
 	}
-	public void setStato(String stato) {
+	public void setStato(Stato stato) {
 		this.stato = stato;
 	}
 	public double getPortafoglio() {
@@ -85,11 +93,17 @@ public class UserDTO {
 	public void setPortafoglio(double portafoglio) {
 		this.portafoglio = portafoglio;
 	}
+	public Ruolo getRuolo() {
+		return ruolo;
+	}
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
+	}
 	@Override
 	public String toString() {
 		return "UserDTO [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", nome=" + nome + ", cognome=" + cognome + ", telefono=" + telefono + ", stato=" + stato
-				+ ", portafoglio=" + portafoglio + "]";
+				+ ", portafoglio=" + portafoglio + ", ruolo=" + ruolo + "]";
 	}
     
 

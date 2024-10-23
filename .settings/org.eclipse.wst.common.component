@@ -1,68 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
                                 
     
+=======
+                            
+>>>>>>> origin/biagionuovo
     
     
     
     
     
     <wb-module deploy-name="ProgettoTreno-1.0">
+<<<<<<< HEAD
                                                                 
         
+=======
+                                                        
+>>>>>>> origin/biagionuovo
         
         
         
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+<<<<<<< HEAD
                                                                 
         
+=======
+                                                        
+>>>>>>> origin/biagionuovo
         
         
         
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+<<<<<<< HEAD
                                                                 
         
+=======
+                                                        
+>>>>>>> origin/biagionuovo
         
         
         
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+<<<<<<< HEAD
                                         
         
+=======
+                                
+>>>>>>> origin/biagionuovo
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
+<<<<<<< HEAD
                                                                 
         
+=======
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+                                                        
+>>>>>>> origin/biagionuovo
         
         
         
         
         
         <property name="context-root" value="ProgettoTreno"/>
+<<<<<<< HEAD
                                                                 
         
+=======
+                                                        
+>>>>>>> origin/biagionuovo
         
         
         
         
         
         <property name="java-output-path" value="/ProgettoTreno/target/classes"/>
+<<<<<<< HEAD
                                                             
     
+=======
+                                                    
+>>>>>>> origin/biagionuovo
     
     
     
     
     
     </wb-module>
+<<<<<<< HEAD
                             
 
+=======
+                        
+>>>>>>> origin/biagionuovo
 
 
 

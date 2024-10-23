@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.treno.application.dto.TrenoDTO;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.Vagone;
@@ -40,19 +41,49 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             return null;  
         }
     }
+    
+    @Transactional
+    @Override
+    public TrenoDTO findByTrenoId(long id) {
+        String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
+        // Recupera l'oggetto Treno
+        Treno treno = em.createQuery(hql, Treno.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+        // Stampa l'oggetto Treno per verificare i dati
+        System.out.println("Oggetto Treno: " + treno);
+        return em.createQuery(hql, TrenoDTO.class)
+                 .setParameter("id", id)
+                 .getSingleResult();
+    }
 
 
     @Transactional
     public List<Treno> findAllInVendita() {
         // HQL con JOIN FETCH per caricare anche valutazioni e transazioni dei treni in vendita
-        String hql = "SELECT DISTINCT t FROM Treno t " +
-                     "LEFT JOIN FETCH t.valutazioni " +
-                     "LEFT JOIN FETCH t.transazioni " +
-                     "WHERE t.inVendita = true";
+    	String hql = "SELECT DISTINCT t FROM Treno t " +
+    				 "LEFT JOIN FETCH t.valutazioni " +
+    				 "LEFT JOIN FETCH t.transazioni " +
+    				 "WHERE t.inVendita = true";
         
         // Esegui la query e restituisci la lista di treni in vendita
         return super.em.createQuery(hql, Treno.class).getResultList();
     }
+    
+    @Transactional
+    public List<Treno> findByOwnerIdAndInVenditaFalse(Long ownerId) {
+        String hql = "SELECT DISTINCT t FROM Treno t " +
+                     "LEFT JOIN FETCH t.valutazioni " +
+                     "LEFT JOIN FETCH t.transazioni " +
+                     "WHERE t.owner.id = :ownerId " +
+                     "AND t.inVendita = false";        
+        // Esegui la query e restituisci la lista di treni che non sono in vendita
+        return super.em.createQuery(hql, Treno.class)
+                       .setParameter("ownerId", ownerId)
+                       .getResultList();
+    }
+
+
 
 
     @Transactional
@@ -190,7 +221,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             hql.append(" AND t.lunghezza <= :lunghezzaMax");
         }
         if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-            hql.append(" AND t.sigla = :sigla");
+            hql.append(" AND t.sigla LIKE :sigla"); // Cambiato a LIKE per corrispondenza parziale
         }
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
             hql.append(" AND t.marca = :marca");
@@ -201,6 +232,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         if (filtro.getPrezzoVenditaMax() != null) {
             hql.append(" AND t.prezzoVendita <= :prezzoVenditaMax");
         }
+
         if (Boolean.TRUE.equals(filtro.isInVendita())) {
             hql.append(" AND t.inVendita = true");
         } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
@@ -227,6 +259,8 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             hql.append(" HAVING SUM(tr.importo) >= :ammontareTotale");
         }
 
+
+
         // Creazione della query
         Query query = em.createQuery(hql.toString());
 
@@ -250,7 +284,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
         }
         if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-            query.setParameter("sigla", filtro.getSigla());
+            query.setParameter("sigla", "%" + filtro.getSigla() + "%"); // Aggiunto jolly per corrispondenza parziale
         }
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
             query.setParameter("marca", filtro.getMarca());
@@ -274,14 +308,19 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
             query.setParameter("nomeOwner", filtro.getNomeOwner());
         }
 
+       // System.out.println("HQL Query: " + hql.toString()); // Stampa la query per il debug
+
         return query.getResultList();
     }
 
 
+
     
     
     
     
+
+
     
     
     

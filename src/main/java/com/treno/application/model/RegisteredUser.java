@@ -42,8 +42,9 @@ public abstract class RegisteredUser {
 	@Column(name = "cognome")
 	private String cognome;
 
-	
-	
+	@Column(name = "ruolo")
+	private Ruolo ruolo;
+
 	public RegisteredUser() {
 		super();
 	}
@@ -132,12 +133,21 @@ public abstract class RegisteredUser {
 		this.cognome = cognome;
 	}
 
+	
+	public Ruolo getRuolo() {
+		return ruolo;
+	}
+	
+	
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
+	}
 
 
 	@Override
 	public String toString() {
 		return "RegisteredUser [userId=" + userId + ", username=" + username + ", password=" + password + ", email="
-				+ email + ", telefono=" + telefono + ", nome=" + nome + ", cognome=" + cognome + "]";
+				+ email + ", telefono=" + telefono + ", nome=" + nome + ", cognome=" + cognome + ", ruolo " + ruolo + "]";
 	}
 
 

@@ -1,5 +1,6 @@
 com\treno\application\package-info.class
 com\treno\application\configuration\PrototypeScopePostProcessor.class
+com\treno\application\controller\AdminController.class
 com\treno\application\dao\ValutazioneDao.class
 com\treno\application\model\builder\TBuilder.class
 com\treno\application\TrenoApplication.class
@@ -25,7 +26,6 @@ com\treno\application\exception\TroppiRistorantiException.class
 com\treno\application\controller\CatalogoController.class
 com\treno\application\dto\TrenoDTO.class
 com\treno\application\utility\UtenteValutaTreno.class
-com\treno\application\model\Admin.class
 com\treno\application\service\TransazioneService.class
 com\treno\application\utility\TrenoUtility.class
 com\treno\application\exception\AccessDeniedException.class
@@ -50,7 +50,6 @@ com\treno\application\controller\package-info.class
 com\treno\application\exception\SessionExpiredException.class
 com\treno\application\model\Ruolo.class
 com\treno\application\service\package-info.class
-com\treno\application\configuration\SessioneUtilityImpl.class
 com\treno\application\utility\package-info.class
 com\treno\application\utility\SessioneUtility.class
 com\treno\package-info.class
@@ -75,11 +74,12 @@ com\treno\application\FactoryConfiguration.class
 com\treno\application\dao\VagoneDao.class
 com\treno\application\exception\TransazioneException.class
 com\treno\application\model\Treno.class
+com\treno\application\controller\MarketController.class
 com\treno\application\dao\package-info.class
 com\treno\application\utility\TransazioneUtility.class
 com\treno\application\exception\ValutazioneException.class
 com\treno\application\dao\UserDao.class
-com\treno\application\controller\ValutazioneController.class
 com\treno\application\model\RegisteredUser.class
 com\treno\application\dao\TransazioneDao.class
+com\treno\application\configuration\SessioneUtilityUser.class
 com\treno\application\model\User$Stato.class

@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dao.Dao;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.InvalidPasswordException;
 import com.treno.application.exception.AlreadyExistEmail;
 import com.treno.application.exception.InvalidCredentialsException;
-import com.treno.application.exception.InvalidPasswordException;
 import com.treno.application.exception.InvalidPhoneNumberException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
@@ -291,11 +291,24 @@ public class UserService {
 	    user.setUsername(userDto.getUsername());
 	    user.setEmail(userDto.getEmail());
 	    user.setPortafoglio(userDto.getPortafoglio());
-
-	    if (userDto.getStato() != null) {
-	        user.setStato(Stato.valueOf(userDto.getStato()));
-	    }
-
+	    user.setStato(userDto.getStato());
 	    return user;
 	}
+	
+	public List<UserDTO> findAllUsers() {
+		return userDao.findAllUsers();
+	}
+	
+	public void bloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.locked);
+		userDao.update(user);
+	}
+	
+	public void sbloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.unlocked);
+		userDao.update(user);
+	}
+	
 }

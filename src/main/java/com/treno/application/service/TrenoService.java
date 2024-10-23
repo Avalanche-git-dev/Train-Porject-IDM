@@ -154,45 +154,89 @@ public class TrenoService {
 	}
 
 	// Converti dto
-	public TrenoDTO convertToTrenoDTO(Treno treno) {
-		TrenoDTO trenoDTO = new TrenoDTO();
+//	public TrenoDTO convertToTrenoDTO(Treno treno) {
+//		TrenoDTO trenoDTO = new TrenoDTO();
+//
+//
+//		// Mappa i campi dall'entità Treno al DTO
+//		trenoDTO.setIdTreno(treno.getIdTreno());
+//		trenoDTO.setNome(treno.getNome());
+//		trenoDTO.setSigla(treno.getSigla());
+//		trenoDTO.setImmagine(treno.getImmagine());
+//		trenoDTO.setInVendita(treno.isInVendita());
+//		trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
+//		trenoDTO.setMarca(treno.getMarca());
+//		trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
+//		trenoDTO.setPesoTotale(treno.getPeso());
+//		trenoDTO.setPostiTotali(treno.getPostiTotali());
+//		trenoDTO.setCostoTotale(treno.getCosto());
+//		trenoDTO.setIdOwner(treno.getOwner().getUserId());
+//
+//		return trenoDTO;
+//	}
+//
+//	// Contrario
+//	public Treno convertToEntity(TrenoDTO trenoDTO) {
+//		Treno treno = new Treno();
+//
+//		// Mappa i campi dal DTO all'entità
+//		treno.setIdTreno(trenoDTO.getIdTreno());
+//		treno.setNome(trenoDTO.getNome());
+//		treno.setSigla(trenoDTO.getSigla());
+//		treno.setImmagine(trenoDTO.getImmagine());
+//		treno.setInVendita(trenoDTO.isInVendita());
+//		treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
+//		treno.setMarca(trenoDTO.getMarca());
+//
+//		if ((Long) (trenoDTO.getIdOwner()) != null) {
+//			// Conversione dell'utente e assegnazione.
+//			UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
 
-		// Mappa i campi dall'entità Treno al DTO
-		trenoDTO.setIdTreno(treno.getIdTreno());
-		trenoDTO.setNome(treno.getNome());
-		trenoDTO.setSigla(treno.getSigla());
-		trenoDTO.setImmagine(treno.getImmagine());
-		trenoDTO.setInVendita(treno.isInVendita());
-		trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
-		trenoDTO.setMarca(treno.getMarca());
-		trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
-		trenoDTO.setPesoTotale(treno.getPeso());
-		trenoDTO.setPostiTotali(treno.getPostiTotali());
-		trenoDTO.setCostoTotale(treno.getCosto());
-		trenoDTO.setIdOwner(treno.getOwner().getUserId());
+	
+	//Converti dto
+	 public TrenoDTO convertToTrenoDTO(Treno treno) {
+	        TrenoDTO trenoDTO = new TrenoDTO();
+	        
+	        // Mappa i campi dall'entità Treno al DTO
+	        trenoDTO.setIdTreno(treno.getIdTreno());
+	        trenoDTO.setNome(treno.getNome());
+	        trenoDTO.setSigla(treno.getSigla());
+	        trenoDTO.setImmagine(treno.getImmagine());
+	        trenoDTO.setInVendita(treno.isInVendita());
+	        trenoDTO.setPrezzoVendita(treno.getPrezzoVendita());
+	        trenoDTO.setMarca(treno.getMarca());
+	        trenoDTO.setMediaValutazioni(treno.getMediaValutazioni());
+	        trenoDTO.setPesoTotale(treno.getPeso());
+	        trenoDTO.setPostiTotali(treno.getPostiTotali());
+	        trenoDTO.setCostoTotale(treno.getCosto());
+	        trenoDTO.setLunghezzaTotale(treno.getLunghezza());
+	        trenoDTO.setIdOwner(treno.getOwner().getUserId());
 
-		return trenoDTO;
-	}
+	        return trenoDTO;
+	    }
+	 
+	 //Contrario
+	 public Treno convertToEntity(TrenoDTO trenoDTO) {
+		    Treno treno = new Treno();
 
-	// Contrario
-	public Treno convertToEntity(TrenoDTO trenoDTO) {
-		Treno treno = new Treno();
+		    // Mappa i campi dal DTO all'entità
+		    treno.setIdTreno(trenoDTO.getIdTreno());
+		    treno.setNome(trenoDTO.getNome());
+		    treno.setSigla(trenoDTO.getSigla());
+		    treno.setImmagine(trenoDTO.getImmagine());
+		    treno.setInVendita(trenoDTO.isInVendita());
+		    treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
+		    treno.setMarca(trenoDTO.getMarca());
+		    if ((Long) ( trenoDTO.getIdOwner()) != null) {
+		    //Conversione dell'utente e assegnazione.
+		    UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
+		    treno.setOwner(userService.convertToUserEntity(Owner));
+		    }
+		    // Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
+		    // a meno che non le passi esplicitamente.
 
-		// Mappa i campi dal DTO all'entità
-		treno.setIdTreno(trenoDTO.getIdTreno());
-		treno.setNome(trenoDTO.getNome());
-		treno.setSigla(trenoDTO.getSigla());
-		treno.setImmagine(trenoDTO.getImmagine());
-		treno.setInVendita(trenoDTO.isInVendita());
-		treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
-		treno.setMarca(trenoDTO.getMarca());
+	
 
-		if ((Long) (trenoDTO.getIdOwner()) != null) {
-			// Conversione dell'utente e assegnazione.
-			UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
-			treno.setOwner(userService.convertToUserEntity(Owner));
-
-		}
 
 		// Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
 		// a meno che non le passi esplicitamente.
@@ -258,6 +302,18 @@ public class TrenoService {
 //	    return convertToTrenoDTO(trenoCopia);
 //	}
 
+	
+	
+	 
+	 public List<TrenoDTO> findTreniInVendita() {
+		    List<Treno> treniInVendita = trenoDao.findAllInVendita();
+		    return treniInVendita.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+		}
+	 
+	 public List<TrenoDTO> findTreniByUserEscludiInVendita(Long ownerId) {
+		    List<Treno> treniUtente = trenoDao.findByOwnerIdAndInVenditaFalse(ownerId);
+		    return treniUtente.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
+	 }
 
 
 }

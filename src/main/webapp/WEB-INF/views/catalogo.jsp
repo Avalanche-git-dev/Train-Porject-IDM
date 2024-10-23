@@ -20,6 +20,7 @@
 	<div class="container">
 		<h1>Tutti i Treni Disponibili</h1>
 
+<<<<<<< HEAD
 		<!-- Form di Filtro per il Catalogo dei Treni -->
 		<form action="${pageContext.request.contextPath}/catalogo/filtro"
 			method="get" class="mb-4">
@@ -118,5 +119,46 @@
             }
         }
     </script>
+=======
+        <!-- Form di Filtro per il Catalogo dei Treni -->
+        <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="nome">Sigla del Treno</label>
+                    <input type="text" id="nome" name="sigla" value="${trenoFilter.sigla}" class="form-control"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="marca">Marca</label>
+                    <input type="text" id="marca" name="marca" value="${trenoFilter.marca}" class="form-control"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="prezzoVendita">Prezzo di Vendita (massimo)</label>
+                    <input type="number" id="prezzoVendita" name="prezzoVendita" value="${trenoFilter.prezzoVendita}" class="form-control"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="valutazioneMassima">Media Valutazioni (massimo)</label>
+                    <input type="number" id="valutazioneMassima" name="valutazioneMassima" value="${trenoFilter.valutazioni}" class="form-control"/>
+                </div>
+                
+            </div>
+            <button type="submit" class="btn btn-primary">Applica Filtro</button>
+        </form>
+
+        <!-- Lista dei Treni Disponibili -->
+        <c:forEach var="treno" items="${treni}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">${treno.nome}</h5>
+                    <p class="card-text">Marca: ${treno.marca}</p>
+                    <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni}</p>
+                    <!-- Pulsante per Vedere i Dettagli del Treno -->
+                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
+                    <!-- Pulsante "Valuta" -->
+                    <a href="${pageContext.request.contextPath}/valutazioni/valutaTreno/${treno.idTreno}" class="btn btn-success ml-2">Valuta</a>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+>>>>>>> origin/biagionuovo
 </body>
 </html>

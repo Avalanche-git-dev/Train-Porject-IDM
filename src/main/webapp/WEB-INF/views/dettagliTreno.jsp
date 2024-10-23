@@ -58,6 +58,7 @@
 
 <div class="container details-container">
     <h1 class="text-center">Dettagli Treno</h1>
+<<<<<<< HEAD
 
     <!-- Card che contiene immagine e dettagli -->
     <div class="card train-card">
@@ -89,6 +90,26 @@
     <!-- Pulsante Torna alla pagina precedente -->
     <button class="btn btn-primary back-button" onclick="window.history.back()">Torna alla pagina precedente</button>
 
+=======
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Nome: ${treno.nome}</h3>
+            <%-- <p class="card-text">ID Treno: ${treno.idTreno}</p> --%>
+            <p class="card-text">Marca: ${treno.marca}</p>
+            <p class="card-text">Sigla: ${treno.sigla}</p>
+            <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
+            <p class="card-text">Lunghezza Totale: ${treno.lunghezzaTotale} m</p>
+            <p class="card-text">Costo Totale: €${treno.costoTotale}€</p>
+            <p class="card-text">Posti Totali: ${treno.postiTotali}</p>
+            <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
+            <p class="card-text">Id Proprietario: ${treno.idOwner}</p>
+            <%-- <c:if test="${ownerId != null}">
+                <p class="card-text">Proprietario: Utente ID ${ownerId}</p>
+            </c:if> --%>
+        </div>
+    </div>
+    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/dashboard'">Torna alla dashboard</button>
+>>>>>>> origin/biagionuovo
 </div>
 
 </body>

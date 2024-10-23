@@ -176,10 +176,11 @@ public class TrenoController {
         if (!sessione.isUtenteLoggato(session)) {
             return sessione.redirectTologin();
         }
-        Long OwnerId = utenteLoggato.getUserId();
-        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
+        Long ownerId = utenteLoggato.getUserId();
+        // List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
+        List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
         model.addAttribute("treniDto", treniDto);
-        model.addAttribute("ownerId", OwnerId);
+        model.addAttribute("ownerId", ownerId);
         return "visualizzaTreni";
     }
 
@@ -232,6 +233,7 @@ public class TrenoController {
         return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
     }
 
+
     
     @PostMapping("/visualizza/treno")
     public String selezionaTreno(@RequestParam("idTreno") Long idTreno, HttpSession session) {
@@ -249,7 +251,8 @@ public class TrenoController {
 
     
 ////////////////////////////// FUNZIONALITA IN PROVA.     
-    
+
+
 
     // Modifica un treno
     @GetMapping("/modifica/treno")
@@ -272,8 +275,6 @@ public class TrenoController {
         trenoService.update(trenoDto);
         return "redirect:/treni/dettagli/" + trenoDto.getIdTreno();
     }
-
-  
 
     
     
