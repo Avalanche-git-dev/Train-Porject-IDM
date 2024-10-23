@@ -1,7 +1,7 @@
-# Compiled class file
+# Compiled class files
 *.class
 
-# Log file
+# Log files
 *.log
 
 # BlueJ files
@@ -19,13 +19,43 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Virtual machine crash logs
 hs_err_pid*
 replay_pid*
 
-# Ignora il pom.xml
-!pom.xml
+# Eclipse 
+.project
+.classpath
+.settings/
 
-# Ignora la classe 
-AppConfiguration.java
-AppConfiguration.class
+# IntelliJ IDEA 
+.idea/
+*.iml
+*.iws
+out/
+
+# NetBeans 
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# VS Code 
+.vscode/
+
+# Maven 
+target/
+
+# Gradle 
+.gradle/
+build/
+
+# macOS 
+.DS_Store
+
+# Windows 
+Thumbs.db
+ehthumbs.db
