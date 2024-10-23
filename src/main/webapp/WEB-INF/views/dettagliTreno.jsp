@@ -1,121 +1,4 @@
-<%-- <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="navbar.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dettagli Treno</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Contenitore per i dettagli */
-        .details-container {
-            margin-top: 50px;
-        }
-
-        /* Card per i dettagli del treno */
-        .train-card {
-            display: flex;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Sezione dell'immagine a sinistra */
-        .train-image {
-            flex: 1;
-            margin-right: 20px;
-            min-width: 200px; /* Mantiene lo spazio vuoto se l'immagine non è presente */
-            height: 200px;
-            background-color: #f0f0f0; /* Sfondo grigio chiaro in assenza di immagine */
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Dimensioni dell'immagine */
-        .train-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        /* Sezione delle informazioni del treno */
-        .train-info {
-            flex: 2;
-            text-align: left;
-        }
-
-        /* Pulsante Torna indietro */
-        .back-button {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container details-container">
-    <h1 class="text-center">Dettagli Treno</h1>
-<<<<<<< HEAD
-
-    <!-- Card che contiene immagine e dettagli -->
-    <div class="card train-card">
-        <!-- Sezione dell'immagine -->
-        <div class="train-image">
-            <!-- Mostra l'immagine se presente, altrimenti spazio vuoto -->
-            <c:choose>
-                <c:when test="${not empty treno.immagine}">
-                    <img src="${treno.immagine}" alt="Immagine del Treno">
-                </c:when>
-                <c:otherwise>
-                    <span>Nessuna immagine disponibile</span>
-                </c:otherwise>
-            </c:choose>
-        </div>
-
-        <!-- Sezione delle informazioni -->
-        <div class="train-info">
-            <h5 class="card-title">Nome Treno: ${treno.nome}</h5>
-            <p class="card-text"><strong>Marca:</strong> ${treno.marca}</p>
-            <p class="card-text"><strong>Sigla:</strong> ${treno.sigla}</p>
-            <p class="card-text"><strong>Peso Totale:</strong> ${treno.pesoTotale} kg</p>
-            <p class="card-text"><strong>Costo Totale:</strong> €${treno.costoTotale}</p>
-            <p class="card-text"><strong>Posti Totali:</strong> ${treno.postiTotali}</p>
-            <p class="card-text"><strong>Media Valutazioni:</strong> ${treno.mediaValutazioni} / 5</p>
-        </div>
-    </div>
-    
-    <!-- Pulsante Torna alla pagina precedente -->
-    <button class="btn btn-primary back-button" onclick="window.history.back()">Torna alla pagina precedente</button>
-
-=======
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">Nome: ${treno.nome}</h3>
-            <%-- <p class="card-text">ID Treno: ${treno.idTreno}</p> --%>
-            <p class="card-text">Marca: ${treno.marca}</p>
-            <p class="card-text">Sigla: ${treno.sigla}</p>
-            <p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
-            <p class="card-text">Lunghezza Totale: ${treno.lunghezzaTotale} m</p>
-            <p class="card-text">Costo Totale: €${treno.costoTotale}€</p>
-            <p class="card-text">Posti Totali: ${treno.postiTotali}</p>
-            <p class="card-text">Media Valutazioni: ${treno.mediaValutazioni} / 5</p>
-            <p class="card-text">Id Proprietario: ${treno.idOwner}</p>
-            <%-- <c:if test="${ownerId != null}">
-                <p class="card-text">Proprietario: Utente ID ${ownerId}</p>
-            </c:if> --%>
-        </div>
-    </div>
-    <button class="btn btn-primary mt-4" onclick="window.location.href='${pageContext.request.contextPath}/dashboard'">Torna alla dashboard</button>
->>>>>>> origin/biagionuovo
-</div>
-
-</body>
-</html>
- --%>
- 
  
  
  
@@ -187,22 +70,23 @@
         <div class="train-image">
             <!-- Mostra l'immagine se presente, altrimenti spazio vuoto -->
             <c:choose>
-                <c:when test="${not empty treno.immagine}">
-                    <img src="${treno.immagine}" alt="Immagine del Treno">
+                <c:when test="${not empty immagineTreno}">
+                    <img src="${immagineTreno}" alt="Immagine del Treno"style="width: 100%; max-width: 300px; height: auto;"/>
                 </c:when>
                 <c:otherwise>
                     <span>Nessuna immagine disponibile</span>
                 </c:otherwise>
             </c:choose>
         </div>
-
         <!-- Sezione delle informazioni -->
         <div class="train-info">
+        <h6 class="card-text">Propietario : ${sessionScope.usernameOwner}</h6>
             <h5 class="card-title">Nome Treno: ${treno.nome}</h5>
+           <!--  <img src="/ProgettoTreno/src/main/webapp/resources/images/treni/trenoTedesco.jpg"> -->
             <p class="card-text"><strong>Marca:</strong> ${treno.marca}</p>
             <p class="card-text"><strong>Sigla:</strong> ${treno.sigla}</p>
             <p class="card-text"><strong>Peso Totale:</strong> ${treno.pesoTotale} kg</p>
-            <p class="card-text"><strong>Costo Totale:</strong> €${treno.costoTotale}</p>
+            <p class="card-text"><strong>Costo Totale:</strong> €${treno.costoTotale} $</p>
             <p class="card-text"><strong>Posti Totali:</strong> ${treno.postiTotali}</p>
             <p class="card-text"><strong>Media Valutazioni:</strong> ${treno.mediaValutazioni} / 5</p>
         </div>

@@ -42,9 +42,8 @@ public class ProfiloController {
 	@GetMapping
 	public String mostraProfilo(HttpSession session, Model model) {
 
-		UserDTO utenteLoggato = sessione.getUtenteLoggato(session); // Prendi l'utente loggato
-		UserDTO userInfo = userService.findByUsername(utenteLoggato.getUsername()); // Carica l'utente loggato dal
-																					// database
+		UserDTO utenteLoggato = sessione.getUtenteLoggato(session); 
+		UserDTO userInfo = userService.findByUsername(utenteLoggato.getUsername()); 
 
 		model.addAttribute("userInfo", userInfo);
 		// model.addAttribute("userInfo", userInfo);
@@ -76,7 +75,7 @@ public class ProfiloController {
 
 		if (importo <= 0) {
 			model.addAttribute("errorMessage", "L'importo deve essere maggiore di zero.");
-			model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per la vista
+			model.addAttribute("userInfo", user); 
 			return "profilo";
 		}
 

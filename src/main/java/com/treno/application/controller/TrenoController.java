@@ -176,10 +176,14 @@ public class TrenoController {
         if (!sessione.isUtenteLoggato(session)) {
             return sessione.redirectTologin();
         }
+        String immagineTreno="/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
+        session.setAttribute("immagineTreno",immagineTreno);
         Long ownerId = utenteLoggato.getUserId();
+        String usernameOwner = utenteLoggato.getUsername();
         // List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
         List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
         model.addAttribute("treniDto", treniDto);
+        session.setAttribute("usernameOwner",usernameOwner);
         model.addAttribute("ownerId", ownerId);
         return "visualizzaTreni";
     }
