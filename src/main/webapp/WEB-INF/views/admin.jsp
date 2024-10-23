@@ -167,7 +167,7 @@
                                 <button class="btn btn-block" onclick="bloccaUtente(${user.userId}, this, this.parentNode.parentNode)">Blocca</button>
                             </c:otherwise>
                         </c:choose>
-                        <a href="javascript:void(0);" class="btn" style="background-color: #28a745; margin-left: 5px;" onclick="openGestisciAttivitaModal(${user.userId})">Vai all'utente</a>
+                        <a href="${pageContext.request.contextPath}/admin/profiloUtente/${user.userId}" class="btn" style="background-color: #28a745; margin-left: 5px;">Vai all'utente</a>
                     </td>
                 </tr>
             </c:forEach>

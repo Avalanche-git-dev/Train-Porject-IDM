@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,5 +64,20 @@ public class AdminController {
     	userService.sbloccaUser(userId);
     	return ResponseEntity.ok("Utente sbloccato con successo!");
     }	
+    
+    @GetMapping("/profiloUtente/{userId}")
+    public String mostraProfiloUtente(@PathVariable("userId") long userId, HttpSession session, Model model) {
+        UserDTO utenteDto = sessione.getUtenteLoggato(session);
+        // Verifica che l'utente sia loggato
+        if (!sessione.isUtenteLoggato(session)) {
+            return sessione.redirectTologin();
+        }
+        // Recupera le informazioni dell'utente
+        UserDTO user = userService.findById(userId); // Assicurati di avere questo metodo nel tuo UserService
+        model.addAttribute("userInfo", user);
+        // Aggiunge l'utente loggato al modello
+        model.addAttribute("utenteLoggato", utenteDto);
+        return "profilo";
+    }
 	
 }
