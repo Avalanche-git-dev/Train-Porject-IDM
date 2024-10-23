@@ -78,7 +78,7 @@ public class CatalogoController {
 	        }
 	        	
 	        	
-	        	
+	        sessione.setUtenteLoggato(session, utenteLoggato);	
 	        List<TrenoDTO> treniDto = trenoService.getAllTreni();
 	        model.addAttribute("treni", treniDto);
 	        model.addAttribute("utenteLoggato",utenteLoggato);

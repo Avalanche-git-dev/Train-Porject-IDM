@@ -1,5 +1,6 @@
 package com.treno.application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,45 +36,123 @@ public class TrenoController {
 
     @GetMapping
     public String mostraTreni(HttpSession session, Model model) {
-        UserDTO utenteDto = sessione.getUtenteLoggato(session);
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
         
 //        if(!sessione.isUtenteLoggato(session)) {
 //        	return sessione.redirectTologin();
 //        }
-        
+        sessione.setUtenteLoggato(session, utenteLoggato);
        	
         	
         
-        model.addAttribute("utenteLoggato", utenteDto);
+        model.addAttribute("utenteLoggato", utenteLoggato);
         return "treni";
     }
 
+   
+    
+    
+    //Creazione Guest
+    @GetMapping("/crea/guest")
+    public String mostraCreaGuest(HttpSession session, Model model) {
+        // Recupera l'utente guest dalla sessione
+    	
+    	UserGuest guest = (UserGuest) sessione.getUtenteLoggato(session);
+    	if(sessione.isUtenteGuest(session)) {
+        	model.addAttribute(guest);
+        }
+        	
+        
+       
+        model.addAttribute("treno", new TrenoDTO());
+        model.addAttribute("guest", guest);
+        sessione.setUtenteLoggato(session, guest);
+
+        // Restituisce la vista del form di creazione
+        return "crea";
+    }
+
+    
+    //Creazione Guest
+    
+    @PostMapping("/crea/guest")
+    public String creaTrenoGuest(@RequestParam("nomeTreno") String nomeTreno, 
+                                 @RequestParam("input") String input,
+                                 @RequestParam("marca") String marca, 
+                                 HttpSession session, 
+                                 Model model) {
+        // Recupera la lista dei treni dalla sessione, o creane una nuova se non esiste
+        @SuppressWarnings("unchecked")
+        List<TrenoDTO> treniGuest = (List<TrenoDTO>) session.getAttribute("treniGuest");
+        if (treniGuest == null) {
+            treniGuest = new ArrayList<>();
+        }
+
+        // Crea un nuovo TrenoDTO e popola i campi
+        TrenoDTO treno = new TrenoDTO();
+        treno.setNome(nomeTreno);
+        treno.setSigla(input);
+        treno.setMarca(marca);
+
+        // Aggiungi il nuovo treno alla lista
+        treniGuest.add(treno);
+
+        // Salva la lista aggiornata nella sessione
+        session.setAttribute("treniGuest", treniGuest);
+
+        // Mostra di nuovo la pagina per creare altri treni o andare alla registrazione
+        model.addAttribute("treniGuest", treniGuest);
+        
+        // Recupera l'utente guest dalla sessione e aggiorna lo stato dell'utente loggato
+        UserGuest guest = (UserGuest) session.getAttribute("utenteGuest");
+        sessione.setUtenteLoggato(session, guest);
+        
+        return "crea"; // Rimani sulla stessa pagina per creare altri treni
+    }
+
+    
+    
+    
+    
+    // <-----------------------------------------------
+    
+   
+    
+    
+    
+    
     // Mostra il form per la creazione di un nuovo treno
     @GetMapping("/crea")
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
         UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-        
-        if(sessione.isUtenteGuest(session)) {
-        	UserGuest guest = (UserGuest) sessione.getUtenteLoggato(session);
-        	boolean permessi = false;
-        	model.addAttribute(permessi);
-        	model.addAttribute(guest);
-        	return "crea";
-        }
-        
-        else {
-        
+//        
+//        if(sessione.isUtenteGuest(session)) {
+//        	UserGuest guest = (UserGuest) sessione.getUtenteLoggato(session);
+//        	boolean permessi = false;
+//        	model.addAttribute(permessi);
+//        	model.addAttribute(guest);
+//        	return "crea";
+//        }
+//        
+//        else {
+//        
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";
         }
-    }
-    
-    
-    
+//    }
+
     
     
 
+    
+    
+    
+    
+    
+    
+    
+    
     // Gestisce la creazione del treno
     @PostMapping("/crea")
     public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
@@ -86,6 +165,8 @@ public class TrenoController {
         trenoService.creaTreno(trenoCreato, utenteLoggato);
         return "redirect:/treni";
     }
+    
+    
 
     // Visualizza i TUTTI treni di un utente specifico
     @GetMapping("/visualizza")

@@ -45,6 +45,7 @@ public class SessioneUtilityUser implements SessioneUtility {
 	//UtenteGuest
 	@Override
 	public boolean isUtenteGuest(HttpSession session) {
+		//session.removeAttribute("utenteLoggato");//aggiunta di ora
 		session.setAttribute("guest", guest);
 		return getUtenteLoggato(session) instanceof UserGuest;
 	}

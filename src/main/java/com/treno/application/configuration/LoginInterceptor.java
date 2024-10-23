@@ -29,6 +29,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 			response.sendRedirect(request.getContextPath() + "/user/login?sessioneScaduta=true");
 			return false; // Interrompe l'esecuzione della richiesta
 		}
+		
+		//if(oldSession == null)||(!sessioneUtility.isUtenteGuest(oldSession)){
 
 		// Se l'utente è loggato, prosegui con la richiesta
 		return true;

@@ -155,7 +155,7 @@
         <p>Gestisci i tuoi treni, acquista e vendi vagoni, e interagisci con altri appassionati di treni.</p>
 
         <!-- Tasto "Crea" sotto il messaggio di benvenuto -->
-        <form action="${pageContext.request.contextPath}/treni/crea" method="get">
+        <form action="${pageContext.request.contextPath}/treni/crea/guest" method="get">
     <button class="create-btn" type="submit">Crea</button>
 </form>
 
