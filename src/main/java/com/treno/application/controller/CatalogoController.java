@@ -72,10 +72,10 @@ public class CatalogoController {
 //	        }
 	        
 	        
-	        if(sessione.isUtenteGuest(session)) {
-	        	boolean permessi = false;
-	        	model.addAttribute(permessi);
-	        }
+			/*
+			 * if(sessione.isUtenteGuest(session)) { boolean permessi = false;
+			 * model.addAttribute(permessi); }
+			 */
 	        	
 	        	
 	        sessione.setUtenteLoggato(session, utenteLoggato);	

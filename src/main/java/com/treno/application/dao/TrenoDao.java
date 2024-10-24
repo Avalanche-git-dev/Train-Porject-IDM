@@ -20,16 +20,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     }
 
     /////////////////// FIND
-    //Override
-//    @Transactional
-//    @Override
-//    public Treno findById(long id) {
-//        String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
-//        return em.createQuery(hql, Treno.class)
-//                 .setParameter("id", id)
-//                 .getSingleResult();
-//    }
-    
     
     public Treno findById(long id) {
         try {
@@ -47,11 +37,11 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     public TrenoDTO findByTrenoId(long id) {
         String hql = "FROM Treno t LEFT JOIN FETCH t.valutazioni LEFT JOIN FETCH t.vagoni LEFT JOIN FETCH t.transazioni WHERE t.idTreno = :id";
         // Recupera l'oggetto Treno
-        Treno treno = em.createQuery(hql, Treno.class)
-                        .setParameter("id", id)
-                        .getSingleResult();
+//        Treno treno = em.createQuery(hql, Treno.class)
+//                        .setParameter("id", id)
+//                        .getSingleResult();
         // Stampa l'oggetto Treno per verificare i dati
-        System.out.println("Oggetto Treno: " + treno);
+       // System.out.println("Oggetto Treno: " + treno);
         return em.createQuery(hql, TrenoDTO.class)
                  .setParameter("id", id)
                  .getSingleResult();
@@ -66,7 +56,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     				 "LEFT JOIN FETCH t.transazioni " +
     				 "WHERE t.inVendita = true";
         
-        // Esegui la query e restituisci la lista di treni in vendita
         return super.em.createQuery(hql, Treno.class).getResultList();
     }
     
@@ -76,16 +65,18 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
                      "LEFT JOIN FETCH t.valutazioni " +
                      "LEFT JOIN FETCH t.transazioni " +
                      "WHERE t.owner.id = :ownerId " +
-                     "AND t.inVendita = false";        
-        // Esegui la query e restituisci la lista di treni che non sono in vendita
+                     "AND t.inVendita = false"; 
+        
+        
         return super.em.createQuery(hql, Treno.class)
                        .setParameter("ownerId", ownerId)
                        .getResultList();
     }
 
 
-
-
+   // JOIN FETCH + DISTINCT servono a risolvere il problema delle collezioni Lazy tra entità mappate.
+   // In questo modo quando viene eseguita la query, si attivano le collezioni lazy e con il distinct si risolvono i doppioni.
+   // A garantire comunque il tutto sono statati utilizzati Hash Set nel service, che preveiene i duplicati a sua volta.
     @Transactional
     public List<Treno> findAllTreniByUser(long userId) {
         String hql = "SELECT DISTINCT t FROM Treno t " +
@@ -314,36 +305,24 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     }
 
 
-
     
-    
-    
-    
-
-
-    
-    
-    
+    //Find ALL 
     @Override
     @Transactional
     public List<Treno> findAll() {
-        // HQL con JOIN FETCH per caricare anche le valutazioni e transazioni
         String hql = "SELECT DISTINCT t FROM Treno t " +
                      "LEFT JOIN FETCH t.valutazioni " +
                      "LEFT JOIN FETCH t.transazioni";
         
-        // Esegui la query e restituisci la lista di treni
         return super.em.createQuery(hql, Treno.class).getResultList();
     }
     
     
-    
-	
 	
 	//getVagoniByTreno
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Vagone> getVagonibyTreno(Long trenoId) {
+	public List<Vagone> findVagonibyTreno(Long trenoId) {
 	    String hql = "SELECT v FROM Vagone v WHERE v.treno.id = :trenoId";
 	    Query query = em.createQuery(hql);
 	    query.setParameter("trenoId", trenoId);

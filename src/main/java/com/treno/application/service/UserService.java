@@ -57,6 +57,8 @@ public class UserService {
 		user.setPortafoglio(0);
 		user.setStato(Stato.unlocked);
 		userDao.save(user);
+		
+		// Ricontrollare l'update per aggiornamento profilo .
 	}
 	
 	

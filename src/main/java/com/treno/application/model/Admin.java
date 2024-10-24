@@ -1,14 +1,16 @@
  package com.treno.application.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="admins")
-@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public class Admin extends User  {
+	
+	
+	@Column(name =  "privilegio")
+	public String privilegio;
 
 	
 	public Admin() {}
