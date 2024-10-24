@@ -1,17 +1,15 @@
-/* package com.treno.application.model;
+ package com.treno.application.model;
 
-import com.treno.application.model.User.Stato;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="admins")
-public class Admin extends RegisteredUser {
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+public class Admin extends User  {
 
-	@Column(name="privilegio")
-	private boolean privilegio;
 	
 	public Admin() {}
 	
@@ -27,4 +25,4 @@ public class Admin extends RegisteredUser {
 		user.setStato(Stato.unlocked);
 	}
 
-} */
+} 

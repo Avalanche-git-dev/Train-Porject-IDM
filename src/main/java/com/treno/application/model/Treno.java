@@ -77,28 +77,6 @@ public class Treno {
 	}
 
 
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-
-	public Set<Transazione> getTransazioni() {
-		return transazioni;
-	}
-
-
-
-
-	public void setTransazioni(Set<Transazione> transazioni) {
-		this.transazioni = transazioni;
-	}
-
-
-
-
-	public void setIdTreno(long idTreno) {
-		this.idTreno = idTreno;
-	}
 
 	/*
 	 * La relazione tra treni e vagoni è 1:N, perciò usiamo
@@ -380,7 +358,29 @@ public class Treno {
 	}
 
 	
-	
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+
+	public Set<Transazione> getTransazioni() {
+		return transazioni;
+	}
+
+
+
+
+	public void setTransazioni(Set<Transazione> transazioni) {
+		this.transazioni = transazioni;
+	}
+
+
+
+
+	public void setIdTreno(long idTreno) {
+		this.idTreno = idTreno;
+	}
 
 
 
