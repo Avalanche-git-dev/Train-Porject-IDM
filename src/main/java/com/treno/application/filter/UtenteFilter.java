@@ -7,7 +7,7 @@ public class UtenteFilter {
 	
 	//Filtri per utente
     private String nome;
-    private String cognome;
+    private String cognome; // servono effettivamente ?
     private String email;
     private Integer età;
     
@@ -16,16 +16,12 @@ public class UtenteFilter {
     private String username;
     private String password;
     private Stato stato;
-    
-    private String telefono;
-    private String nuovaPassword;
     private int numeroTreni;
     private int numeroValutazioni;
     private int numeroTransazioni;
-    private int ammontareTotaleTransazioni;
+   // private int ammontareTotaleTransazioni;
 	public UtenteFilter(String nome, String cognome, String email, Integer età, String username, String password,
-			Stato stato, String telefono, String nuovaPassword, int numeroTreni, int numeroValutazioni,
-			int numeroTransazioni, int ammontareTotaleTransazioni) {
+			Stato stato, int numeroTreni, int numeroValutazioni, int numeroTransazioni) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
@@ -34,15 +30,9 @@ public class UtenteFilter {
 		this.username = username;
 		this.password = password;
 		this.stato = stato;
-		this.telefono = telefono;
-		this.nuovaPassword = nuovaPassword;
 		this.numeroTreni = numeroTreni;
 		this.numeroValutazioni = numeroValutazioni;
 		this.numeroTransazioni = numeroTransazioni;
-		this.ammontareTotaleTransazioni = ammontareTotaleTransazioni;
-	}
-	public UtenteFilter() {
-		super();
 	}
 	public String getNome() {
 		return nome;
@@ -86,18 +76,6 @@ public class UtenteFilter {
 	public void setStato(Stato stato) {
 		this.stato = stato;
 	}
-	public String getTelefono() {
-		return telefono;
-	}
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
-	public String getNuovaPassword() {
-		return nuovaPassword;
-	}
-	public void setNuovaPassword(String nuovaPassword) {
-		this.nuovaPassword = nuovaPassword;
-	}
 	public int getNumeroTreni() {
 		return numeroTreni;
 	}
@@ -116,13 +94,14 @@ public class UtenteFilter {
 	public void setNumeroTransazioni(int numeroTransazioni) {
 		this.numeroTransazioni = numeroTransazioni;
 	}
-	public int getAmmontareTotaleTransazioni() {
-		return ammontareTotaleTransazioni;
+	@Override
+	public String toString() {
+		return "UtenteFilter [nome=" + nome + ", cognome=" + cognome + ", email=" + email + ", età=" + età
+				+ ", username=" + username + ", password=" + password + ", stato=" + stato + ", numeroTreni="
+				+ numeroTreni + ", numeroValutazioni=" + numeroValutazioni + ", numeroTransazioni=" + numeroTransazioni
+				+ "]";
 	}
-	public void setAmmontareTotaleTransazioni(int ammontareTotaleTransazioni) {
-		this.ammontareTotaleTransazioni = ammontareTotaleTransazioni;
-	}
-    
+
     
     
 }

@@ -14,12 +14,12 @@ import jakarta.servlet.http.HttpSession;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-// Questa roba con le interfacce è strafigo pensavo ci andasse di piu
+      // Questa roba con le interfacce è strafigo pensavo ci andasse di piu
 	@Autowired
 	@Qualifier("Sessione")
 	private SessioneUtility sessioneUtility;
 
-//Praticamente una servlet che due coglioni.
+    //Praticamente una servlet che due coglioni.
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -27,12 +27,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
 		if (oldSession == null || !sessioneUtility.isUtenteLoggato(oldSession)) {
 			response.sendRedirect(request.getContextPath() + "/user/login?sessioneScaduta=true");
-			return false; // Interrompe l'esecuzione della richiesta
+			return false; // Interrompo l'esecuzione della richiesta
 		}
 		
-		//if(oldSession == null)||(!sessioneUtility.isUtenteGuest(oldSession)){
 
-		// Se l'utente è loggato, prosegui con la richiesta
 		return true;
 	}
 }

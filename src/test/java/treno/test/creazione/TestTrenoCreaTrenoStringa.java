@@ -6,11 +6,10 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.treno.application.Factory;
+import com.treno.application.FactoryConfiguration;
 import com.treno.application.dao.Dao;
 import com.treno.application.model.Treno;
 import com.treno.application.model.builder.TBuilder;
-
-import treno.FactoryConfiguration;
 
 public class TestTrenoCreaTrenoStringa {
 

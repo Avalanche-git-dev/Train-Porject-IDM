@@ -10,10 +10,12 @@ public class Admin extends User  {
 	
 	
 	@Column(name =  "privilegio")
-	public String privilegio;
+	public boolean privilegio;
 
 	
-	public Admin() {}
+	public Admin() {
+		this.privilegio=true;
+	}
 	
 	public void controllaAttivita(User user) {
 		
@@ -25,6 +27,14 @@ public class Admin extends User  {
 	
 	public void riattiva(User user) {
 		user.setStato(Stato.unlocked);
+	}
+
+	public boolean isPrivilegio() {
+		return privilegio;
+	}
+
+	public void setPrivilegio(boolean privilegio) {
+		this.privilegio = privilegio;
 	}
 
 } 

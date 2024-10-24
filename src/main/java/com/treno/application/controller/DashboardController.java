@@ -34,11 +34,11 @@ public class DashboardController {
         //sessioneUtility.setUtenteLoggato(session, utenteLoggato); se non modifico lo stato rimane li 
         model.addAttribute("utenteLoggato", utenteLoggato);
         return "dashboard";
-    }
+        
     
     
     
 }
 
-
+}
 

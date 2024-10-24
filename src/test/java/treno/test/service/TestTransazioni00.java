@@ -5,10 +5,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
+import com.treno.application.service.TransazioneService;
 import com.treno.application.utility.TrenoUtility;
 import com.treno.application.utility.UserUtility;
-
-import treno.TransazioneService;
 
 public class TestTransazioni00 {
 

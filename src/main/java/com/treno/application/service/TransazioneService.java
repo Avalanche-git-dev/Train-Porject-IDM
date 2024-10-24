@@ -112,6 +112,7 @@ public class TransazioneService {
             return "L'utente non è il proprietario di questo treno!";
         }
         
+        
         if (treno.isInVendita()){
             return "Il treno è già in vendita!";
         }

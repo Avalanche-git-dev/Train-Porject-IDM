@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -121,40 +120,19 @@ public class TrenoController {
     
     
     
-    
-    // Mostra il form per la creazione di un nuovo treno
+    // getCrea
     @GetMapping("/crea")
     public String mostraFormCreazioneTreno(HttpSession session, Model model) {
         UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//        
-//        if(sessione.isUtenteGuest(session)) {
-//        	UserGuest guest = (UserGuest) sessione.getUtenteLoggato(session);
-//        	boolean permessi = false;
-//        	model.addAttribute(permessi);
-//        	model.addAttribute(guest);
-//        	return "crea";
-//        }
-//        
-//        else {
-//        
+        
+        
+        
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("treno", new TrenoDTO());
         return "crea";
         }
-//    }
-
     
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    // Gestisce la creazione del treno
+    // DoCrea
     @PostMapping("/crea")
     public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
                             @RequestParam("marca") String marca, HttpSession session) {
@@ -167,9 +145,7 @@ public class TrenoController {
         return "redirect:/treni";
     }
     
-    
-
-    // Visualizza i TUTTI treni di un utente specifico
+    // getAllTreniByUser
     @GetMapping("/visualizza")
     public String visualizzaTreniPerUtente(Model model, HttpSession session) {
         UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
@@ -180,8 +156,8 @@ public class TrenoController {
         session.setAttribute("immagineTreno",immagineTreno);
         Long ownerId = utenteLoggato.getUserId();
         String usernameOwner = utenteLoggato.getUsername();
-        // List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(OwnerId);
-        List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
+        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(ownerId);
+        //List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
         model.addAttribute("treniDto", treniDto);
         session.setAttribute("usernameOwner",usernameOwner);
         model.addAttribute("ownerId", ownerId);
@@ -191,26 +167,7 @@ public class TrenoController {
 
 
     
-//    // Visualizzazione di un treno.
-//    @GetMapping("/visualizza/treno")
-//    public String visualizzaTreno(@ModelAttribute("treno") TrenoDTO trenoSelezionato, Model model, HttpSession session) {
-//        // Verifica che l'utente sia loggato
-//        if (!sessione.isUtenteLoggato(session)) {
-//            return sessione.redirectTologin();
-//        }
-//        
-//        if (trenoSelezionato == null) {
-//        	model.addAttribute("errorMessage","Il treno da te cercato non è piu disponibile, contatta l'admin. ");// Se non ci sono informazioni sul treno, reindirizza al catalogo
-//            return "redirect:/catalogo";
-//        }
-//        
-//        trenoSelezionato = trenoService.findById(trenoSelezionato.getIdTreno());
-//
-//        model.addAttribute("treno", trenoSelezionato);
-//        model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
-//        return "dettagliTreno";  // Restituisce la vista dei dettagli del treno
-//    }
-    
+
     
     // O post con il dto o get con id tramite post nascosto  .
     @GetMapping("/visualizza/treno")
@@ -273,12 +230,12 @@ public class TrenoController {
     
     
     
-    // Salva le modifiche al treno
-    @PostMapping("/salvaModifica")
-    public String salvaModifica(@ModelAttribute("treno") TrenoDTO trenoDto) {
-        trenoService.update(trenoDto);
-        return "redirect:/treni/dettagli/" + trenoDto.getIdTreno();
-    }
+//    // Salva le modifiche al treno
+//    @PostMapping("/salvaModifica")
+//    public String salvaModifica(@ModelAttribute("treno") TrenoDTO trenoDto) {
+//        trenoService.update(trenoDto);
+//        return "redirect:/treni/dettagli/" + trenoDto.getIdTreno();
+//    }
 
     
     

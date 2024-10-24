@@ -94,60 +94,6 @@ public class ProfiloController {
 		model.addAttribute("successMessage", "Denaro aggiunto con successo al portafoglio.");
 		return "profilo";
 	}
-	/*
-	 * // modifica Profilo
-	 * 
-	 * @PostMapping("/modifica") public String modificaProfilo(@RequestParam(value =
-	 * "passwordVecchia", required = false) String passwordVecchia,
-	 * 
-	 * @RequestParam(value = "passwordNuova", required = false) String
-	 * passwordNuova,
-	 * 
-	 * @RequestParam(value = "email", required = false) String email,
-	 * 
-	 * @RequestParam(value = "telefono", required = false) String telefono,
-	 * HttpSession session, RedirectAttributes redirectAttributes) {
-	 * 
-	 * // Verifica se l'utente è loggato if (!sessione.isUtenteLoggato(session)) {
-	 * return sessione.redirectTologin(); }
-	 * 
-	 * UserDTO currentUser = sessione.getUtenteLoggato(session);
-	 * 
-	 * // Validazione della nuova password (solo se fornita) if (passwordNuova !=
-	 * null && !passwordNuova.isEmpty()) { if (passwordNuova.length() < 6) {
-	 * redirectAttributes.addFlashAttribute("errorMessage",
-	 * "La nuova password deve avere almeno 6 caratteri."); return
-	 * "redirect:/profilo"; } }
-	 * 
-	 * // Validazione dell'email (solo se fornita) if (email != null &&
-	 * !email.isEmpty()) { if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-	 * redirectAttributes.addFlashAttribute("errorMessage",
-	 * "L'email inserita non è valida."); return "redirect:/profilo"; } }
-	 * 
-	 * // Validazione del telefono (solo se fornito) if (telefono != null &&
-	 * !telefono.isEmpty()) { if (!telefono.matches("\\d{10}")) {
-	 * redirectAttributes.addFlashAttribute("errorMessage",
-	 * "Il numero di telefono inserito non è valido."); return "redirect:/profilo";
-	 * } }
-	 * 
-	 * try { // Aggiorna l'utente con i parametri forniti UserDTO updatedUser =
-	 * userService.updateUserWithParams(currentUser.getUserId(), passwordVecchia,
-	 * passwordNuova, email, telefono);
-	 * 
-	 * // Aggiorna l'utente nella sessione sessione.setUtenteLoggato(session,
-	 * updatedUser);
-	 * 
-	 * // Aggiungi messaggio di successo
-	 * 
-	 * } catch (InvalidCredentialsException e) { // Gestisci tutte le eccezioni
-	 * derivanti da credenziali non valide
-	 * redirectAttributes.addFlashAttribute("errorMessage",
-	 * "Aggiornamento fallito: " + e.getMessage()); return "redirect:/profilo"; }
-	 * redirectAttributes.addFlashAttribute("successMessage",
-	 * "Profilo aggiornato con successo! Controlla i tuoi nuovi dati."); //
-	 * Reindirizza alla pagina del profilo con il messaggio di successo return
-	 * "redirect:/profilo"; }
-	 */
 
 	// modifica Profilo
 	@PostMapping("/modifica")
@@ -223,10 +169,6 @@ public class ProfiloController {
 	}
 
 	
-	
-	
-
-	
 
 	@PostMapping("/mostra/utente")
 	public String mostraProfiloUtente(HttpSession session, Model model, @RequestParam("username") String username) {
@@ -239,14 +181,11 @@ public class ProfiloController {
 		}
 
 		try {
-			// Recupera la lista dei treni associati all'utente visualizzato
 			List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(username);
 
-			// Memorizza sia l'utente che la lista di treni nella sessione
 			session.setAttribute("utenteView", utenteView);
 			session.setAttribute("treniDto", treniUtente);
 
-			// Aggiungi i dettagli dell'utente e dei treni al modello per la vista
 			model.addAttribute("username", utenteView.getUsername());
 			model.addAttribute("nome", utenteView.getNome());
 			model.addAttribute("numeroTreni", treniUtente.size());

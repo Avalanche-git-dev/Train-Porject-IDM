@@ -25,15 +25,11 @@ import com.treno.application.dao.VagoneDao;
 import com.treno.application.dao.ValutazioneDao;
 import com.treno.application.model.Transazione;
 import com.treno.application.model.builder.TBuilder;
+import com.treno.application.service.AdminService;
 import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.service.ValutazioneService;
-
-
-
-
-
 
 @Configuration
 @EnableTransactionManagement
@@ -52,6 +48,7 @@ public class AppConfiguration {
 		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
 		return ds;
 	}
+
 	// E' come se fosse un context per l'entity manager.
 	@Bean
 	public LocalContainerEntityManagerFactoryBean getEntityManager() {
@@ -93,15 +90,13 @@ public class AppConfiguration {
 //		// transactionManager.setNestedTransactionAllowed(false);
 //		return transactionManager;
 //	}
-	
-	
+
 	@Bean
 	public PlatformTransactionManager getTransactionManager() {
-	    JpaTransactionManager transactionManager = new JpaTransactionManager();
-	    transactionManager.setEntityManagerFactory(getEntityManager().getObject());
-	    return transactionManager;
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(getEntityManager().getObject());
+		return transactionManager;
 	}
-
 
 	// Configurazione della Factory
 
@@ -110,13 +105,8 @@ public class AppConfiguration {
 		return new FactoryConfiguration();
 	}
 
-	
-	
-	
-	//<Application>
-	
-	
-	
+	// <Application>
+
 	// Configurazione del builder
 
 	@Bean(name = "Builder")
@@ -182,6 +172,11 @@ public class AppConfiguration {
 
 	}
 
+	@Bean(name = "AdminService")
+	public AdminService getAdminService() {
+		return new AdminService();
+	}
+
 	// Bean Component
 
 	@Bean("Transazione")
@@ -189,19 +184,7 @@ public class AppConfiguration {
 	public Transazione getTransazione() {
 		return new Transazione();
 	}
-	
-	//</Application>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	}
 
+	// </Application>
 
+}

@@ -20,6 +20,7 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\LoginInterceptor.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\TrenoDTO.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\AdminController.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\AdminDTO.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\FactoryConfiguration.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\WebConfig.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\MotricenonInTestaException.java
@@ -34,7 +35,6 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Transazione.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\utility\UtenteValutaTreno.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\utility\UserUtility.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\MotriceDao.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\AlreadyExistEmail.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\filter\TransazioneFilter.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\TransazioneDao.java

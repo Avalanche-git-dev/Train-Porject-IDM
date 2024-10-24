@@ -20,7 +20,6 @@
 	<div class="container">
 		<h1>Tutti i Treni Disponibili</h1>
 
-<<<<<<< HEAD
 		<!-- Form di Filtro per il Catalogo dei Treni -->
 		<form action="${pageContext.request.contextPath}/catalogo/filtro"
 			method="get" class="mb-4">
@@ -34,11 +33,11 @@
 					<label for="marca">Marca</label> <input type="text" id="marca"
 						name="marca" value="${trenoFilter.marca}" class="form-control" />
 				</div>
-				<div class="form-group col-md-3">
-					<label for="prezzoVendita">Prezzo di Vendita (massimo)</label> <input
-						type="number" id="prezzoVendita" name="prezzoVendita"
-						value="${trenoFilter.prezzoVenditaMax}" class="form-control" />
-				</div>
+				<%-- <div class="form-group col-md-3">
+					<label for="Valore">Valore</label> <input
+						type="number" id="costoTotale" name="costoTotale"
+						value="${trenoFilter.costoTotale}" class="form-control" />
+				</div> --%>
 				<div class="form-group col-md-3">
 					<label for="valutazioneMassima">Media Valutazioni (massimo)</label>
 					<input type="number" id="valutazioneMassima"
@@ -62,6 +61,13 @@
 						<div class="col-md-8">
 							<h5 class="card-title">${treno.nome}</h5>
 							<p class="card-text">Marca: ${treno.marca}</p>
+							<p class="card-text">Sigla: ${treno.sigla}</p>
+							<p class="card-text">Propietario : ${sessionScope.usernameOwner}</p>
+							
+							<%-- <p class="card-text">Peso: ${treno.pesoTotale} Kg</p>
+							<p class="card-text">Valore: ${treno.costoTotale} $</p>
+							<p class="card-text">Marca: ${treno.pesoTotale}</p> --%>
+							
 							<p class="card-text">Media Valutazioni:
 								${treno.mediaValutazioni}</p>
 						</div>
@@ -120,7 +126,7 @@
         }
     </script>
 =======
-        <!-- Form di Filtro per il Catalogo dei Treni -->
+       <%--  <!-- Form di Filtro per il Catalogo dei Treni -->
         <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="mb-4">
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -132,8 +138,8 @@
                     <input type="text" id="marca" name="marca" value="${trenoFilter.marca}" class="form-control"/>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="prezzoVendita">Prezzo di Vendita (massimo)</label>
-                    <input type="number" id="prezzoVendita" name="prezzoVendita" value="${trenoFilter.prezzoVendita}" class="form-control"/>
+                    <label for="prezzoVendita">Valore (massimo)</label>
+                    <input type="number" id="prezzoVendita" name="prezzoVendita" value="${trenoFilter.costoTotale}" class="form-control"/>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="valutazioneMassima">Media Valutazioni (massimo)</label>
@@ -161,4 +167,4 @@
     </div>
 >>>>>>> origin/biagionuovo
 </body>
-</html>
+</html> --%>

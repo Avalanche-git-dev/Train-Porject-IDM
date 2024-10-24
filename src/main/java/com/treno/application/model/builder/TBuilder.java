@@ -23,17 +23,11 @@ public class TBuilder extends TrenoBuilder {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
-//
-//	@Override
-//	protected Motrice addMotrice() {
-//		return factory.creaMotrice();
-//	}
+
+
 	
 	@Override
 	protected Motrice addMotrice() {
-	    if (factory == null) {
-	        throw new IllegalStateException("factory bazlata");
-	    }
 	    return factory.creaMotrice();
 	}
 

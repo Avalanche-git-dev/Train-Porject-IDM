@@ -418,7 +418,7 @@
 								<p class="card-text">Marca: ${treno.marca}</p>
 								<p class="card-text">Valutazione Media:
 									${treno.mediaValutazioni} / 5</p>
-								<p class="card-text">Lunghezza: ${treno.lunghezza} m</p>
+								<%-- <p class="card-text">Lunghezza: ${treno.lunghezza} m</p> --%>
 								<p class="card-text">Peso Totale: ${treno.pesoTotale} kg</p>
 								<p class="card-text">Costo Totale: ${treno.costoTotale} €</p>
 								<form
