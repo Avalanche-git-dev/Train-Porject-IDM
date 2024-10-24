@@ -3,9 +3,13 @@ package com.treno.application.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.UtenteFilter;
+import com.treno.application.model.Admin;
 import com.treno.application.model.User;
+import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
 
 import jakarta.persistence.TypedQuery;
@@ -67,82 +71,11 @@ public class UserDao extends ProxyDao<User> implements UserUtility {
     }
 
 
-	@Override
-	public List<User> filtraUtenti(UtenteFilter filtro, long userId) {
-		return null;
-	}
-
-//    
-//    @Override
-//    public List<User> filtraUtenti(UtenteFilter filtro, long userId) {
-//        StringBuilder queryString = new StringBuilder("SELECT u FROM User u WHERE u.id <> :userId");
-//
-//        if (filtro.getUsername() != null) {
-//            queryString.append(" AND u.username LIKE :username");
-//        }
-//        if (filtro.getEmail() != null) {
-//            queryString.append(" AND u.email LIKE :email");
-//        }
-//        if (filtro.getNome() != null) {
-//            queryString.append(" AND u.nome LIKE :nome");
-//        }
-//        if (filtro.getCognome() != null) {
-//            queryString.append(" AND u.cognome LIKE :cognome");
-//        }
-//        if (filtro.getEtà() != null) {
-//            queryString.append(" AND u.età = :età");
-//        }
-//        if (filtro.getStato() != null) {
-//            queryString.append(" AND u.stato = :stato");
-//        }
-//        if (filtro.getTelefono() != null) {
-//            queryString.append(" AND u.telefono LIKE :telefono");
-//        }
-//        if (filtro.getPassword() != null) {
-//            queryString.append(" AND u.password = :password");
-//        }
-//        if (filtro.getNuovaPassword() != null) {
-//            queryString.append(" AND u.nuovaPassword = :nuovaPassword");
-//        }
-//
-//        TypedQuery<User> query = em.createQuery(queryString.toString(), User.class);
-//        query.setParameter("userId", userId);
-//
-//        if (filtro.getUsername() != null) {
-//            query.setParameter("username", "%" + filtro.getUsername() + "%");
-//        }
-//        if (filtro.getEmail() != null) {
-//            query.setParameter("email", "%" + filtro.getEmail() + "%");
-//        }
-//        if (filtro.getNome() != null) {
-//            query.setParameter("nome", "%" + filtro.getNome() + "%");
-//        }
-//        if (filtro.getCognome() != null) {
-//            query.setParameter("cognome", "%" + filtro.getCognome() + "%");
-//        }
-//        if (filtro.getEtà() != null) {
-//            query.setParameter("età", filtro.getEtà());
-//        }
-//        if (filtro.getStato() != null) {
-//            query.setParameter("stato", filtro.getStato());
-//        }
-//        if (filtro.getTelefono() != null) {
-//            query.setParameter("telefono", "%" + filtro.getTelefono() + "%");
-//        }
-//        if (filtro.getPassword() != null) {
-//            query.setParameter("password", filtro.getPassword());
-//        }
-//        if (filtro.getNuovaPassword() != null) {
-//            query.setParameter("nuovaPassword", filtro.getNuovaPassword());
-//        }
-//
-//        return query.getResultList();
-//    }
-	
 	
 	
 	
 	// Filtro admin
+	@Override
 	public List<User> filtraUtenti(UtenteFilter filtro) {
 	    CriteriaBuilder cb = em.getCriteriaBuilder();
 	    CriteriaQuery<User> cq = cb.createQuery(User.class);
@@ -185,8 +118,84 @@ public class UserDao extends ProxyDao<User> implements UserUtility {
 	    return query.getResultList();
 	}
 
+	
+	
+	
+	// findAllAdmin
+	@Transactional
+	public List<Admin> findAllAdminWithPrivileges() {
+	    String hql = "SELECT DISTINCT a FROM Admin a " +
+	                 "LEFT JOIN FETCH a.treni t " +
+	                 "LEFT JOIN FETCH t.valutazioni " +
+	                 "LEFT JOIN FETCH t.transazioni " +
+	                 "WHERE a.privilegio = true";
+	    
+	    return super.em.createQuery(hql, Admin.class).getResultList();
+	}
 
-    
-    
+	
+	@Transactional
+	public List<User> findAllLockedUsers() {
+	    String hql = "SELECT u FROM User u WHERE u.stato = :stato";
+	    return em.createQuery(hql, User.class)
+	             .setParameter("stato", Stato.locked)
+	             .getResultList();
+	}
+	
+	// findAllAttivi
+	@Transactional
+	public List<User> findAllActiveUsers() {
+	    // HQL per trovare tutti gli utenti attivi (stato unlocked) e caricare le relazioni
+	    String hql = "SELECT DISTINCT u FROM User u " +
+	                 "LEFT JOIN FETCH u.treni t " +
+	                 "LEFT JOIN FETCH t.valutazioni " +
+	                 "LEFT JOIN FETCH t.transazioni " +
+	                 "WHERE u.stato = :stato";
+	    
+	    return super.em.createQuery(hql, User.class)
+	                   .setParameter("stato", Stato.unlocked)  // Passiamo l'enum Stato.unlocked come parametro
+	                   .getResultList();
+	}
+//	
+//	@Override
+//	public Admin findAdminByUserId(Long userId) {
+//		String hql = "SELECT a FROM Admin a WHERE a.userId = :userId";
+//	    return em.createQuery(hql, Admin.class)
+//	             .setParameter("userId", userId)
+//	             .getSingleResult();
+//		
+//		
+//	}
+	
+	
+	
+//	@Override
+//	public Admin findAdminByUserId(Long userId) {
+//	    String hql = "SELECT a FROM Admin a WHERE a.userId = :userId";
+//	    try {
+//	        return em.createQuery(hql, Admin.class)
+//	                 .setParameter("userId", userId)
+//	                 .getSingleResult();
+//	    } catch (UserNotFoundException e) {
+//	        throw new AdminNotFoundException("Amministratore non trovato con ID: " + userId);
+//	    }
+//	}
+	
+	
+	@Override
+	public Admin findAdminByUserId(Long userId) {
+	    String hql = "SELECT a FROM Admin a WHERE a.userId = :userId";
+	    List<Admin> result = em.createQuery(hql, Admin.class)
+	                           .setParameter("userId", userId)
+	                           .getResultList();
+	    
+	    if (result.isEmpty()) {
+	        return null;  // Oppure puoi lanciare una tua eccezione personalizzata
+	    }
+	    
+	    return result.get(0);  // Ritorna il primo risultato
+	}
+
+
 
 }

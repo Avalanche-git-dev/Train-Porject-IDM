@@ -13,6 +13,8 @@ public class UserDTO {
     private String telefono;
     private Stato stato;
     private double portafoglio;
+
+
 	public UserDTO() {
 		super();
 	}
@@ -97,6 +99,8 @@ public class UserDTO {
 				+ ", nome=" + nome + ", cognome=" + cognome + ", telefono=" + telefono + ", stato=" + stato
 				+ ", portafoglio=" + portafoglio + "]";
 	}
+
+
 
     // Getters e Setters
 	

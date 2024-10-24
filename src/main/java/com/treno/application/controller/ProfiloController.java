@@ -185,7 +185,6 @@ public class ProfiloController {
 
 			session.setAttribute("utenteView", utenteView);
 			session.setAttribute("treniDto", treniUtente);
-
 			model.addAttribute("username", utenteView.getUsername());
 			model.addAttribute("nome", utenteView.getNome());
 			model.addAttribute("numeroTreni", treniUtente.size());

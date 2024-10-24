@@ -9,14 +9,24 @@ import jakarta.persistence.Table;
 public class Admin extends User  {
 	
 	
-	@Column(name =  "privilegio")
+	@Column(name =  "privilegio" , nullable = false)
 	public boolean privilegio;
 
 	
 	public Admin() {
-		this.privilegio=true;
 	}
 	
+	
+	
+	
+	public Admin(boolean privilegio) {
+		super();
+		this.privilegio = privilegio;
+	}
+
+
+
+
 	public void controllaAttivita(User user) {
 		
 	}

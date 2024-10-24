@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.FondiInsufficientiException;
@@ -39,11 +40,18 @@ public class MarketController {
 
 	@Autowired
 	@Qualifier("Sessione")
-	private SessioneUtility sessioneUtility;
+	private SessioneUtility sessione;
 
 	@GetMapping
 	public String mostraTreniInVendita(Model model, HttpSession session) {
-		sessioneUtility.getUtenteLoggato(session);
+		sessione.getUtenteLoggato(session);
+		
+		
+		 if(sessione.isAdminLoggato(session)) {
+	        	session.removeAttribute("utenteLoggato");
+	        	AdminDTO admin = sessione.getAdminLoggato(session);
+	        	session.setAttribute("admin", admin);
+				  }
 		List<TrenoDTO> treniInVendita = trenoService.findTreniInVendita();
 		model.addAttribute("treniInVendita", treniInVendita);
 		return "market";
@@ -52,7 +60,7 @@ public class MarketController {
 	@PostMapping("/acquista")
 	public String acquistaTreno(@RequestParam("idTreno") Long idTreno, Model model, HttpSession session)
 			throws VenditoreAcquirenteNonTrovatoException, FondiInsufficientiException {
-		transazioneService.compraTreno(sessioneUtility.getUtenteLoggato(session).getUserId(), idTreno);
+		transazioneService.compraTreno(sessione.getUtenteLoggato(session).getUserId(), idTreno);
 		model.addAttribute("message", "Acquisto in corso");
 		return "transazione";
 	}
@@ -60,7 +68,7 @@ public class MarketController {
 	@PostMapping("/mettiInVendita")
 	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
 			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
-		long idUtente = sessioneUtility.getUtenteLoggato(session).getUserId();
+		long idUtente = sessione.getUtenteLoggato(session).getUserId();
 		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
 		model.addAttribute("message", risultatoVendita);
 		return "redirect:/market";
@@ -70,11 +78,11 @@ public class MarketController {
 	public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model,
 			HttpSession session) {
 		// Verifica che l'utente sia loggato
-		if (!sessioneUtility.isUtenteLoggato(session)) {
-			return sessioneUtility.redirectTologin();
+		if (!sessione.isUtenteLoggato(session)) {
+			return sessione.redirectTologin();
 		}
 		// Recupera l'utente loggato
-		UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
+		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
 		// Filtra i treni utilizzando il TrenoFilter
 		Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
 		List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());

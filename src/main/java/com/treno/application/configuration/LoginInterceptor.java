@@ -25,10 +25,23 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		HttpSession oldSession = request.getSession(false);
 
-		if (oldSession == null || !sessioneUtility.isUtenteLoggato(oldSession)) {
+		if ((oldSession == null) || (!sessioneUtility.isUtenteLoggato(oldSession))){
 			response.sendRedirect(request.getContextPath() + "/user/login?sessioneScaduta=true");
 			return false; // Interrompo l'esecuzione della richiesta
 		}
+		
+		
+//		
+//		if (oldSession == null || !sessioneUtility.isUtenteLoggato(oldSession)) {
+//			response.sendRedirect(request.getContextPath() + "/user/login?sessioneScaduta=true");
+//			return false;
+//			
+//		} else if (!sessioneUtility.isAdminLoggato(oldSession)) {
+//			response.sendRedirect(request.getContextPath() + "/user/login?sessioneScaduta=true");
+//			return false;
+//		}
+
+
 		
 
 		return true;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.ValutazioneException;
@@ -70,6 +71,12 @@ public class CatalogoController {
 //	        if(!sessione.isUtenteLoggato(session)) {
 //	        	return sessione.redirectTologin();
 //	        }
+	        
+	        if(sessione.isAdminLoggato(session)) {
+	        	session.removeAttribute("utenteLoggato");
+	        	AdminDTO admin = sessione.getAdminLoggato(session);
+	        	session.setAttribute("admin", admin);
+				  }
 	        
 	        
 			

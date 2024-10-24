@@ -471,7 +471,7 @@
 
  
   --%>
- 
+ <%-- 
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="navbar.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -703,30 +703,34 @@
 
 
 
+ --%>
 
 
 
 
-
-
-
-
-
-<%-- <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="navbar.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profilo Utente</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>Insert title here</title>
+
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
+
+
+
+
 <style>
+
+    body{
+        font-family: 'Roboto', sans-serif; 
+    }
+
+
 .error-message {
-	color: #d9534f;
-	background-color: #f8d7da;
 	padding: 10px;
 	border-radius: 5px;
 	margin-bottom: 15px;
@@ -735,8 +739,6 @@
 }
 
 .success-message {
-	color: #28a745;
-	background-color: #d4edda;
 	padding: 10px;
 	border-radius: 5px;
 	margin-bottom: 15px;
@@ -746,49 +748,39 @@
 
 .profile-container {
 	display: flex;
-	justify-content: flex-start; /* Inizio pagina, sinistra */
-	margin-top: 20px; /* Spazio dalla navbar */
+	justify-content: center; /* Centro la pagina */
+	margin-top: 50px;
 	width: 100%;
 }
 
 .profile-section {
 	padding: 40px;
-	background-color: #f8f9fa;
 	border-radius: 10px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-	width: 30%; /* Profilo utente più stretto */
-	margin-left: 10px; /* Spazio sotto la navbar */
+	width: 35%; /* Profilo utente ridotto */
 }
 
 .sidebar-section {
 	padding: 20px;
-	background-color: #f1f1f1;
 	border-radius: 10px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-	width: 35%; /* Sidebar leggermente più stretta */
+	width: 30%; /* Sidebar ridotta */
 	margin-left: 20px;
-	margin-top: 30px; /* Più bassa rispetto alla navbar */
 	position: relative;
 }
 
 .btn-action {
-	background-color: #0275d8;
-	color: white;
 	padding: 10px 20px;
 	border-radius: 5px;
 	border: none;
 	cursor: pointer;
-	width: 100%;
+	width: 100%; /* Full width for button */
 	margin-bottom: 15px;
 }
 
-.btn-action:hover {
-	background-color: #025aa5;
-}
+
 
 .cancel-btn {
-	background-color: #d9534f;
-	color: white;
 	padding: 10px 20px;
 	border-radius: 5px;
 	border: none;
@@ -798,16 +790,12 @@
 	right: 20px;
 }
 
-.cancel-btn:hover {
-	background-color: #c9302c;
-}
+
 
 .section-content {
 	display: none;
-	background-color: #ffffff;
 	padding: 20px;
 	border-radius: 10px;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 	position: absolute;
 	left: 100%; /* Open to the right side */
 	top: 0;
@@ -819,111 +807,109 @@
 	display: flex;
 	flex-direction: column; /* Stack buttons vertically */
 	margin-top: 30px;
-	width: 100%;
-}
-
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+	width: 100%; /* Ensure full width for buttons */
 }
 </style>
 </head>
-<body>
+<body class="bg-light">
 
 	<div class="container">
 		<div class="profile-container">
 			<!-- Profilo utente -->
-			<div class="profile-section">
-				<h5 class="text-center mt-5">Informazioni Utente</h5>
+			<div class="profile-section bg-primary">
+				<h5 class="text-center mt-5 text-white">Informazioni Utente</h5>
 				<table class="table table-borderless">
 					<tr>
-						<th>Nome:</th>
-						<td>${userInfo.nome}</td>
+						<th class="text-white">Nome:</th>
+						<td class="text-secondary">${userInfo.nome}</td>
 					</tr>
 					<tr>
-						<th>Cognome:</th>
-						<td>${userInfo.cognome}</td>
+						<th class="text-white">Cognome:</th>
+						<td class="text-secondary">${userInfo.cognome}</td>
 					</tr>
 					<tr>
-						<th>Username:</th>
-						<td>${userInfo.username}</td>
+						<th class="text-white">Username:</th>
+						<td class="text-secondary">${userInfo.username}</td>
 					</tr>
 					<tr>
-						<th>Portafoglio:</th>
-						<td>${userInfo.portafoglio}€</td>
+						<th class="text-white">Portafoglio:</th>
+						<td class="text-secondary mr-1">${userInfo.portafoglio} €</td>
 					</tr>
 				</table>
 			</div>
 
 			<!-- Sidebar per azioni -->
-			<div class="sidebar-section">
+			<div class="sidebar-section bg-primary">
 				<!-- Messaggi di errore e successo -->
 				<c:if test="${not empty errorMessage}">
-					<div class="error-message" role="alert">${errorMessage}</div>
+					<div class="error-message text-danger" role="alert">${errorMessage}</div>
 				</c:if>
 
 				<c:if test="${not empty successMessage}">
-					<div class="success-message" role="alert">${successMessage}</div>
+					<div class="success-message text-success" role="alert">${successMessage}</div>
 				</c:if>
 
 				<!-- Opzioni -->
 				<div class="button-group">
-					<button class="btn-action" onclick="toggleSection('editSection')">Modifica Profilo</button>
-					<button class="btn-action" onclick="toggleSection('walletSection')">Portafoglio</button>
-					<button class="btn-action" onclick="toggleSection('searchSection')">Cerca Profilo</button>
+					<button class="btn-action btn-secondary" onclick="toggleSection('editSection')">Modifica Profilo</button>
+					<button class="btn-action btn-secondary" onclick="toggleSection('walletSection')">Portafoglio</button>
+					<button class="btn-action btn-secondary" onclick="toggleSection('searchSection')">Cerca Profilo</button>
 				</div>
 
 				<!-- Sezione di modifica -->
-				<div id="editSection" class="section-content">
+				<div id="editSection" class="section-content bg-primary ml-3">
 					<form action="${pageContext.request.contextPath}/profilo/modifica" method="post">
 						<div class="form-group">
-							<label for="passwordVecchia">Password Vecchia:</label>
+							<label class="text-white" for="passwordVecchia">Password Vecchia:</label>
 							<input type="password" class="form-control" id="passwordVecchia" name="passwordVecchia">
 						</div>
 						<div class="form-group">
-							<label for="passwordNuova">Nuova Password:</label>
+							<label class="text-white" for="passwordNuova">Nuova Password:</label>
 							<input type="password" class="form-control" id="passwordNuova" name="passwordNuova">
 						</div>
 						<div class="form-group">
-							<label for="email">Email:</label>
+							<label class="text-white" for="email">Email:</label>
 							<input type="email" class="form-control" id="email" name="email">
 						</div>
 						<div class="form-group">
-							<label for="telefono">Telefono:</label>
+							<label class="text-white" for="telefono">Telefono:</label>
 							<input type="text" class="form-control" id="telefono" name="telefono">
 						</div>
-						<button type="submit" class="btn btn-action">Salva Modifiche</button>
+						<button type="submit" class="btn btn-action btn-secondary">Salva Modifiche</button>
 					</form>
 				</div>
 
 				<!-- Sezione Portafoglio -->
-				<div id="walletSection" class="section-content">
-					<p>Saldo attuale: ${userInfo.portafoglio} €</p>
+				<div id="walletSection" class="section-content bg-primary ml-3">
+					<p class="text-white">Saldo attuale:</p>
+					<div class="d-flex justify-content-start">
+						<p class="text-secondary mr-2">${userInfo.portafoglio}</p> <p class="text-white">€</p>
+					</div>
+					
 					<form action="${pageContext.request.contextPath}/profilo/portafoglio/aggiungi" method="post">
 						<div class="form-group">
-							<label for="importo">Aggiungi denaro:</label>
-							<input type="number" class="form-control" id="importo" name="importo" placeholder="Inserisci importo" min="1" required>
+							<label class="text-white" for="importo">Aggiungi denaro:</label>
+							<input type="number" class="form-control " id="importo" name="importo" placeholder="Inserisci importo" min="1" required>
 						</div>
-						<button type="submit" class="btn btn-action">Ricarica</button>
+						<button type="submit" class="btn btn-action btn-secondary">Ricarica</button>
 					</form>
 				</div>
 
 				<!-- Sezione Cerca Profilo -->
-				<div id="searchSection" class="section-content">
+				<div id="searchSection" class="section-content bg-primary ml-3">
 					<form action="${pageContext.request.contextPath}/profilo/mostra/utente" method="post">
 						<div class="form-group">
-							<label for="searchUsername">Inserisci Username:</label>
+							<label class="text-white"  for="searchUsername">Inserisci Username:</label>
 							<input type="text" class="form-control" name="username" placeholder="Cerca profilo utente">
 						</div>
-						<button type="submit" class="btn btn-primary">Cerca Profilo</button>
+						<button type="submit" class="btn btn-primary btn-secondary">Cerca Profilo</button>
 					</form>
 				</div>
 			</div>
 		</div>
 
 		<!-- Pulsante Cancella Account in fondo alla pagina -->
-		<button class="cancel-btn" onclick="confirmDeleteAccount()">Cancella Account</button>
+		<button class="cancel-btn btn-danger" onclick="confirmDeleteAccount()">Cancella Account</button>
 	</div>
 
 	<!-- Script -->
@@ -946,6 +932,11 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
- --%>
+
+
+
+
+

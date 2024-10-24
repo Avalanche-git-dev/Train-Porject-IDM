@@ -4,27 +4,27 @@ import java.util.UUID;
 
 public class UserGuest extends UserDTO {
 
-    private String id;
-    private String guest;
+    private UUID id ;
+    private String guest ;
 
     // Costruttore
     public UserGuest() {
-        this.id = UUID.randomUUID().toString(); 
+        this.id = UUID.randomUUID(); 
         this.guest="Guest";
     }
 
-    public String getId() {
-        return id;
-    }
+	public UUID getId() {
+		return id;
+	}
 
-
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
 	public String getGuest() {
 		return guest;
 	}
+
 
 	public void setGuest(String guest) {
 		this.guest = guest;

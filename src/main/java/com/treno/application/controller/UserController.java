@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.dto.UserGuest;
@@ -130,39 +131,88 @@ public class UserController {
     
     
     
-
-    // doLogin
+//
+//    // doLogin
+//    @PostMapping("/login")
+//    public String doLogin(@ModelAttribute("userDto") UserDTO userDto, Model model, HttpServletRequest request) {
+//        try {
+//        	
+//        	UserDTO utenteLoggato = userService.login(userDto);
+//        	//Controllo se in sessione è admin. il guest non puo accedere
+//        	 HttpSession session = request.getSession(false); 
+//             if (session != null) {
+//                 session.invalidate();
+//             }
+//            session = request.getSession(true);
+//            sessione.setUtenteLoggato(session, utenteLoggato);
+//            
+//            if(session!=null) {
+//            	
+//            }
+//            
+//
+//            return "redirect:/dashboard";
+//            
+//        } catch (UserNotFoundException e) {
+//            model.addAttribute("errorMessage", "Errore: " + e.getMessage());
+//            return "login";  // <-----
+//            
+//        } catch (InvalidPasswordException e) {
+//            model.addAttribute("errorMessage", "Errore: " + e.getMessage());
+//            return "login";  // <-----
+//            
+//        } catch (InvalidCredentialsException e) {
+//            model.addAttribute("errorMessage", "Errore: " + e.getMessage());
+//            return "login";  // <-----
+//        }
+//    }
+    
+    
+    
     @PostMapping("/login")
     public String doLogin(@ModelAttribute("userDto") UserDTO userDto, Model model, HttpServletRequest request) {
         try {
-        	
-        	UserDTO utenteLoggato = userService.login(userDto);
-        	//Controllo se in sessione è admin. il guest non puo accedere
-        	 HttpSession session = request.getSession(false); 
-             if (session != null) {
-                 session.invalidate();
-             }
-            session = request.getSession(true);
-            sessione.setUtenteLoggato(session, utenteLoggato);
+            // Autentica l'utente tramite il servizio
             
-            if(session!=null) {
-            	
+        	UserDTO utenteLoggato;
+				utenteLoggato = userService.login(userDto);
+				
+			
+            // Invalida la sessione esistente, se presente
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
             }
+
+            // Crea una nuova sessione
+            session = request.getSession(true);
             
 
-            return "redirect:/dashboard";
+            if (utenteLoggato instanceof AdminDTO) {
+            	session.setAttribute("admin", utenteLoggato);
+                return "redirect:/admin";
+                
+            }else {
+            	sessione.setUtenteLoggato(session, utenteLoggato); 
+            	return "redirect:/dashboard";
+            }
             
+            
+			
+
+            
+
         } catch (UserNotFoundException e) {
             model.addAttribute("errorMessage", "Errore: " + e.getMessage());
-            return "login";  // <-----
-            
+            return "login";  
+
         } catch (InvalidPasswordException e) {
             model.addAttribute("errorMessage", "Errore: " + e.getMessage());
-            return "login";  // <-----
-            
+            return "login";  
+
         } catch (InvalidCredentialsException e) {
             model.addAttribute("errorMessage", "Errore: " + e.getMessage());
-            return "login";  // <-----
+            return "login";  
         }
     }
     

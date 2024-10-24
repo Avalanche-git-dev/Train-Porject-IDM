@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.AlreadyExistEmail;
 import com.treno.application.exception.InvalidCredentialsException;
@@ -15,6 +16,7 @@ import com.treno.application.exception.InvalidPhoneNumberException;
 import com.treno.application.exception.UserAlreadyExistsException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
+import com.treno.application.model.Admin;
 import com.treno.application.model.User;
 import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
@@ -70,7 +72,7 @@ public class UserService {
 	
 	
     //Login
-	public UserDTO login(UserDTO userDto) {
+	public UserDTO login(UserDTO userDto){
 	    // Trova l'utente dal database usando lo username
 	    User user = userDao.findByUsername(userDto.getUsername());
 	    
@@ -85,10 +87,22 @@ public class UserService {
 	    if (!user.getPassword().equals(userDto.getPassword())) {
 	        throw new InvalidPasswordException("Password non corretta");
 	    }
+	   Admin admin = userDao.findAdminByUserId(user.getUserId());
+	   
+	   if(admin==null) {
+		   return convertToUserDTO(user);
+	   }
+	    
+	    if (admin.isPrivilegio()) {
+	        return convertToAdminDTO(admin);
+	    } else {
+	        // Se non è un amministratore, restituisce il normale UserDTO
+	        return convertToUserDTO(user);
+	    }
 	    
 	    
 
-	    return convertToUserDTO(user);
+	   // return convertToUserDTO(user);
 	}
 
 	
@@ -191,8 +205,8 @@ public class UserService {
 	
 	
 	// Filtro Utenti nel Service per fare da ponte al controller.
-	public List<UserDTO> filtraUtenti(UtenteFilter filtro, long userId) {
-		List<User> utenti = userDao.filtraUtenti(filtro, userId);
+	public List<UserDTO> filtraUtenti(UtenteFilter filtro) {
+		List<User> utenti = userDao.filtraUtenti(filtro);
 		if (utenti.isEmpty()) {
 			throw new UserNotFoundException("Nessun utente trovato con il filtro specificato");
 		}
@@ -235,6 +249,127 @@ public class UserService {
 	//metodi admin
 	
 	
+
 	
+	
+	
+	public void nominaAdmin(UserDTO user) {
+	    AdminDTO admin = new AdminDTO();
+	    admin.setUserId(user.getUserId());
+	    admin.setUsername(user.getUsername());
+	    admin.setPassword(user.getPassword());
+	    admin.setNome(user.getNome());
+	    admin.setCognome(user.getCognome());
+	    admin.setEmail(user.getEmail());
+	    admin.setTelefono(user.getTelefono());
+	    admin.setPortafoglio(user.getPortafoglio());
+	    admin.setPrivilegio(true);
+	    admin.setStato(user.getStato());
+	    // Ora salva l'admin nel database tramite il DAO
+	    userDao.update(convertToUserEntity(admin));
+	    
+	}
+	
+	
+	
+	
+	public AdminDTO convertToAdminDTO(Admin admin) {
+	    AdminDTO adminDto = new AdminDTO();
+	    adminDto.setUserId(admin.getUserId());
+	    adminDto.setPassword(admin.getPassword());
+	    adminDto.setUsername(admin.getUsername());
+	    adminDto.setNome(admin.getNome());
+	    adminDto.setCognome(admin.getCognome());
+	    adminDto.setEmail(admin.getEmail());
+	    adminDto.setPortafoglio(admin.getPortafoglio());
+	    adminDto.setTelefono(admin.getTelefono());
+	    adminDto.setStato(admin.getStato());
+	    adminDto.setPrivilegio(admin.isPrivilegio());  // Campo specifico per Admin
+	    return adminDto;
+	}
+
+	
+	// Admin
+	
+//	
+	
+	
+
+	
+	
+	
+	public Admin convertToAdminEntity(AdminDTO adminDto) {
+	    Admin admin = new Admin();
+	    admin.setUserId(adminDto.getUserId());
+	    admin.setUsername(adminDto.getUsername());
+	    admin.setNome(adminDto.getNome());
+	    admin.setCognome(adminDto.getCognome());
+	    admin.setEmail(adminDto.getEmail());
+	    admin.setTelefono(adminDto.getTelefono());
+	    admin.setPortafoglio(adminDto.getPortafoglio());
+	    admin.setStato(adminDto.getStato());
+	    admin.setPrivilegio(adminDto.isPrivilegio()); 
+	    return admin;
+	}
+	
+	
+	
+	
+	public List<UserDTO> getBannedUsers() {
+        List<User> bannedUsers = userDao.findAllLockedUsers(); 
+        return bannedUsers.stream().map(this::convertToUserDTO).collect(Collectors.toList());
+    }
+
+    
+    public List<UserDTO> getActiveUsers() {
+        List<User> activeUsers = userDao.findAllActiveUsers(); 
+        return activeUsers.stream().map(this::convertToUserDTO).collect(Collectors.toList());
+    }
+    
+    
+    public List<AdminDTO> getAllAdminWithPrivileges() {
+        List<Admin> admins = userDao.findAllAdminWithPrivileges();  // Chiama il metodo nel DAO
+        return admins.stream()
+                     .map(this::convertToAdminDTO)  // Converte ogni Admin in un AdminDTO
+                     .collect(Collectors.toList()); // Colleziona e restituisce la lista di AdminDTO
+    }
+    
+    public List<UserDTO> getAllLockedUsers() {
+        List<User> lockedUsers = userDao.findAllLockedUsers();  // Chiama il metodo nel DAO
+        return lockedUsers.stream()
+                          .map(this::convertToUserDTO)  // Converte ogni User in un UserDTO
+                          .collect(Collectors.toList()); // Colleziona e restituisce la lista di UserDTO
+    }
+    
+    
+    
+    public List<UserDTO> getAllActiveUsers() {
+        List<User> activeUsers = userDao.findAllActiveUsers();  // Chiama il metodo nel DAO
+        return activeUsers.stream()
+                          .map(this::convertToUserDTO)  // Converte ogni User in un UserDTO
+                          .collect(Collectors.toList()); // Colleziona e restituisce la lista di UserDTO
+    }
+
+
+
+    
+    
+    
+    
+
+    // Funzionalità admin
+	public void bloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.locked);
+		userDao.update(user);
+	}
+	
+	public void sbloccaUser(long userId) {
+		User user = userDao.findById(userId);
+		user.setStato(Stato.unlocked);
+		userDao.update(user);
+	}
+
+
 	
 }

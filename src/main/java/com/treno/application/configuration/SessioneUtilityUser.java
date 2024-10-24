@@ -4,6 +4,7 @@ package com.treno.application.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.dto.UserGuest;
 import com.treno.application.utility.SessioneUtility;
@@ -29,6 +30,17 @@ public class SessioneUtilityUser implements SessioneUtility {
     @Override
     public boolean isUtenteLoggato(HttpSession session) {
         return getUtenteLoggato(session) != null;
+    }
+    
+    
+    @Override
+    public AdminDTO getAdminLoggato(HttpSession session) {
+        return (AdminDTO) session.getAttribute("admin");
+    }
+    
+    @Override
+    public boolean isAdminLoggato(HttpSession session) {
+        return getAdminLoggato(session) != null;
     }
     
     @Override
