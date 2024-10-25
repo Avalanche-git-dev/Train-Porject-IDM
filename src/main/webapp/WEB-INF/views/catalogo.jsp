@@ -38,7 +38,7 @@
     <h1>Tutti i Treni Disponibili</h1>
 
     <!-- Barra di ricerca con applica filtri -->
-    <div class="input-group mt-3 mb-3">
+    <form action="${pageContext.request.contextPath}/filtro" method="get" class="input-group mt-3 mb-3">
         <button type="button" class="btn btn-primary dropdown-toggle fixed-width-button" data-toggle="dropdown">Scegli un'opzione</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
@@ -52,9 +52,9 @@
 
         <!-- Pulsante per applicare i filtri -->
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" onclick="filtraTreni()">Cerca</button>
+            <button class="btn btn-outline-secondary" type="submit">Cerca</button>
         </div>
-    </div>
+    </form>
 
     <div class="form-container mb-3">
         <div class="custom-form-group">
@@ -159,73 +159,6 @@
 </div>
 
 <script>
-    // Funzione per filtrare i treni senza ricaricare la pagina
-    function filtraTreni() {
-    var selectedOption = document.getElementById('hiddenSelectedOption').value.toLowerCase();
-    var peso = document.getElementById('pesoFilter').value;
-    var lunghezza = document.getElementById('lunghezzaFilter').value;
-    var valutazioni = document.getElementById('valutazioniFilter').value;
-    var ordinamento = document.getElementById('ordinamentoFilter').value;
-    var treni = document.querySelectorAll('.treno');
-    treni.forEach(function(treno) {
-        var mostra = true;
-        // Filtri per Nome, Sigla, Marca, e Utente
-        if (selectedOption) {
-            var selectedValue = treno.dataset[selectedOption];
-            var searchValue = document.getElementById('selectedOption').value.toLowerCase();
-            // Controlla se l'opzione selezionata è 'utente' o 'marca'
-            if (selectedOption === 'utente') {
-                // Controlla se l'ID corrisponde esattamente
-                mostra = selectedValue === searchValue; 
-            } else if (selectedOption === 'marca') {
-                // Controlla se la marca corrisponde esattamente
-                mostra = selectedValue.toLowerCase() === searchValue;
-            } else if (selectedValue && !selectedValue.toLowerCase().includes(searchValue)) {
-                mostra = false;
-            }
-        }
-        // Filtri per Peso
-        if (peso && !filtraPerPeso(treno.dataset.peso, peso)) {
-            mostra = false;
-        }
-        // Filtri per Lunghezza
-        if (lunghezza && !filtraPerLunghezza(treno.dataset.lunghezza, lunghezza)) {
-            mostra = false;
-        }
-        // Filtri per Valutazioni
-        if (valutazioni && !filtraPerValutazioni(treno.dataset.mediaValutazioni, valutazioni)) {
-            mostra = false;
-        }
-        treno.style.display = mostra ? 'block' : 'none';
-    });
-}
-
-
-    // Funzioni di filtraggio
-    function filtraPerPeso(peso, filtro) {
-        if (!filtro) return true;
-        var range = filtro.split('-');
-        var min = parseInt(range[0]);
-        var max = parseInt(range[1] || peso);
-        return peso >= min && peso <= max;
-    }
-
-    function filtraPerLunghezza(lunghezza, filtro) {
-        if (!filtro) return true;
-        var range = filtro.split('-');
-        var min = parseInt(range[0]);
-        var max = parseInt(range[1] || lunghezza);
-        return lunghezza >= min && lunghezza <= max;
-    }
-
-    function filtraPerValutazioni(mediaValutazioni, filtro) {
-        if (!filtro) return true;
-        var range = filtro.split('-');
-        var min = parseInt(range[0]);
-        var max = parseInt(range[1] || mediaValutazioni);
-        return mediaValutazioni >= min && mediaValutazioni <= max;
-    }
-
     // Funzione per mostrare/nascondere il form di valutazione
     function toggleValutaForm(trenoId) {
         var form = document.getElementById("valutaForm" + trenoId);
@@ -247,31 +180,38 @@
         this.value = '';  // Cancella il valore corrente dell'input visibile
     });
     
+    document.getElementById('selectedOption').addEventListener('focus', function() {
+    	if (event.key === 'Enter') {
+    		event.preventDefault();
+    		document.querySelector('.input-group-append button').click();
+    	}
+    })
+    
     document.getElementById('pesoFilter').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Previene l'azione di default per evitare refresh o altre azioni
-            filtraTreni(); // Chiama la funzione di filtro quando l'utente preme "Enter"
+            document.querySelector('.input-group-append button').click();
         }
     });
     
     document.getElementById('lunghezzaFilter').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Previene l'azione di default per evitare refresh o altre azioni
-            filtraTreni(); // Chiama la funzione di filtro quando l'utente preme "Enter"
+            document.querySelector('.input-group-append button').click();
         }
     });
     
     document.getElementById('valutazioniFilter').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            filtraTreni();
+            document.querySelector('.input-group-append button').click();
         }
     });
     
     document.getElementById('ordinamentoFilter').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            filtraTreni();
+            document.querySelector('.input-group-append button').click();
         }
     });
 </script>

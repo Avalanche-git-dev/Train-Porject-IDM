@@ -36,8 +36,6 @@ public class TrenoService {
 	@Autowired
 	@Qualifier ("ValutazioneDao")
 	private UtenteValutaTreno valutazioneDao;
-
-	
 	
 	//Creazione del treno
 	@Transactional
@@ -107,7 +105,7 @@ public class TrenoService {
 	
 	// Proviamo con hasset
 	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
+	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreniCriteria(filtro);
 
 	    // Convertire la lista in un set per evitare duplicati
 	    return treniFiltrati.stream()

@@ -11,7 +11,7 @@ public interface TrenoUtility extends Dao <Treno> {
 
 	//Treno findById(Treno treno);
 	
-	public List<Treno> filtraTreni(TrenoFilter filtro);
+	public List<Treno> filtraTreniCriteria(TrenoFilter filtro);
 
 	public List<Treno> findAllTreniByUser(long userId);
 	
@@ -20,6 +20,5 @@ public interface TrenoUtility extends Dao <Treno> {
 	public List<Treno> findByOwnerIdAndInVenditaFalse(Long ownerId);
 	
 	public TrenoDTO findByTrenoId(long id);
-
 
 }

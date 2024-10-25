@@ -114,9 +114,7 @@ public class CatalogoController {
 	        // Filtra i treni utilizzando il TrenoFilter
 	        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
 	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
-	        
-	        
-
+	  
 	        // Aggiungi la lista dei treni filtrati al modello
 	        model.addAttribute("treni", treniFiltrati);
 	        model.addAttribute("utenteLoggato", utenteLoggato);
