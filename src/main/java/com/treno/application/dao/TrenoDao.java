@@ -1,5 +1,6 @@
 package com.treno.application.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,11 @@ import com.treno.application.model.Vagone;
 import com.treno.application.utility.TrenoUtility;
 
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
@@ -255,6 +261,64 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
         System.out.println("HQL Query: " + hql.toString()); // Stampa la query per il debug
 
+        return query.getResultList();
+    }
+    
+    @Transactional
+    public List<Treno> filtraTreniCriteria(TrenoFilter filtro) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Treno> cq = cb.createQuery(Treno.class);
+        Root<Treno> treno = cq.from(Treno.class);
+        List<Predicate> predicates = new ArrayList<>();
+        // Filtro per nome
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+        	predicates.add(cb.like(treno.get("nome"), "%" + filtro.getNome() + "%"));
+        }
+        // Filtro per sigla
+        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+            predicates.add(cb.like(treno.get("sigla"), "%" + filtro.getSigla() + "%"));
+        }
+        // Filtro per marca
+        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+        	predicates.add(cb.equal(treno.get("marca"), filtro.getMarca()));
+        }
+        // Filtro per utente
+        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
+        	predicates.add(cb.equal(treno.get("idOwner"), filtro.getNomeOwner()));
+        }
+        // Filtro per peso
+        if (filtro.getPesoMin() != null && filtro.getPesoMax() != null) {
+            predicates.add(cb.between(treno.get("pesoTotale"), filtro.getPesoMin(), filtro.getPesoMax()));
+        } else if (filtro.getPesoMin() != null) {
+            predicates.add(cb.ge(treno.get("pesoTotale"), filtro.getPesoMin()));
+        } else if (filtro.getPesoMax() != null) {
+            predicates.add(cb.le(treno.get("pesoTotale"), filtro.getPesoMax()));
+        }
+        // Filtro per Lunghezza
+        if (filtro.getLunghezzaMin() != null && filtro.getLunghezzaMax() != null) {
+            predicates.add(cb.between(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin(), filtro.getLunghezzaMax()));
+        } else if (filtro.getPesoMin() != null) {
+            predicates.add(cb.ge(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin()));
+        } else if (filtro.getPesoMax() != null) {
+            predicates.add(cb.le(treno.get("lunghezzaTotale"), filtro.getLunghezzaMax()));
+        }
+        // Filtro per Valutazioni
+        if (filtro.getValutazioni() != 0) {
+        	String valutazioni = filtro.getValutazioni() + "";
+            String[] valutazioniRange = valutazioni.split("-");
+            if (valutazioniRange.length == 2) {
+                try {
+                    int valutazioniMin = Integer.parseInt(valutazioniRange[0]);
+                    int valutazioniMax = Integer.parseInt(valutazioniRange[1]);
+                    predicates.add(cb.between(treno.get("mediaValutazioni"), valutazioniMin, valutazioniMax));
+                } catch (NumberFormatException e) {
+                    // Gestisci eccezione, logga o ignora filtro
+                    System.out.println("Formato non valido per il range di valutazioni: " + e.getMessage());
+                }
+            }
+        }
+        cq.select(treno).distinct(true).where(predicates.toArray(new Predicate[0]));
+        TypedQuery<Treno> query = em.createQuery(cq);
         return query.getResultList();
     }
 

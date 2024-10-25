@@ -116,7 +116,8 @@
                  data-marca="${treno.marca}" 
                  data-peso="${treno.pesoTotale}" 
                  data-lunghezza="${treno.lunghezzaTotale}" 
-                 data-media-valutazioni="${treno.mediaValutazioni}">
+                 data-media-valutazioni="${treno.mediaValutazioni}"
+                 data-utente="${treno.idOwner}">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-8">
@@ -160,33 +161,45 @@
 <script>
     // Funzione per filtrare i treni senza ricaricare la pagina
     function filtraTreni() {
-        var selectedOption = document.getElementById('hiddenSelectedOption').value.toLowerCase();
-        var peso = document.getElementById('pesoFilter').value;
-        var lunghezza = document.getElementById('lunghezzaFilter').value;
-        var valutazioni = document.getElementById('valutazioniFilter').value;
-        var ordinamento = document.getElementById('ordinamentoFilter').value;
-        var treni = document.querySelectorAll('.treno');
-        treni.forEach(function(treno) {
-            var mostra = true;
-            // Filtri per Nome, Sigla, e Marca
-            if (selectedOption && !treno.dataset[selectedOption].toLowerCase().includes(document.getElementById('selectedOption').value.toLowerCase())) {
+    var selectedOption = document.getElementById('hiddenSelectedOption').value.toLowerCase();
+    var peso = document.getElementById('pesoFilter').value;
+    var lunghezza = document.getElementById('lunghezzaFilter').value;
+    var valutazioni = document.getElementById('valutazioniFilter').value;
+    var ordinamento = document.getElementById('ordinamentoFilter').value;
+    var treni = document.querySelectorAll('.treno');
+    treni.forEach(function(treno) {
+        var mostra = true;
+        // Filtri per Nome, Sigla, Marca, e Utente
+        if (selectedOption) {
+            var selectedValue = treno.dataset[selectedOption];
+            var searchValue = document.getElementById('selectedOption').value.toLowerCase();
+            // Controlla se l'opzione selezionata è 'utente' o 'marca'
+            if (selectedOption === 'utente') {
+                // Controlla se l'ID corrisponde esattamente
+                mostra = selectedValue === searchValue; 
+            } else if (selectedOption === 'marca') {
+                // Controlla se la marca corrisponde esattamente
+                mostra = selectedValue.toLowerCase() === searchValue;
+            } else if (selectedValue && !selectedValue.toLowerCase().includes(searchValue)) {
                 mostra = false;
             }
-            // Filtri per Peso
-            if (peso && !filtraPerPeso(treno.dataset.peso, peso)) {
-                mostra = false;
-            }
-            // Filtri per Lunghezza
-            if (lunghezza && !filtraPerLunghezza(treno.dataset.lunghezza, lunghezza)) {
-                mostra = false;
-            }
-            // Filtri per Valutazioni
-            if (valutazioni && !filtraPerValutazioni(treno.dataset.mediaValutazioni, valutazioni)) {
-                mostra = false;
-            }
-            treno.style.display = mostra ? 'block' : 'none';
-        });
-    }
+        }
+        // Filtri per Peso
+        if (peso && !filtraPerPeso(treno.dataset.peso, peso)) {
+            mostra = false;
+        }
+        // Filtri per Lunghezza
+        if (lunghezza && !filtraPerLunghezza(treno.dataset.lunghezza, lunghezza)) {
+            mostra = false;
+        }
+        // Filtri per Valutazioni
+        if (valutazioni && !filtraPerValutazioni(treno.dataset.mediaValutazioni, valutazioni)) {
+            mostra = false;
+        }
+        treno.style.display = mostra ? 'block' : 'none';
+    });
+}
+
 
     // Funzioni di filtraggio
     function filtraPerPeso(peso, filtro) {
