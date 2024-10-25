@@ -1,8 +1,6 @@
 package com.treno.application.controller;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -99,21 +97,34 @@ public class CatalogoController {
     
 	    
 	    
+//	    @GetMapping("/filtro")
+//	    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
+//	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//
+//	        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
+//	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
+//	        
+//	        
+//	        model.addAttribute("treni", treniFiltrati);
+//	        model.addAttribute("utenteLoggato", utenteLoggato);
+//	        model.addAttribute("trenoFilter", trenoFilter);
+//
+//	        return "catalogo";
+//	    }
+//	    
+	    
+	    
 	    @GetMapping("/filtro")
-	    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
-	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-
-	        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
-	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
-	        
-	        
+	    public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
+	       
+	        List<TrenoDTO> treniFiltrati = trenoService.findTreniByFilter(filter);
+            
 	        model.addAttribute("treni", treniFiltrati);
-	        model.addAttribute("utenteLoggato", utenteLoggato);
-	        model.addAttribute("trenoFilter", trenoFilter);
+	        
+	        model.addAttribute("filter", filter);
 
 	        return "catalogo";
 	    }
-	    
 	    
 	    
    

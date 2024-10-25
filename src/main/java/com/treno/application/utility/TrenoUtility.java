@@ -21,4 +21,5 @@ public interface TrenoUtility extends Dao <Treno> {
 	public Treno findByTrenoId(long id);
 
 
+
 }

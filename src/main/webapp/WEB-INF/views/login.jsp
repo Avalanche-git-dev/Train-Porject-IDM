@@ -126,22 +126,21 @@ to {
 <body>
 
 
-<div class="navbar navbar-brand navbar-dark bg-primary py-1">
+<%-- <div class="navbar navbar-brand navbar-dark bg-primary py-1">
     <!-- Logo immagine -->
     <a href="${pageContext.request.contextPath}/" id="home-button">
         <img src="${pageContext.request.contextPath}/resources/images/icon.jpg" alt="logo" id="logo"/>
     </a>
-</div>
+</div> --%>
 
 
 
-<%-- 	<!-- Navbar -->
+	<!-- Navbar -->
 	<div class="navbar navbar-brand navbar-dark bg-primary py-1">
 		<a href="${pageContext.request.contextPath}/" >
-		 <img src="${pageContext.request.contextPath}/resources/images/icon.jpg" alt="logo"id="logo"style=" max-width: 110px; max-height: 100px;"/>
-			<!-- <img src="train-svgrepo-com.svg" alt="logo" id="logo"> -->
-		<!-- </a> -->
-	</div> --%>
+			<img src="${pageContext.request.contextPath}/resources/images/train-svgrepo-com.svg" alt="logo" id="logo">
+		</a>
+	</div>
 
 	<!-- Login form -->
 	<div class="login-container">
@@ -160,13 +159,13 @@ to {
 		</c:if>
 		
 		<c:if test="${not empty logoutMessage}">
-    <div class="text-success">${logoutMessage}</div>
+    <div class="text-success mt-3">${logoutMessage}</div>
     </c:if>
 	<%
     String sessioneScaduta = request.getParameter("sessioneScaduta");
     if ("true".equals(sessioneScaduta)) {
 %>
-    <div class="error-message">La tua sessione è scaduta. Per favore, accedi di nuovo.</div>
+    <div class="text-danger mt-3">La tua sessione è scaduta. Per favore, accedi di nuovo.</div>
 <%
     }
 %>

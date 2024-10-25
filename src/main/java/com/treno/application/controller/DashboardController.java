@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.UserDTO;
 import com.treno.application.utility.SessioneUtility;
@@ -25,20 +26,53 @@ public class DashboardController {
 
     
     
+//    @GetMapping
+//    public String dashboard(HttpSession session, Model model) {
+//    	
+//    	if(sessioneUtility.isUtenteGuest(session)) {
+//    		session.setAttribute("errorMessage", "Non sei autorizzato ad accedere a questa sezione, sei pregato di registrati o eseguire il login per proseguire.");
+//    		return sessioneUtility.redirectTologin();
+//    	}
+//       
+//        if(sessioneUtility.isUtenteLoggato(session)) {
+//        	return "dashboard";
+//        }else if (sessioneUtility.isAdminLoggato(session)) {
+//        	return "redirect:/admin";
+//        }
+//      
+//        
+//        UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
+//        model.addAttribute("utenteLoggato", utenteLoggato);
+//        return "dashboard";
+//        
+//    
+//    
+//    
+//}
+
+    
+    
+    
     @GetMapping
-    public String dashboard(HttpSession session, Model model) {
-        UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
-        if(!sessioneUtility.isUtenteLoggato(session)) {
-        	return sessioneUtility.redirectTologin();
-        }
-        //sessioneUtility.setUtenteLoggato(session, utenteLoggato); se non modifico lo stato rimane li 
-        model.addAttribute("utenteLoggato", utenteLoggato);
-        return "dashboard";
+    public String dashboard(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         
-    
-    
-    
-}
+        if (sessioneUtility.isUtenteGuest(session)) {
+            
+            return "redirect:/user/login"; // Assicurati che restituisca "redirect:/login"
+        }
+
+        if (sessioneUtility.isUtenteLoggato(session)) {
+            UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
+            model.addAttribute("utenteLoggato", utenteLoggato);
+            return "dashboard";
+        } else if (sessioneUtility.isAdminLoggato(session)) {
+            return "redirect:/admin";
+        }
+        
+        redirectAttributes.addFlashAttribute("errorMessage", "Non sei autorizzato ad accedere a questa sezione. Sei pregato di registrarti o eseguire il login per proseguire.");
+        // Fallback per utenti loggati non previsti
+        return "redirect:/user/login";
+    }
 
 }
 

@@ -73,10 +73,6 @@ footer {
 footer p {
 	margin: 0;
 }
-
-.spacer {
-	margin-top: 50px;
-}
 </style>
 </head>
 <body>
@@ -89,15 +85,10 @@ footer p {
 			<button class="cta-btn"
 				onclick="window.location.href='${pageContext.request.contextPath}/treni/crea'">Crea
 				un nuovo treno</button>
-			<!-- Pulsante "Visualizza i tuoi treni" -->
+			<!-- Pulsante "Vai ai tuoi treni" -->
 			<button class="cta-btn"
-				onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza'">Visualizza
-				i tuoi treni</button>
-			<!-- Pulsante "Vedi i treni di tutti gli utenti" -->
-			<div class="spacer"></div>
-			<button class="cta-btn"
-				onclick="window.location.href='${pageContext.request.contextPath}/catalogo'">Vedi
-				 Catalogo </button>
+				onclick="window.location.href='${pageContext.request.contextPath}/treni/visualizza'">Vai
+				ai tuoi treni</button>
 		</div>
 	</div>
 
@@ -116,3 +107,4 @@ footer p {
 
 </body>
 </html>
+

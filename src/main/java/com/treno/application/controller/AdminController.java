@@ -1,6 +1,7 @@
 package com.treno.application.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.filter.UtenteFilter;
 import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
@@ -50,17 +53,6 @@ public class AdminController {
     
     
     
-//
-//    @GetMapping
-//    public String mostraAdmin(HttpSession session, Model model) {
-//        AdminDTO admin = sessione.getAdminLoggato(session);
-//        if (!sessione.isAdminLoggato(session)) {
-//            return sessione.redirectTologin();
-//        }
-//        model.addAttribute("listaUtenti", userService.findAllUsers());
-//        model.addAttribute("user", admin);
-//        return "admin";
-//    }
     
     
     @GetMapping
@@ -119,5 +111,17 @@ public class AdminController {
         model.addAttribute("utenteLoggato", utenteDto);
         return "profiloUtente";
     }
+    
+    
+    
+    @GetMapping("/filtro")
+    public String getRicercaByFiltro(@ModelAttribute ("UserFilter") UtenteFilter filtro, Model model, HttpSession session) {
+        Set<UserDTO> utentiFiltrati = userService.filtraUtenti(filtro);
+
+        model.addAttribute("listaUtenti", utentiFiltrati);
+
+        return "admin";
+    }
+
 	
 }

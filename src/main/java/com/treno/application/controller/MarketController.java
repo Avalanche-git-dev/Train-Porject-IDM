@@ -1,7 +1,6 @@
 package com.treno.application.controller;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ public class MarketController {
 		return "transazione";
 	}
 
-	@PostMapping("/mettiInVendita")
+	@PostMapping("/vendi")
 	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
 			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
 		long idUtente = sessione.getUtenteLoggato(session).getUserId();
@@ -84,7 +83,7 @@ public class MarketController {
 		// Recupera l'utente loggato
 		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
 		// Filtra i treni utilizzando il TrenoFilter
-		Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
+		List<TrenoDTO> treniFiltratiSet = trenoService.findTreniByFilter(trenoFilter);
 		List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
 		// Aggiungi la lista dei treni filtrati al modello
 		model.addAttribute("treni", treniFiltrati);

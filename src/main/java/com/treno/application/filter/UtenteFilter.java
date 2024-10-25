@@ -6,39 +6,18 @@ public class UtenteFilter {
 	
 	
 	//Filtri per utente
-    private String nome;
+    
     private String cognome; // servono effettivamente ?
     private String email;
-    private Integer età;
-    
-    
-    //Filtri per admin
+    private String nome;
     private String username;
     private String password;
-    private Stato stato;
-    private int numeroTreni;
-    private int numeroValutazioni;
-    private int numeroTransazioni;
-   // private int ammontareTotaleTransazioni;
-	public UtenteFilter(String nome, String cognome, String email, Integer età, String username, String password,
-			Stato stato, int numeroTreni, int numeroValutazioni, int numeroTransazioni) {
-		super();
-		this.nome = nome;
-		this.cognome = cognome;
-		this.email = email;
-		this.età = età;
-		this.username = username;
-		this.password = password;
-		this.stato = stato;
-		this.numeroTreni = numeroTreni;
-		this.numeroValutazioni = numeroValutazioni;
-		this.numeroTransazioni = numeroTransazioni;
-	}
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	private Stato stato;
+    private Integer numeroTreni;
+    private Integer numeroValutazioni;
+    private Integer numeroTransazioni;
+    private double portafoglio;
+	public UtenteFilter() {
 	}
 	public String getCognome() {
 		return cognome;
@@ -52,11 +31,11 @@ public class UtenteFilter {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Integer getEtà() {
-		return età;
+	public String getNome() {
+		return nome;
 	}
-	public void setEtà(Integer età) {
-		this.età = età;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	public String getUsername() {
 		return username;
@@ -94,14 +73,11 @@ public class UtenteFilter {
 	public void setNumeroTransazioni(int numeroTransazioni) {
 		this.numeroTransazioni = numeroTransazioni;
 	}
-	@Override
-	public String toString() {
-		return "UtenteFilter [nome=" + nome + ", cognome=" + cognome + ", email=" + email + ", età=" + età
-				+ ", username=" + username + ", password=" + password + ", stato=" + stato + ", numeroTreni="
-				+ numeroTreni + ", numeroValutazioni=" + numeroValutazioni + ", numeroTransazioni=" + numeroTransazioni
-				+ "]";
+	public double getPortafoglio() {
+		return portafoglio;
 	}
-
-    
+	public void setPortafoglio(double portafoglio) {
+		this.portafoglio = portafoglio;
+	}
     
 }

@@ -83,11 +83,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     }
 
     
-    
-
-    
-    
-//    
 //    @SuppressWarnings("unchecked")
 //    @Transactional
 //    public List<Treno> filtraTreni(TrenoFilter filtro) {
@@ -98,11 +93,11 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 //        hql.append("WHERE 1=1");
 //
 //        // Aggiunta dinamica delle condizioni di filtro
-//        if (filtro.getPrezzoMin() != null) {
-//            hql.append(" AND t.prezzoVendita >= :prezzoMin");
+//        if (filtro.getCostoTotaleMin() != null) {
+//            hql.append(" AND t.prezzoVendita >= :costoTotaleMin");
 //        }
-//        if (filtro.getPrezzoMax() != null) {
-//            hql.append(" AND t.prezzoVendita <= :prezzoMax");
+//        if (filtro.getCostoTotaleMax() != null) {
+//            hql.append(" AND t.prezzoVendita <= :costoTotaleMax");
 //        }
 //        if (filtro.getPesoMin() != null) {
 //            hql.append(" AND t.peso >= :pesoMin");
@@ -117,55 +112,30 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 //            hql.append(" AND t.lunghezza <= :lunghezzaMax");
 //        }
 //        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-//            hql.append(" AND t.sigla LIKE :sigla"); // Cambiato a LIKE per corrispondenza parziale
+//            hql.append(" AND t.sigla LIKE :sigla"); // Usa LIKE per corrispondenza parziale
 //        }
 //        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
 //            hql.append(" AND t.marca = :marca");
 //        }
-//        if (filtro.getPrezzoVendita() != null) {
-//            hql.append(" AND t.prezzoVendita = :prezzoVendita");
-//        }
-//        if (filtro.getPrezzoVenditaMax() != null) {
-//            hql.append(" AND t.prezzoVendita <= :prezzoVenditaMax");
-//        }
-//
-//        if (Boolean.TRUE.equals(filtro.isInVendita())) {
-//            hql.append(" AND t.inVendita = true");
-//        } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
-//            hql.append(" AND t.inVendita = false");
+//        if (Boolean.TRUE.equals(filtro.getMediaValutazioniMin() != null)) {
+//            hql.append(" AND AVG(v.punteggio) >= :mediaValutazioniMin");
 //        }
 //        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
-//            hql.append(" AND t.nome = :nome");
+//            hql.append(" AND t.nome LIKE :nome"); // Usa LIKE per corrispondenza parziale
 //        }
-//        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
-//            hql.append(" AND t.owner.username = :nomeOwner");
+//        if (filtro.getUsernameProprietario() != null && !filtro.getUsernameProprietario().isEmpty()) {
+//            hql.append(" AND t.owner.username = :usernameProprietario");
 //        }
-//
-//        // Aggiunta della media delle valutazioni
-//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
-//            hql.append(" GROUP BY t ");
-//            hql.append(" HAVING AVG(v.punteggio) >= :valutazioni");
-//        }
-//
-//        // Aggiunta della somma delle transazioni per ammontare totale
-//        if (filtro.getAmmontareTotale() != null) {
-//            if (!hql.toString().contains("GROUP BY")) {
-//                hql.append(" GROUP BY t ");
-//            }
-//            hql.append(" HAVING SUM(tr.importo) >= :ammontareTotale");
-//        }
-//
-//
 //
 //        // Creazione della query
 //        Query query = em.createQuery(hql.toString());
 //
 //        // Impostazione dei parametri
-//        if (filtro.getPrezzoMin() != null) {
-//            query.setParameter("prezzoMin", filtro.getPrezzoMin());
+//        if (filtro.getCostoTotaleMin() != null) {
+//            query.setParameter("costoTotaleMin", filtro.getCostoTotaleMin());
 //        }
-//        if (filtro.getPrezzoMax() != null) {
-//            query.setParameter("prezzoMax", filtro.getPrezzoMax());
+//        if (filtro.getCostoTotaleMax() != null) {
+//            query.setParameter("costoTotaleMax", filtro.getCostoTotaleMax());
 //        }
 //        if (filtro.getPesoMin() != null) {
 //            query.setParameter("pesoMin", filtro.getPesoMin());
@@ -180,34 +150,132 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 //            query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
 //        }
 //        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-//            query.setParameter("sigla", "%" + filtro.getSigla() + "%"); // Aggiunto jolly per corrispondenza parziale
+//            query.setParameter("sigla", "%" + filtro.getSigla() + "%"); // Corrispondenza parziale
 //        }
 //        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
 //            query.setParameter("marca", filtro.getMarca());
 //        }
-//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
-//            query.setParameter("valutazioni", filtro.getValutazioni());
-//        }
-//        if (filtro.getPrezzoVendita() != null) {
-//            query.setParameter("prezzoVendita", filtro.getPrezzoVendita());
-//        }
-//        if (filtro.getPrezzoVenditaMax() != null) {
-//            query.setParameter("prezzoVenditaMax", filtro.getPrezzoVenditaMax());
-//        }
-//        if (filtro.getAmmontareTotale() != null) {
-//            query.setParameter("ammontareTotale", filtro.getAmmontareTotale());
+//        if (filtro.getMediaValutazioniMin() != null && filtro.getMediaValutazioniMin() > 0) {
+//            query.setParameter("mediaValutazioniMin", filtro.getMediaValutazioniMin());
 //        }
 //        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
-//            query.setParameter("nome", filtro.getNome());
+//            query.setParameter("nome", "%" + filtro.getNome() + "%"); // Corrispondenza parziale
 //        }
-//        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
-//            query.setParameter("nomeOwner", filtro.getNomeOwner());
+//        if (filtro.getUsernameProprietario() != null && !filtro.getUsernameProprietario().isEmpty()) {
+//            query.setParameter("usernameProprietario", filtro.getUsernameProprietario());
 //        }
-//
-//       // System.out.println("HQL Query: " + hql.toString()); // Stampa la query per il debug
 //
 //        return query.getResultList();
 //    }
+
+    
+    
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Treno> filtraTreni(TrenoFilter filtro) {
+        StringBuilder hql = new StringBuilder("SELECT DISTINCT t FROM Treno t ");
+        hql.append("LEFT JOIN FETCH t.valutazioni v ");
+        hql.append("LEFT JOIN FETCH t.transazioni tr ");
+        hql.append("WHERE 1=1");
+
+        // Condizioni di filtro dinamiche
+        if (filtro.getCostoTotaleMin() != null) {
+            hql.append(" AND t.prezzoVendita >= :costoTotaleMin");
+        }
+        if (filtro.getCostoTotaleMax() != null) {
+            hql.append(" AND t.prezzoVendita <= :costoTotaleMax");
+        }
+        if (filtro.getPesoMin() != null) {
+            hql.append(" AND t.peso >= :pesoMin");
+        }
+        if (filtro.getPesoMax() != null) {
+            hql.append(" AND t.peso <= :pesoMax");
+        }
+        if (filtro.getLunghezzaMin() != null) {
+            hql.append(" AND t.lunghezza >= :lunghezzaMin");
+        }
+        if (filtro.getLunghezzaMax() != null) {
+            hql.append(" AND t.lunghezza <= :lunghezzaMax");
+        }
+        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+            hql.append(" AND t.sigla LIKE :sigla");
+        }
+        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+            hql.append(" AND t.marca = :marca");
+        }
+        if (filtro.getMediaValutazioniMin() != null) {
+            hql.append(" AND AVG(v.punteggio) >= :mediaValutazioniMin");
+        }
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+            hql.append(" AND t.nome LIKE :nome");
+        }
+        if (filtro.getUsernameProprietario() != null && !filtro.getUsernameProprietario().isEmpty()) {
+            hql.append(" AND t.owner.username = :usernameProprietario");
+        }
+
+        // Aggiunta dell'ordinamento dinamico
+        if (filtro.getOrdine() != null) {
+            hql.append(" ORDER BY ");
+            switch (filtro.getOrdine()) {
+                case "sigla":
+                    hql.append("t.sigla");
+                    break;
+                case "prezzo":
+                    hql.append("t.prezzoVendita");
+                    break;
+                case "lunghezza":
+                    hql.append("t.lunghezza");
+                    break;
+                case "peso":
+                    hql.append("t.peso");
+                    break;
+                default:
+                    hql.append("t.idTreno"); // Ordinamento di default
+                    break;
+            }
+            // Aggiunta della direzione di ordinamento (ASC o DESC)
+            hql.append(" ").append(filtro.getDirezione() != null ? filtro.getDirezione() : "ASC");
+        }
+
+        Query query = em.createQuery(hql.toString());
+
+        // Impostazione dei parametri
+        if (filtro.getCostoTotaleMin() != null) {
+            query.setParameter("costoTotaleMin", filtro.getCostoTotaleMin());
+        }
+        if (filtro.getCostoTotaleMax() != null) {
+            query.setParameter("costoTotaleMax", filtro.getCostoTotaleMax());
+        }
+        if (filtro.getPesoMin() != null) {
+            query.setParameter("pesoMin", filtro.getPesoMin());
+        }
+        if (filtro.getPesoMax() != null) {
+            query.setParameter("pesoMax", filtro.getPesoMax());
+        }
+        if (filtro.getLunghezzaMin() != null) {
+            query.setParameter("lunghezzaMin", filtro.getLunghezzaMin());
+        }
+        if (filtro.getLunghezzaMax() != null) {
+            query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
+        }
+        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+            query.setParameter("sigla", "%" + filtro.getSigla() + "%");
+        }
+        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+            query.setParameter("marca", filtro.getMarca());
+        }
+        if (filtro.getMediaValutazioniMin() != null) {
+            query.setParameter("mediaValutazioniMin", filtro.getMediaValutazioniMin());
+        }
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+            query.setParameter("nome", "%" + filtro.getNome() + "%");
+        }
+        if (filtro.getUsernameProprietario() != null && !filtro.getUsernameProprietario().isEmpty()) {
+            query.setParameter("usernameProprietario", filtro.getUsernameProprietario());
+        }
+
+        return query.getResultList();
+    }
 //
 
     
@@ -234,11 +302,6 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 	    return (List<Vagone>)query.getResultList();
 	}
 
-	@Override
-	public List<Treno> filtraTreni(TrenoFilter filtro) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

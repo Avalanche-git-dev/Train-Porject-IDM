@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.dto.UserGuest;
+import com.treno.application.filter.TrenoFilter;
 import com.treno.application.service.TrenoService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -146,21 +148,62 @@ public class TrenoController {
     }
     
     // getAllTreniByUser
+//    @GetMapping("/visualizza")
+//    public String visualizzaTreniPerUtente(Model model, HttpSession session) {
+//        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//        if (!sessione.isUtenteLoggato(session)) {
+//            return sessione.redirectTologin();
+//        }
+//        String immagineTreno="/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
+//        session.setAttribute("immagineTreno",immagineTreno);
+//        Long ownerId = utenteLoggato.getUserId();
+//        String usernameOwner = utenteLoggato.getUsername();
+//        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(ownerId);
+//        //List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
+//        model.addAttribute("treniDto", treniDto);
+//        session.setAttribute("usernameOwner",usernameOwner);
+//        model.addAttribute("ownerId", ownerId);
+//        return "visualizzaTreni";
+//    }
+    
+    
     @GetMapping("/visualizza")
     public String visualizzaTreniPerUtente(Model model, HttpSession session) {
-        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+        // Verifica se l'utente è loggato e, se non lo è, reindirizza alla pagina di login
         if (!sessione.isUtenteLoggato(session)) {
             return sessione.redirectTologin();
         }
-        String immagineTreno="/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
-        session.setAttribute("immagineTreno",immagineTreno);
+        
+        // Recupera i dettagli dell'utente loggato
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
         Long ownerId = utenteLoggato.getUserId();
         String usernameOwner = utenteLoggato.getUsername();
+        
+        // Aggiunge un percorso di immagine predefinito per i treni
+        String immagineTreno = "/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
+        session.setAttribute("immagineTreno", immagineTreno);
+        
+        // Recupera la lista di TrenoDTO per l'utente loggato
         List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(ownerId);
-        //List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
+
+        // Aggiunge attributi al modello per essere utilizzati nella vista
         model.addAttribute("treniDto", treniDto);
-        session.setAttribute("usernameOwner",usernameOwner);
         model.addAttribute("ownerId", ownerId);
+        session.setAttribute("usernameOwner", usernameOwner);
+
+        // Ritorna la vista 'visualizzaTreni', assicurati che esista un file JSP o HTML con questo nome
+        return "visualizzaTreni";
+    }
+    
+    @GetMapping("/filtro")
+    public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
+       
+        List <TrenoDTO> treniFiltrati = trenoService.findTreniByFilter(filter);
+
+        model.addAttribute("treniDto", treniFiltrati);
+        
+        model.addAttribute("filter", filter);
+
         return "visualizzaTreni";
     }
 

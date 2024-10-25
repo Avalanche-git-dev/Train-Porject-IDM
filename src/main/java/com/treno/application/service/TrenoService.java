@@ -1,7 +1,6 @@
 package com.treno.application.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,11 +86,11 @@ public class TrenoService {
 	}
 
 	// Proviamo con hasHset
-	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-		List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
-
-		return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toSet());
-	}
+//	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
+//		List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
+//
+//		return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toSet());
+//	}
 
 	public TrenoDTO findById(Long id) {
 		Treno treno = trenoDao.findByTrenoId(Long.valueOf(id));
@@ -199,7 +198,17 @@ public class TrenoService {
 				.collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
 	}
 	
-	
+	//FindTreniByFilter
+	    @Transactional
+	    public List<TrenoDTO> findTreniByFilter(TrenoFilter filter) {
+	        List<Treno> treni = trenoDao.filtraTreni(filter);
+
+	        return treni.stream()
+	                    .map(this::convertToTrenoDTO) // Conversione di ogni Treno in TrenoDTO
+	                    .collect(Collectors.toList()); // Restituisce la lista di TrenoDTO
+	    }
+//	
+//	
 	
 	
 

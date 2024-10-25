@@ -1,6 +1,7 @@
 package com.treno.application.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,13 +206,18 @@ public class UserService {
 	
 	
 	// Filtro Utenti nel Service per fare da ponte al controller.
-	public List<UserDTO> filtraUtenti(UtenteFilter filtro) {
+	public Set<UserDTO> filtraUtenti(UtenteFilter filtro) {
 		List<User> utenti = userDao.filtraUtenti(filtro);
 		if (utenti.isEmpty()) {
 			throw new UserNotFoundException("Nessun utente trovato con il filtro specificato");
 		}
-		return utenti.stream().map(this::convertToUserDTO).collect(Collectors.toList());
+		return utenti.stream().map(this::convertToUserDTO).collect(Collectors.toSet());
 	}
+	
+	
+	
+	
+	
 	
 	
 	// Senza questa roba non si puo chiamare logica di business
@@ -349,12 +355,17 @@ public class UserService {
                           .map(this::convertToUserDTO)  // Converte ogni User in un UserDTO
                           .collect(Collectors.toList()); // Colleziona e restituisce la lista di UserDTO
     }
+    
+    
+   
+
+    public UserDTO findById(Long id) {
+        User user = userDao.findById(id);
+        return convertToUserDTO(user);
+    }
 
 
 
-    
-    
-    
     
 
     // Funzionalità admin
