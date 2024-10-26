@@ -258,7 +258,7 @@
 
     body {
         font-family: 'Roboto', sans-serif;
-        background-color: #ffffff; 
+        background-color: #f8f8ff; 
     }
 
     .error-message {
@@ -360,7 +360,7 @@
 }
 </style>
 </head>
-<body class="bg-light">
+<body>
 
     <div class="container">
         <div class="profile-container">

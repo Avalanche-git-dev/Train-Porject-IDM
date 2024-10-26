@@ -12,30 +12,34 @@
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); 
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #fafafa;
             color: #333;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            font-family: 'Roboto', sans-serif;
+        	background-color: #f8f8ff; 
         }
+        
+        
+        
+        
         .main {
             text-align: center;
             padding: 80px 20px;
-            background-color: #ffffff;
+            background-color: #f8f8ff; 
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         footer {
-            background-color: #f0f0f0;
+            background-color: #333333;
             padding: 20px;
             text-align: center;
             border-top: 1px solid #ddd;
-            color: #333;
+            color: #f8f8ff;
             width: 100%;
         }
     </style>
@@ -44,7 +48,7 @@
 
 <!-- Main content -->
 <div class="main">
-    <h1>Benvenuto, ${utente.username}</h1>
+    <h1>Benvenuto, <span class="text-warning">${utenteLoggato.username}</span>!</h1>
     <p>Questa è la tua dashboard personale.</p>
 </div>
 

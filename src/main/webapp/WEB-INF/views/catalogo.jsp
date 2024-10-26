@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>Tutti i Treni Disponibili</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
+<style>
+ body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8ff; 
+    }</style>
 </head>
 <body>
     <div class="container">

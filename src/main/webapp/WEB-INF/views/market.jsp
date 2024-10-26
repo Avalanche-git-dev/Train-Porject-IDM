@@ -9,6 +9,12 @@
 <title>Treni</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
+<style type="text/css">
+ body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8ff; 
+    }
+</style>
 </head>
 <body>
 

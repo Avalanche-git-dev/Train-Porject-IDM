@@ -63,6 +63,13 @@
 	width: 170px;
 	white-space: nowrap; /* Regolato per stare sotto la sezione profilo */
 }
+
+
+
+ body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8ff; 
+    }
 </style>
 </head>
 <body>
