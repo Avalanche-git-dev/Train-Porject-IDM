@@ -1,7 +1,9 @@
 package com.treno.application.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,16 +11,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.dto.UserGuest;
 import com.treno.application.exception.TrenoCreazioneException;
 import com.treno.application.filter.TrenoFilter;
+import com.treno.application.model.Cargo;
+import com.treno.application.model.Motrice;
+import com.treno.application.model.Passeggero;
+import com.treno.application.model.Ristorante;
+import com.treno.application.model.Vagone;
 import com.treno.application.service.TrenoService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -107,52 +114,100 @@ public class TrenoController {
 	// getCrea
 	@GetMapping("/crea")
 	public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+	    UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+	    model.addAttribute("utenteLoggato", utenteLoggato);
+	    model.addAttribute("treno", new TrenoDTO());
 
-		model.addAttribute("utenteLoggato", utenteLoggato);
-		model.addAttribute("treno", new TrenoDTO());
-		return "crea";
+	    List<TrenoDTO> listaTreni = trenoService.findAllTreniByUser(utenteLoggato.getUserId());
+	    model.addAttribute("listaTreniUtente", listaTreni);
+	    Map<Long, String> vagoneTypeMap = new HashMap<>();
+	    for (TrenoDTO treno : listaTreni) {
+	        List<Vagone> listaVagoni = trenoService.findVagoniByTreno(treno.getIdTreno());
+	        
+	        for (Vagone vagone : listaVagoni) {
+	            if (vagone instanceof Passeggero) {
+	                vagoneTypeMap.put(vagone.getIdVagone(), "Vagone Passeggeri");
+	            } else if (vagone instanceof Ristorante) {
+	                vagoneTypeMap.put(vagone.getIdVagone(), "Vagone Ristorante");
+	            } else if (vagone instanceof Cargo) {
+	                vagoneTypeMap.put(vagone.getIdVagone(), "Vagone Cargo");
+	            } else if (vagone instanceof Motrice) {
+	                vagoneTypeMap.put(vagone.getIdVagone(), "Vagone Motrice");
+	            } else {
+	                vagoneTypeMap.put(vagone.getIdVagone(), "Tipo Sconosciuto");
+	            }
+	        }
+	        treno.setVagoni(listaVagoni);
+	        
+	    }
+	    model.addAttribute("vagoneTypeMap", vagoneTypeMap);
+	   
+	    return "crea";
 	}
+	
+	
+//	
+////	
+//	@GetMapping("/crea")
+//	public String mostraFormCreazioneTreno(HttpSession session, Model model) {
+//	    UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//	    model.addAttribute("utenteLoggato", utenteLoggato);
+//	    model.addAttribute("treno", new TrenoDTO());
+//
+//	    List<TrenoDTO> listaTreni = trenoService.findAllTreniByUser(utenteLoggato.getUserId());
+//	    for (TrenoDTO treno : listaTreni) {
+//	        List<Vagone> listaVagoni = trenoService.findVagoniByTreno(treno.getIdTreno());
+//	        treno.setVagoni(listaVagoni);
+//	        
+//	    }
+//
+//	    model.addAttribute("listaTreniUtente", listaTreni);
+//	    return "crea";
+//	}
 
 	// DoCrea
+//	@PostMapping("/crea")
+//	public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
+//			@RequestParam("marca") String marca, HttpSession session, Model model) {
+//		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+//		try {
+//			TrenoDTO trenoCreato = new TrenoDTO();
+//			trenoCreato.setNome(nomeTreno);
+//			trenoCreato.setSigla(input);
+//			trenoCreato.setMarca(marca);
+//			TrenoDTO nuovoTreno = trenoService.creaTreno(trenoCreato, utenteLoggato);
+//			model.addAttribute("nuovoTreno", nuovoTreno);
+//		} catch (TrenoCreazioneException e) {
+//			model.addAttribute("errorMessage", e.getMessage());
+//			return "crea";
+//
+//		}
+//
+//		return "redirect:/treni/crea";
+//	}
+	
+	
 	@PostMapping("/crea")
 	public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
-			@RequestParam("marca") String marca, HttpSession session, Model model) {
-		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-		try {
-			TrenoDTO trenoCreato = new TrenoDTO();
-			trenoCreato.setNome(nomeTreno);
-			trenoCreato.setSigla(input);
-			trenoCreato.setMarca(marca);
-			TrenoDTO nuovoTreno = trenoService.creaTreno(trenoCreato, utenteLoggato);
-			model.addAttribute("nuovoTreno", nuovoTreno);
-		} catch (TrenoCreazioneException e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "crea";
+	                        @RequestParam("marca") String marca, HttpSession session, RedirectAttributes redirectAttributes) {
+	    UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+	    
+	    try {
+	        TrenoDTO trenoCreato = new TrenoDTO();
+	        trenoCreato.setNome(nomeTreno);
+	        trenoCreato.setSigla(input);
+	        trenoCreato.setMarca(marca);
+	        TrenoDTO nuovoTreno = trenoService.creaTreno(trenoCreato, utenteLoggato);
+	        redirectAttributes.addFlashAttribute("nuovoTreno", nuovoTreno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Treno creato con successo: " + nuovoTreno.getNome());
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+	        return "redirect:/treni/crea";
+	    }
 
-		}
-
-		return "crea";
+	    return "redirect:/treni/crea";
 	}
 
-	// getAllTreniByUser
-//    @GetMapping("/visualizza")
-//    public String visualizzaTreniPerUtente(Model model, HttpSession session) {
-//        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//        if (!sessione.isUtenteLoggato(session)) {
-//            return sessione.redirectTologin();
-//        }
-//        String immagineTreno="/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
-//        session.setAttribute("immagineTreno",immagineTreno);
-//        Long ownerId = utenteLoggato.getUserId();
-//        String usernameOwner = utenteLoggato.getUsername();
-//        List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(ownerId);
-//        //List<TrenoDTO> treniDto = trenoService.findTreniByUserEscludiInVendita(ownerId);
-//        model.addAttribute("treniDto", treniDto);
-//        session.setAttribute("usernameOwner",usernameOwner);
-//        model.addAttribute("ownerId", ownerId);
-//        return "visualizzaTreni";
-//    }
 
 	@GetMapping("/visualizza")
 	public String visualizzaTreniPerUtente(Model model, HttpSession session) {
@@ -227,23 +282,72 @@ public class TrenoController {
 
 ////////////////////////////// FUNZIONALITA IN PROVA.     
 
-	// Modifica un treno
-	@GetMapping("/modifica/treno")
-	public String modificaTreno(@PathVariable Long idTreno, Model model, HttpSession session) {
-		sessione.getUtenteLoggato(session);
-		TrenoDTO trenoDto = trenoService.findById(idTreno);
-		if (trenoDto == null) {
-			return "redirect:/treni/catalogo";
-		}
-		model.addAttribute("treno", trenoDto);
-		return "modificaTreno";
+	
+	
+
+	@GetMapping("/modifica/aggiungi")
+	public String aggiungiVagone(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	    sessione.getUtenteLoggato(session);
+	    
+	    
+	    try {
+	        trenoService.aggiungiVagone(idTreno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Vagone aggiunto con successo al treno.");
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'aggiunta del vagone.");
+	    }
+	    return "redirect:/treni/crea";
 	}
 
-//    // Salva le modifiche al treno
-//    @PostMapping("/salvaModifica")
-//    public String salvaModifica(@ModelAttribute("treno") TrenoDTO trenoDto) {
-//        trenoService.update(trenoDto);
-//        return "redirect:/treni/dettagli/" + trenoDto.getIdTreno();
-//    }
+	@PostMapping("/modifica/rimuovi")
+	public String rimuoviVagone(@RequestParam("idTrenoM") Long idTreno, @RequestParam("idVagone") Long idVagone, HttpSession session, RedirectAttributes redirectAttributes) {
+	    sessione.getUtenteLoggato(session);
+	    
+	    try {
+	        trenoService.rimuoviVagone(idTreno, idVagone);
+	        redirectAttributes.addFlashAttribute("successMessage", "Vagone rimosso con successo dal treno.");
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la rimozione del vagone.");
+	    }
+	    return "redirect:/treni/crea";
+	}
+
+	@PostMapping("/modifica/copia")
+	public String copiaTreno(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	    sessione.getUtenteLoggato(session);
+	    try {
+	       TrenoDTO nuovoTreno=trenoService.copiaTreno(idTreno);
+	        redirectAttributes.addFlashAttribute("nuovoTreno", nuovoTreno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Treno copiato con successo.");
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la copia del treno.");
+	    }
+	    return "redirect:/treni/crea";
+	}
+
+	@PostMapping("/modifica/inverti")
+	public String invertiTreno(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	    sessione.getUtenteLoggato(session);
+	    try {
+	        TrenoDTO nuovoTreno = trenoService.invertiVagoni(idTreno);
+	        redirectAttributes.addFlashAttribute("nuovoTreno", nuovoTreno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Vagoni del treno invertiti con successo.");
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'inversione dei vagoni.");
+	    }
+	    return "redirect:/treni/crea";
+	}
+
+	@PostMapping("/modifica/cancella")
+	public String cancellaTreno(@RequestParam Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	    sessione.getUtenteLoggato(session);
+	    try {
+	        trenoService.cancellaTreno(idTreno);
+	        redirectAttributes.addFlashAttribute("successMessage", "Treno cancellato con successo.");
+	    } catch (TrenoCreazioneException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la cancellazione del treno.");
+	    }
+	    return "redirect:/treni/crea";
+	}
 
 }

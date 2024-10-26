@@ -293,6 +293,7 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
     
 	
 	//getVagoniByTreno
+    @Override
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Vagone> findVagonibyTreno(Long trenoId) {

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.TrenoCreazioneException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
@@ -38,6 +39,12 @@ public class TrenoService {
 //	@Autowired
 //	@Qualifier("ValutazioneDao")
 //	private UtenteValutaTreno valutazioneDao;
+	
+	
+	
+	
+	
+	
 
 	// Creazione del treno
 	@Transactional
@@ -90,7 +97,7 @@ public class TrenoService {
 		if (treno != null) {
 			trenoDao.delete(treno);
 		} else {
-			throw new IllegalArgumentException("Treno non trovato con l'ID: " + idTreno);
+			throw new TrenoCreazioneException("Treno non trovato con l'ID: " + idTreno);
 		}
 	}
 
@@ -99,6 +106,11 @@ public class TrenoService {
 	public TrenoDTO findById(Long id) {
 		Treno treno = trenoDao.findByTrenoId(Long.valueOf(id));
 		return convertToTrenoDTO(treno);
+	}
+	
+	public Treno findByid(Long id) {
+		Treno treno= trenoDao.findById(Long.valueOf(id));
+		return treno;
 	}
 
 	// Metodi di servizio per non fare query impossibili........ non si puo gestire
@@ -235,7 +247,7 @@ public class TrenoService {
 	 
 	 
 	   @Transactional
-	    public void invertiVagoni(Long trenoId) {
+	    public TrenoDTO invertiVagoni(Long trenoId) {
 	        Treno treno = trenoDao.findById(trenoId);
 	        if (treno == null) {
 	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
@@ -244,7 +256,11 @@ public class TrenoService {
 	        List<Vagone> vagoni = treno.getVagoni();
 	        Collections.reverse(vagoni); // Inverte l'ordine dei vagoni
 	        treno.setVagoni(vagoni);
+	        String sigla = treno.getSigla();
+	        String siglaReverse = new StringBuilder(sigla).reverse().toString();
+	        treno.setSigla(siglaReverse);
 	        trenoDao.update(treno);
+	        return convertToTrenoDTO(treno);
 	    }
 
 	    // Metodo per copiare un treno esistente
@@ -252,10 +268,12 @@ public class TrenoService {
 	    public TrenoDTO copiaTreno(Long trenoId) {
 	        Treno trenoOriginale = trenoDao.findById(trenoId);
 	        if (trenoOriginale == null) {
-	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	            throw new TrenoCreazioneException("Treno non trovato con ID: " + trenoId);
 	        }
 
 	        Treno trenoCopia = new Treno();
+	        trenoCopia.setImmagine(trenoOriginale.getImmagine());
+	        trenoCopia.setSigla(trenoOriginale.getSigla());
 	        trenoCopia.setNome(trenoOriginale.getNome() + "_copia");
 	        trenoCopia.setMarca(trenoOriginale.getMarca());
 	        trenoCopia.setOwner(trenoOriginale.getOwner());
@@ -270,7 +288,7 @@ public class TrenoService {
 	    public void aggiungiVagone(Long trenoId, Vagone... nuoviVagoni) {
 	        Treno treno = trenoDao.findById(trenoId);
 	        if (treno == null) {
-	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	            throw new TrenoCreazioneException("Treno non trovato con ID: " + trenoId);
 	        }
 
 	        List<Vagone> vagoni = treno.getVagoni();
@@ -284,7 +302,7 @@ public class TrenoService {
 	    public void rimuoviVagone(Long trenoId, long vagoneId) {
 	        Treno treno = trenoDao.findById(trenoId);
 	        if (treno == null) {
-	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	            throw new TrenoCreazioneException("Treno non trovato con ID: " + trenoId);
 	        }
 
 	        List<Vagone> vagoni = treno.getVagoni();
@@ -292,6 +310,14 @@ public class TrenoService {
 	        treno.setVagoni(vagoni);
 	        trenoDao.update(treno);
 	    }
+	    
+	    
+	    
+	    
+	    public List<Vagone> findVagoniByTreno(Long idTreno) {
+	        return trenoDao.findVagonibyTreno(idTreno);
+	    }
+
 
 
 }

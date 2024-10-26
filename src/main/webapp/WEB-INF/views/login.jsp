@@ -156,7 +156,7 @@ to {
 
 		<!-- Display errors if any -->
 		<c:if test="${not empty errorMessage}">
-			<div class="text-danger">${errorMessage}</div>
+			<div class="text-danger mt-3">${errorMessage}</div>
 		</c:if>
 		
 		<c:if test="${not empty logoutMessage}">
