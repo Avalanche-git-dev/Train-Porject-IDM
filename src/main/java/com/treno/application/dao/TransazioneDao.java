@@ -40,6 +40,39 @@ public class TransazioneDao extends ProxyDao<Transazione> implements Transazione
 	             .getResultList();
 	}
 	
+	
+	
+	@Transactional
+	public List<Transazione> findTransazioniByVenditore(long venditoreId) {
+	    // HQL per recuperare le transazioni dove l'utente è venditore, caricare le relazioni e ordinare per importo
+	    String hql = "SELECT DISTINCT t FROM Transazione t " +
+	                 "LEFT JOIN FETCH t.treno " +
+	                 "LEFT JOIN FETCH t.acquirente " +
+	                 "LEFT JOIN FETCH t.venditore " +
+	                 "WHERE t.venditore.userId = :venditoreId " +
+	                 "ORDER BY t.importo DESC";
+
+	    return em.createQuery(hql, Transazione.class)
+	             .setParameter("venditoreId", venditoreId)
+	             .getResultList();
+	}
+
+	@Transactional
+	public List<Transazione> findTransazioniByAcquirente(long acquirenteId) {
+	    // HQL per recuperare le transazioni dove l'utente è acquirente, caricare le relazioni e ordinare per importo
+	    String hql = "SELECT DISTINCT t FROM Transazione t " +
+	                 "LEFT JOIN FETCH t.treno " +
+	                 "LEFT JOIN FETCH t.acquirente " +
+	                 "LEFT JOIN FETCH t.venditore " +
+	                 "WHERE t.acquirente.userId = :acquirenteId " +
+	                 "ORDER BY t.importo DESC";
+
+	    return em.createQuery(hql, Transazione.class)
+	             .setParameter("acquirenteId", acquirenteId)
+	             .getResultList();
+	}
+
+	
 	@Transactional
 	public List<Transazione> findAllTransazioniOrdinatePerImporto() {
 	    // HQL per recuperare tutte le transazioni, caricare le relazioni e ordinarle per importo decrescente

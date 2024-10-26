@@ -82,6 +82,7 @@ public abstract class TrenoBuilder {
                     throw new IllegalArgumentException("Carattere non riconosciuto nella stringa di input: " + c);
             }
         }
+        
 
         treno.setSigla(input);
         return treno;

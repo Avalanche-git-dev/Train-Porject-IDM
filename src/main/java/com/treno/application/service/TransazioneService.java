@@ -246,6 +246,27 @@ public class TransazioneService {
                           .map(this::convertToDTO)  // Converte ogni Transazione in TransazioneDTO
                           .collect(Collectors.toList());
     }
+    
+    
+    public List<TransazioneDTO> getTransazioniByUtenteVenditore(long venditoreId) {
+        // Recupera la lista di transazioni dove l'utente è venditore
+        List<Transazione> transazioni = transazioneDao.findTransazioniByVenditore(venditoreId);
+
+        // Converte ogni entità Transazione in TransazioneDTO e restituisce la lista
+        return transazioni.stream()
+                          .map(this::convertToDTO)
+                          .collect(Collectors.toList());
+    }
+
+   public   List<TransazioneDTO> getTransazioniByUtenteAcquirente(long acquirenteId) {
+        // Recupera la lista di transazioni dove l'utente è acquirente
+        List<Transazione> transazioni = transazioneDao.findTransazioniByAcquirente(acquirenteId);
+
+        // Converte ogni entità Transazione in TransazioneDTO e restituisce la lista
+        return transazioni.stream()
+                          .map(this::convertToDTO)
+                          .collect(Collectors.toList());
+    }
 
 
 

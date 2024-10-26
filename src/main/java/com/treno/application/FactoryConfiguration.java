@@ -26,36 +26,36 @@ public class FactoryConfiguration implements Factory {
     }
 
     public Cargo creaCargo() {
-        String beanName = marca + "Cargo";
-        if (!context.containsBean(beanName)) {
+        String vagoneCargo = marca + "Cargo";
+        if (!context.containsBean(vagoneCargo)) {
             throw new IllegalArgumentException("Bean non trovato per la marca: " + marca);
         }
-        return context.getBean(beanName, Cargo.class);
+        return context.getBean(vagoneCargo, Cargo.class);
     }
 
     // Funzionerà ? vediamo vorrei evitare strutture dati e iterazioni ci sarà
     // sicuramente un modo piu elegante di svolgere la cosa
     public Passeggero creaPasseggeri() {
-        String beanName = marca + "Passeggero";
-        if (!context.containsBean(beanName)) {
+        String vagonePasseggeri = marca + "Passeggero";
+        if (!context.containsBean(vagonePasseggeri)) {
             throw new IllegalArgumentException("Bean non trovato per la marca: " + marca);
         }
-        return context.getBean(beanName, Passeggero.class);
+        return context.getBean(vagonePasseggeri, Passeggero.class);
     }
 
     public Ristorante creaRistorante() {
-        String beanName = marca + "Ristorante";
-        if (!context.containsBean(beanName)) {
+        String vagoneRistorante = marca + "Ristorante";
+        if (!context.containsBean(vagoneRistorante)) {
             throw new IllegalArgumentException("Bean non trovato per la marca: " + marca);
         }
-        return context.getBean(beanName, Ristorante.class);
+        return context.getBean(vagoneRistorante, Ristorante.class);
     }
 
     public Motrice creaMotrice() {
-        String beanName = marca + "Motrice";
-        if (!context.containsBean(beanName)) {
+        String vagoneMotrice = marca + "Motrice";
+        if (!context.containsBean(vagoneMotrice)) {
             throw new IllegalArgumentException("Bean non trovato per la marca: " + marca);
         }
-        return context.getBean(beanName, Motrice.class);
+        return context.getBean(vagoneMotrice, Motrice.class);
     }
 }

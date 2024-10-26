@@ -25,40 +25,14 @@ public class DashboardController {
     private SessioneUtility sessioneUtility;
 
     
-    
-//    @GetMapping
-//    public String dashboard(HttpSession session, Model model) {
-//    	
-//    	if(sessioneUtility.isUtenteGuest(session)) {
-//    		session.setAttribute("errorMessage", "Non sei autorizzato ad accedere a questa sezione, sei pregato di registrati o eseguire il login per proseguire.");
-//    		return sessioneUtility.redirectTologin();
-//    	}
-//       
-//        if(sessioneUtility.isUtenteLoggato(session)) {
-//        	return "dashboard";
-//        }else if (sessioneUtility.isAdminLoggato(session)) {
-//        	return "redirect:/admin";
-//        }
-//      
-//        
-//        UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
-//        model.addAttribute("utenteLoggato", utenteLoggato);
-//        return "dashboard";
-//        
-//    
-//    
-//    
-//}
 
-    
-    
     
     @GetMapping
     public String dashboard(HttpSession session, Model model, RedirectAttributes redirectAttributes) {
         
         if (sessioneUtility.isUtenteGuest(session)) {
             
-            return "redirect:/user/login"; // Assicurati che restituisca "redirect:/login"
+            return "redirect:/user/login"; // 
         }
 
         if (sessioneUtility.isUtenteLoggato(session)) {

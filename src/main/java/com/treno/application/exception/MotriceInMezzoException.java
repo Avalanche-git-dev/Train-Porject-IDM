@@ -1,5 +1,6 @@
 package com.treno.application.exception;
-public class MotriceInMezzoException extends RuntimeException {
+
+public class MotriceInMezzoException extends TrenoCreazioneException {
     /**
 	 * 
 	 */

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.InvalidCredentialsException;
 import com.treno.application.exception.UserNotFoundException;
+import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.utility.SessioneUtility;
@@ -39,15 +41,25 @@ public class ProfiloController {
 	@Autowired
 	@Qualifier("TrenoService")
 	private TrenoService trenoService;
+	
+	@Autowired
+	@Qualifier("TransazioneService")
+	private TransazioneService transazioneService;
 
 	@GetMapping
 	public String mostraProfilo(HttpSession session, Model model) {
 
 		UserDTO utenteLoggato = sessione.getUtenteLoggato(session); 
 		UserDTO userInfo = userService.findByUsername(utenteLoggato.getUsername()); 
-
-		model.addAttribute("userInfo", userInfo);
-		// model.addAttribute("userInfo", userInfo);
+		  List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(userInfo.getUsername());
+		  List<TransazioneDTO> transazioniVenditaDTO = transazioneService.getTransazioniByUtenteVenditore(userInfo.getUserId());
+		  List<TransazioneDTO> transazioniAcquistoDTO = transazioneService.getTransazioniByUtenteAcquirente(userInfo.getUserId());
+		  model.addAttribute("transazioniAcquisto", transazioniAcquistoDTO);
+		  model.addAttribute("transazioniVendita", transazioniVenditaDTO);
+		  model.addAttribute("numeroTreni", treniUtente.size());
+		  model.addAttribute("userInfo", userInfo);
+		  model.addAttribute("numeroTreni", treniUtente.size());
+		  model.addAttribute("listaTreni", treniUtente);
 
 		return "profilo";
 	}
@@ -108,6 +120,7 @@ public class ProfiloController {
 	    if (!sessione.isUtenteLoggato(session)) {
 	        return sessione.redirectTologin();
 	    }
+	    
 
 	    UserDTO currentUser = sessione.getUtenteLoggato(session);
 
@@ -171,31 +184,65 @@ public class ProfiloController {
 
 	
 
+	
+	
+	
+	
 	@PostMapping("/mostra/utente")
-	public String mostraProfiloUtente(HttpSession session, Model model, @RequestParam("username") String username) {
-		// Recupera l'utente tramite username dal servizio
-		UserDTO utenteView = userService.findByUsername(username);
+	public String mostraProfiloUtente(HttpSession session, Model model, @RequestParam("username") String username, RedirectAttributes redirectAttributes) {
+	    // Verifica se lo username è nullo o vuoto e reindirizza al form di inserimento con un messaggio di errore
+	    if (username == null || username.trim().isEmpty()) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Inserisci uno username!");
+	        return "redirect:/profilo"; // Redirect al form di inserimento username
+	    }
 
-		if (utenteView == null) {
-			session.setAttribute("erroMessage", "L'utente da te cercato non esiste.");
-			return "redirect:/profiloUtente";
-		}
+	    
+	    try {
+	        // Recupera la lista dei treni dell'utente
+	    	
+	    	
+	    	 UserDTO utenteView = userService.findByUsername(username);
+			    if (utenteView == null||utenteView.getUsername()==null) {
+			        redirectAttributes.addFlashAttribute("errorMessage", "L'utente da te cercato non esiste.");
+			        return "redirect:/profilo"; // Redirect al form con messaggio di errore
+			    }
+			    
+			    
+	        List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(username);
+	        
+	        
 
-		try {
-			List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(username);
+		    // Recupera l'utente tramite username dal servizio
+		   
+	        
+	        
+	        
+	        
+	     // Memorizza i dati utente nella sessione per l'uso nella vista profiloUtente
+	        session.setAttribute("utenteView", utenteView);
+	        session.setAttribute("treniDto", treniUtente);
 
-			session.setAttribute("utenteView", utenteView);
-			session.setAttribute("treniDto", treniUtente);
-			model.addAttribute("username", utenteView.getUsername());
-			model.addAttribute("nome", utenteView.getNome());
-			model.addAttribute("numeroTreni", treniUtente.size());
-			model.addAttribute("listaTreni", treniUtente);
+	        // Aggiunge al modello i dati necessari per la vista profiloUtente
+	        model.addAttribute("username", utenteView.getUsername());
+	        model.addAttribute("nome", utenteView.getNome());
+	        model.addAttribute("numeroTreni", treniUtente.size());
+	        model.addAttribute("listaTreni", treniUtente);
 
-		} catch (UserNotFoundException e) {
-			model.addAttribute("errorMessage", "Utente non trovato: " + e.getMessage());
-		}
+	    	
+	        
+	    } catch (UserNotFoundException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Utente non trovato: " + e.getMessage());
+	        return "redirect:/profilo"; // Redirect al form con messaggio di errore
+	    }
 
-		return "profiloUtente";
+	    return "profiloUtente"; // Ritorna direttamente alla vista del profilo utente
 	}
+	
+	
+	
+	
+	
+	
+	
 
 }

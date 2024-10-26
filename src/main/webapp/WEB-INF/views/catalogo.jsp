@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Tutti i Treni Disponibili</title>
-<link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
 </head>
 <body>
     <div class="container">

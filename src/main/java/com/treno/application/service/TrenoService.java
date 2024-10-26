@@ -1,5 +1,8 @@
 package com.treno.application.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +16,7 @@ import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
 import com.treno.application.model.User;
+import com.treno.application.model.Vagone;
 import com.treno.application.model.builder.TBuilder;
 import com.treno.application.model.builder.TrenoBuilder;
 import com.treno.application.utility.TrenoUtility;
@@ -37,9 +41,10 @@ public class TrenoService {
 
 	// Creazione del treno
 	@Transactional
-	public void creaTreno(TrenoDTO trenoDto, UserDTO utenteDto) {
+	public TrenoDTO creaTreno(TrenoDTO trenoDto, UserDTO utenteDto) {
 		TBuilder builder2 = (TBuilder) builder;
 		builder2.getFactory().setMarca(trenoDto.getMarca());
+		
 
 		Treno treno = builder.creaTrenoDaStringa(trenoDto.getSigla());
 
@@ -48,7 +53,11 @@ public class TrenoService {
 		treno.setOwner(owner);
 		treno.setMarca(trenoDto.getMarca());
 		treno.setNome(trenoDto.getNome());
+		
+		TrenoDTO trenoR = convertToTrenoDTO(treno);
+		
 		trenoDao.save(treno);
+		return trenoR;
 	}
 
 	// Classico by user
@@ -85,12 +94,7 @@ public class TrenoService {
 		}
 	}
 
-	// Proviamo con hasHset
-//	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-//		List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
-//
-//		return treniFiltrati.stream().map(this::convertToTrenoDTO).collect(Collectors.toSet());
-//	}
+	
 
 	public TrenoDTO findById(Long id) {
 		Treno treno = trenoDao.findByTrenoId(Long.valueOf(id));
@@ -226,6 +230,68 @@ public class TrenoService {
 		    List<Treno> treniUtente = trenoDao.findByOwnerIdAndInVenditaFalse(ownerId);
 		    return treniUtente.stream().map(this::convertToTrenoDTO).collect(Collectors.toList());
 	 }
+	 
+	 
+	 
+	 
+	   @Transactional
+	    public void invertiVagoni(Long trenoId) {
+	        Treno treno = trenoDao.findById(trenoId);
+	        if (treno == null) {
+	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	        }
+
+	        List<Vagone> vagoni = treno.getVagoni();
+	        Collections.reverse(vagoni); // Inverte l'ordine dei vagoni
+	        treno.setVagoni(vagoni);
+	        trenoDao.update(treno);
+	    }
+
+	    // Metodo per copiare un treno esistente
+	    @Transactional
+	    public TrenoDTO copiaTreno(Long trenoId) {
+	        Treno trenoOriginale = trenoDao.findById(trenoId);
+	        if (trenoOriginale == null) {
+	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	        }
+
+	        Treno trenoCopia = new Treno();
+	        trenoCopia.setNome(trenoOriginale.getNome() + "_copia");
+	        trenoCopia.setMarca(trenoOriginale.getMarca());
+	        trenoCopia.setOwner(trenoOriginale.getOwner());
+	        trenoCopia.setVagoni(new ArrayList<>(trenoOriginale.getVagoni())); // Copia dei vagoni
+	        trenoDao.save(trenoCopia);
+
+	        return convertToTrenoDTO(trenoCopia);
+	    }
+
+	    // Metodo per aggiungere uno o più vagoni a un treno
+	    @Transactional
+	    public void aggiungiVagone(Long trenoId, Vagone... nuoviVagoni) {
+	        Treno treno = trenoDao.findById(trenoId);
+	        if (treno == null) {
+	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	        }
+
+	        List<Vagone> vagoni = treno.getVagoni();
+	        vagoni.addAll(Arrays.asList(nuoviVagoni)); // Aggiunge i nuovi vagoni
+	        treno.setVagoni(vagoni);
+	        trenoDao.update(treno);
+	    }
+
+	    // Metodo per rimuovere un vagone da un treno
+	    @Transactional
+	    public void rimuoviVagone(Long trenoId, long vagoneId) {
+	        Treno treno = trenoDao.findById(trenoId);
+	        if (treno == null) {
+	            throw new IllegalArgumentException("Treno non trovato con ID: " + trenoId);
+	        }
+
+	        List<Vagone> vagoni = treno.getVagoni();
+	        vagoni.removeIf(vagone ->Long.valueOf((vagone.getIdVagone())).equals(vagoneId)); // Rimuove il vagone specifico
+	        treno.setVagoni(vagoni);
+	        trenoDao.update(treno);
+	    }
 
 
 }

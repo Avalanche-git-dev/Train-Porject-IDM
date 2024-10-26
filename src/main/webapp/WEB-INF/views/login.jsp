@@ -10,7 +10,7 @@
 <title>Login</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); */
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); 
 
 body {
 	font-family: 'Roboto', sans-serif;

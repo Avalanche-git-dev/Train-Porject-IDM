@@ -97,21 +97,7 @@ public class CatalogoController {
     
 	    
 	    
-//	    @GetMapping("/filtro")
-//	    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
-//	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//
-//	        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
-//	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
-//	        
-//	        
-//	        model.addAttribute("treni", treniFiltrati);
-//	        model.addAttribute("utenteLoggato", utenteLoggato);
-//	        model.addAttribute("trenoFilter", trenoFilter);
-//
-//	        return "catalogo";
-//	    }
-//	    
+    
 	    
 	    
 	    @GetMapping("/filtro")
