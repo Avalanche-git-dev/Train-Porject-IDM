@@ -432,6 +432,71 @@ pre {
   max-height: 340px;
   overflow-y: scroll; }
 
+       /* Card styling */
+.train-card-crea {
+    margin-bottom: 15px;
+    padding: 35px; /* Aumentato il padding per una migliore spaziatura */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: absolute;
+    flex-direction: column; /* Cambiato per disporre gli elementi in colonna */
+    align-items: center; /* Centrato gli elementi orizzontalmente */
+    justify-content: center; /* Centrato gli elementi verticalmente */
+    border: 1px solid #ccc; /* Aggiunto un bordo per definire meglio la card */
+    border-radius: 5px; /* Arrotondato gli angoli */
+    height: 200px; /* Altezza fissa per le card */
+    text-align: center; /* Centra il testo */
+}
+
+   .form-section-crea {
+    width: 100%; /* Imposta la larghezza al 100% del contenitore genitore */
+    max-width: 1200px; /* Imposta una larghezza massima se necessario */
+    height: auto; /* Imposta l'altezza automatica per adattarsi al contenuto */
+    min-height: 300px; /* Imposta un'altezza minima per garantire che il contenitore sia visibile */
+    overflow: hidden; /* Nasconde il contenuto che esce dai limiti del contenitore */
+    margin: 20px auto;
+    margin-right: 20px; /* Centra il contenitore con margini superiori e inferiori */
+    padding: 20px; /* Aggiungi padding se necessario */
+    box-sizing: border-box; /* Include il padding e il bordo nella larghezza e altezza */
+    border: 1px solid #ccc; /* Aggiungi un bordo per vedere i limiti del contenitore (opzionale) */
+}
+
+
+.train-details-card-crea {
+    position: relative;
+    margin-top: -5px; /* Solleva la card verso l'alto */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Arrotonda gli angoli */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombreggiatura per effetto sopraelevato */
+    background-color: #fff;
+    overflow: hidden; /* Nasconde il contenuto fuori dai bordi */
+    text-align: center;
+    z-index: 1; /* Assicura che la card sia sopra altri elementi */
+}
+
+/* Contorno con effetto "nascosto" sopra */
+.train-details-card-crea::before {
+    content: '';
+    position: absolute;
+    top: -5px; /* Estende l'elemento verso l'alto */
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ccc; /* Bordo superiore visibile solo fuori dalla card */
+    z-index: -1; /* Posiziona il contorno dietro la card */
+}
+
+/* Ombreggiatura aggiuntiva per effetto rilievo */
+.train-details-card-crea:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombra più intensa al passaggio del mouse */
+}
+
+  
+
+
+
+
 .container {
   width: 100%;
   padding-right: 15px;
@@ -2179,7 +2244,8 @@ fieldset:disabled a.btn {
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: 0.2rem; }
-
+  
+ 
 .btn-block {
   display: block;
   width: 100%; }
@@ -3495,7 +3561,19 @@ input[type="button"].btn-block {
   display: flex;
   padding-left: 0;
   list-style: none;
-  border-radius: 0.25rem; }
+  border-radius: 0.25rem;
+  margin-top: 5px; }
+  
+  
+  .pagination-controls {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-controls button {
+    margin: 0 10px;
+}
 
 .page-link {
   position: relative;
@@ -4112,6 +4190,27 @@ a.close.disabled {
 
 .toast-body {
   padding: 0.75rem; }
+  
+ .modal-header .btn-close {
+    background-color: #414141; /* Colore di sfondo */
+    color: white; /* Colore del testo */
+    border: none; /* Rimuove il bordo */
+    width: 20px; /* Larghezza del pulsante */
+    height: 10px; /* Altezza del pulsante */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+    display: flex; /* Per centrare il contenuto */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra orizzontalmente */
+    transition: background-color 0.3s; /* Transizione per il colore di sfondo */
+}
+
+.modal-header .btn-close:hover {
+    background-color: #FF4500; /* Colore di sfondo al passaggio del mouse */
+}
+
+.modal-header {
+    justify-content: center; /* Centra il contenuto dell'intestazione */
+}
 
 .modal-open {
   overflow: hidden; }
@@ -4128,7 +4227,8 @@ a.close.disabled {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  outline: 0; }
+  outline: 0; 
+  }
 
 .modal-dialog {
   position: relative;
@@ -4220,7 +4320,8 @@ a.close.disabled {
 .modal-body {
   position: relative;
   flex: 1 1 auto;
-  padding: 1rem; }
+  padding: 1rem;
+  overflow-y: auto;  }
 
 .modal-footer {
   display: flex;

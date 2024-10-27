@@ -18,6 +18,7 @@ import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.ValutazioneException;
 import com.treno.application.filter.TrenoFilter;
+import com.treno.application.model.Treno;
 import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.service.ValutazioneService;
@@ -100,10 +101,25 @@ public class CatalogoController {
     
 	    
 	    
+//	    @GetMapping("/filtro")
+//	    public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
+//	       
+//	        List<TrenoDTO> treniFiltrati = trenoService.findTreniByFilter(filter);
+//            
+//	        model.addAttribute("treni", treniFiltrati);
+//	        
+//	        model.addAttribute("filter", filter);
+//
+//	        return "catalogo";
+//	    }
+//	    
+//	    
+	    
 	    @GetMapping("/filtro")
 	    public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
 	       
-	        List<TrenoDTO> treniFiltrati = trenoService.findTreniByFilter(filter);
+	        List<Treno> treni = trenoService.filtraTreniConServizio(filter);
+	        List<TrenoDTO> treniFiltrati = trenoService.convertToDTOList(treni);
             
 	        model.addAttribute("treni", treniFiltrati);
 	        

@@ -20,6 +20,16 @@ public class TrenoDTO {
 	private long idOwner;
 	private double costoTotale;
 	private List<Vagone> vagoni;
+	
+	private Double valore;
+
+	public Double getValore() {
+		return valore;
+	}
+
+	public void setValore(Double valore) {
+		this.valore = valore;
+	}
 
 	public List<Vagone> getVagoni() {
 		return vagoni;
@@ -29,9 +39,10 @@ public class TrenoDTO {
 		this.vagoni = new ArrayList<Vagone>(vagoni);
 	}
 
+
 	public TrenoDTO(long idTreno, String sigla, String immagine, boolean inVendita, double prezzoVendita, String marca,
 			double mediaValutazioni, double pesoTotale, double lunghezzaTotale, double postiTotali, String nome,
-			long idOwner, double costoTotale, List<Vagone> vagoni) {
+			long idOwner, double costoTotale, List<Vagone> vagoni, Double valore) {
 		super();
 		this.idTreno = idTreno;
 		this.sigla = sigla;
@@ -47,6 +58,7 @@ public class TrenoDTO {
 		this.idOwner = idOwner;
 		this.costoTotale = costoTotale;
 		this.vagoni = vagoni;
+		this.valore = valore;
 	}
 
 	public TrenoDTO() {

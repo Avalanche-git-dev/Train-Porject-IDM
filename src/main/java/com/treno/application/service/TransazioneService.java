@@ -81,6 +81,7 @@ public class TransazioneService {
         treno.setOwner(acquirente);
         treno.setInVendita(false);
         treno.setPrezzoVendita(0);
+        treno.setValore(treno.getValore()+prezzo);
         
         // Crea una nuova transazione
         Transazione nuovaTransazione = new Transazione(); // Crea una nuova istanza
@@ -89,6 +90,7 @@ public class TransazioneService {
         nuovaTransazione.setTreno(treno);
         nuovaTransazione.setImporto(prezzo);
         nuovaTransazione.setData(LocalDateTime.now());
+        nuovaTransazione.setNomeTreno(treno.getNome());
        
         // Salva la nuova transazione
         transazioneDao.save(nuovaTransazione);
@@ -124,6 +126,9 @@ public class TransazioneService {
         // Verifica che il prezzo sia valido
         if (prezzoVendita == null || prezzoVendita <= 0) {
             return "Il prezzo di vendita deve essere maggiore di zero!";
+        }
+        if(treno.getNome().contains("_copia")) {
+        	throw new TransazioneNonTrovataException("I treni copiati non possono essere messi in vendita sul market ");
         }
 
         // Imposta il treno come in vendita e assegna il prezzo
@@ -182,6 +187,8 @@ public class TransazioneService {
         annullamento.setTreno(treno);
         annullamento.setImporto(-importo);  
         annullamento.setData(LocalDateTime.now());  
+        
+        
 
         
         transazioneDao.save(annullamento);  
@@ -301,6 +308,7 @@ public class TransazioneService {
         dto.setTrenoId(transazione.getTreno().getIdTreno());
         dto.setAcquirenteUsername(transazione.getAcquirente().getUsername());
         dto.setVenditoreUsername(transazione.getVenditore().getUsername());
+        dto.setTrenoNome(transazione.getNomeTreno());
         return dto;
     }
 

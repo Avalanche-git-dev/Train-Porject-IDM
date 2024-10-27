@@ -43,18 +43,16 @@ public class TrenoController {
 	@Qualifier("Sessione")
 	private SessioneUtility sessione;
 
-	@GetMapping
-	public String mostraTreni(HttpSession session, Model model) {
-		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-
-//        if(!sessione.isUtenteLoggato(session)) {
-//        	return sessione.redirectTologin();
-//        }
-		sessione.setUtenteLoggato(session, utenteLoggato);
-
-		model.addAttribute("utenteLoggato", utenteLoggato);
-		return "treni";
-	}
+//	@GetMapping
+//	public String mostraTreni(HttpSession session, Model model) {
+//	if(!sessione.isUtenteLoggato(session)) {
+//		if(!sessione.isAdminLoggato(session)) {
+//			UserGuest Guest = sessione.isUtenteGuest(session);
+//		}
+//	}
+//
+//		return "treni";
+//	}
 
 	// Creazione Guest
 	@GetMapping("/crea/guest")
@@ -71,7 +69,7 @@ public class TrenoController {
 		sessione.setUtenteLoggato(session, guest);
 
 		// Restituisce la vista del form di creazione
-		return "crea";
+		return "creaGuest";
 	}
 
 	// Creazione Guest
@@ -106,7 +104,7 @@ public class TrenoController {
 		UserGuest guest = (UserGuest) session.getAttribute("utenteGuest");
 		sessione.setUtenteLoggato(session, guest);
 
-		return "crea"; // Rimani sulla stessa pagina per creare altri treni
+		return "creaGuest"; // Rimani sulla stessa pagina per creare altri treni
 	}
 
 	// <-----------------------------------------------
@@ -285,29 +283,35 @@ public class TrenoController {
 	
 	
 
-	@GetMapping("/modifica/aggiungi")
-	public String aggiungiVagone(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	@PostMapping("/modifica/aggiungi")
+	public String aggiungiVagone(@RequestParam("idTrenoM") Long idTreno, 
+	                             @RequestParam("tipoVagone") String tipoVagone,
+	                             HttpSession session, 
+	                             RedirectAttributes redirectAttributes,Model model) {
 	    sessione.getUtenteLoggato(session);
 	    
-	    
 	    try {
-	        trenoService.aggiungiVagone(idTreno);
+	        // Passa il tipo di vagone al livello di servizio
+	        TrenoDTO modificaTreno = trenoService.aggiungiVagone(idTreno, tipoVagone);
+	        redirectAttributes.addFlashAttribute("modificaTreno", modificaTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Vagone aggiunto con successo al treno.");
 	    } catch (TrenoCreazioneException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'aggiunta del vagone.");
+	        redirectAttributes.addFlashAttribute("errorMessage","Errore durante l'aggiunta del vagone "+e.getMessage());
 	    }
 	    return "redirect:/treni/crea";
 	}
+
 
 	@PostMapping("/modifica/rimuovi")
 	public String rimuoviVagone(@RequestParam("idTrenoM") Long idTreno, @RequestParam("idVagone") Long idVagone, HttpSession session, RedirectAttributes redirectAttributes) {
 	    sessione.getUtenteLoggato(session);
 	    
 	    try {
-	        trenoService.rimuoviVagone(idTreno, idVagone);
+	    	TrenoDTO modificaTreno =   trenoService.rimuoviVagone(idTreno, idVagone);
+	    	redirectAttributes.addFlashAttribute("modificaTreno", modificaTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Vagone rimosso con successo dal treno.");
 	    } catch (TrenoCreazioneException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la rimozione del vagone.");
+	        redirectAttributes.addFlashAttribute("errorMessage","Errore durante la rimozione del vagone "+ e.getMessage());
 	    }
 	    return "redirect:/treni/crea";
 	}
@@ -316,11 +320,11 @@ public class TrenoController {
 	public String copiaTreno(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
 	    sessione.getUtenteLoggato(session);
 	    try {
-	       TrenoDTO nuovoTreno=trenoService.copiaTreno(idTreno);
-	        redirectAttributes.addFlashAttribute("nuovoTreno", nuovoTreno);
+	       TrenoDTO modificaTreno =trenoService.copiaTreno(idTreno);
+	        redirectAttributes.addFlashAttribute("modificaTreno", modificaTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Treno copiato con successo.");
 	    } catch (TrenoCreazioneException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la copia del treno.");
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la copia del treno."+e.getMessage());
 	    }
 	    return "redirect:/treni/crea";
 	}
@@ -329,23 +333,23 @@ public class TrenoController {
 	public String invertiTreno(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
 	    sessione.getUtenteLoggato(session);
 	    try {
-	        TrenoDTO nuovoTreno = trenoService.invertiVagoni(idTreno);
-	        redirectAttributes.addFlashAttribute("nuovoTreno", nuovoTreno);
+	        TrenoDTO modificaTreno = trenoService.invertiVagoni(idTreno);
+	        redirectAttributes.addFlashAttribute("modificaTreno", modificaTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Vagoni del treno invertiti con successo.");
 	    } catch (TrenoCreazioneException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'inversione dei vagoni.");
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'inversione dei vagoni."+e.getMessage());
 	    }
 	    return "redirect:/treni/crea";
 	}
 
 	@PostMapping("/modifica/cancella")
-	public String cancellaTreno(@RequestParam Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
+	public String cancellaTreno(@RequestParam("idTrenoM") Long idTreno, HttpSession session, RedirectAttributes redirectAttributes) {
 	    sessione.getUtenteLoggato(session);
 	    try {
 	        trenoService.cancellaTreno(idTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Treno cancellato con successo.");
 	    } catch (TrenoCreazioneException e) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la cancellazione del treno.");
+	        redirectAttributes.addFlashAttribute("errorMessage", "Errore durante la cancellazione del treno."+e.getMessage());
 	    }
 	    return "redirect:/treni/crea";
 	}

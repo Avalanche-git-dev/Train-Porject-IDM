@@ -39,7 +39,7 @@ public class Treno {
 	
 	private long idTreno;
 	
-	@Column(name = "nome" , unique = true)
+	@Column(name = "nome" , unique = true, nullable = false)
     private String nome;
 	
 	
@@ -124,6 +124,10 @@ public class Treno {
 
 	@OneToMany( mappedBy = "treno", fetch = FetchType.LAZY)
 	private Set<Transazione> transazioni;
+	
+	
+	@Column(name = "valore")
+	private Double valore;
 
 	// Static metodo per costruire il treno all'esterno della classe.
 	public static Treno build() {
@@ -350,14 +354,18 @@ public class Treno {
 	}
 	
 
-	@Override
-	public String toString() {
-		return "Treno [idTreno=" + idTreno + ", nome=" + nome + ", sigla=" + sigla + ", immagine=" + immagine
-				+ ", InVendita=" + inVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", vagoni="
-				+ vagoni + ", valutazioni=" + valutazioni + ", owner=" + owner.getUserId() + ", transazioni=" + transazioni + "]";
-	}
 
 	
+
+	public Double getValore() {
+		return valore;
+	}
+
+
+	public void setValore(Double valore) {
+		this.valore = valore;
+	}
+
 
 	public void setMarca(String marca) {
 		this.marca = marca;

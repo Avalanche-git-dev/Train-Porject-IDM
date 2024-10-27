@@ -1,7 +1,6 @@
 package com.treno.application.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.treno.application.Factory;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.MotriceInMezzoException;
+import com.treno.application.exception.MotricenonInTestaException;
 import com.treno.application.exception.TrenoCreazioneException;
 import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.TrenoFilter;
@@ -60,6 +62,7 @@ public class TrenoService {
 		treno.setOwner(owner);
 		treno.setMarca(trenoDto.getMarca());
 		treno.setNome(trenoDto.getNome());
+		treno.setValore(treno.getCosto());
 		
 		TrenoDTO trenoR = convertToTrenoDTO(treno);
 		
@@ -93,7 +96,7 @@ public class TrenoService {
 	// cancella un treno no DTO
 	@Transactional
 	public void cancellaTreno(Long idTreno) {
-		Treno treno = trenoDao.findById(idTreno); // Trova il treno tramite l'ID
+		Treno treno = trenoDao.findById(Long.valueOf(idTreno)); // Trova il treno tramite l'ID
 		if (treno != null) {
 			trenoDao.delete(treno);
 		} else {
@@ -169,6 +172,7 @@ public class TrenoService {
 	        trenoDTO.setCostoTotale(treno.getCosto());
 	        trenoDTO.setLunghezzaTotale(treno.getLunghezza());
 	        trenoDTO.setIdOwner(treno.getOwner().getUserId());
+	        trenoDTO.setValore(treno.getValore());
 
 	        return trenoDTO;
 	    }
@@ -184,6 +188,7 @@ public class TrenoService {
 		    treno.setInVendita(trenoDTO.isInVendita());
 		    treno.setPrezzoVendita(trenoDTO.getPrezzoVendita());
 		    treno.setMarca(trenoDTO.getMarca());
+		    treno.setValore(trenoDTO.getValore());
 		    if ((Long) ( trenoDTO.getIdOwner()) != null) {
 		    UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
 		    treno.setOwner(userService.convertToUserEntity(Owner));
@@ -245,7 +250,7 @@ public class TrenoService {
 	 
 	 
 	 
-	 
+	   //Inverti vagoni e sigla del treno
 	   @Transactional
 	    public TrenoDTO invertiVagoni(Long trenoId) {
 	        Treno treno = trenoDao.findById(trenoId);
@@ -263,7 +268,7 @@ public class TrenoService {
 	        return convertToTrenoDTO(treno);
 	    }
 
-	    // Metodo per copiare un treno esistente
+	    // Metodo per copiare un treno esistente, dandogli il nome distintivo copia -05
 	    @Transactional
 	    public TrenoDTO copiaTreno(Long trenoId) {
 	        Treno trenoOriginale = trenoDao.findById(trenoId);
@@ -282,34 +287,155 @@ public class TrenoService {
 
 	        return convertToTrenoDTO(trenoCopia);
 	    }
-
-	    // Metodo per aggiungere uno o più vagoni a un treno
+        // aggiungi un Vagone 
 	    @Transactional
-	    public void aggiungiVagone(Long trenoId, Vagone... nuoviVagoni) {
+	    public TrenoDTO aggiungiVagone(Long idTreno, String tipoVagone) throws TrenoCreazioneException {
+	        // Trova il treno dal database
+	        Treno treno = trenoDao.findById(idTreno);
+	        
+	        if (treno == null) {
+	            throw new TrenoCreazioneException("Treno non trovato.");
+	        }
+	        TBuilder builder2 = (TBuilder) builder;
+	        Factory factory =  builder2.getFactory();
+	        if((treno.getMarca()==null)||((treno.getMarca()).equals("")))
+	        {
+	        	throw new TrenoCreazioneException("Contatta l'amminitratore il tuo treno risulta essere di una marca sonosciuta.");
+	        }
+	        factory.setMarca(treno.getMarca());
+	        
+	        String sigla=treno.getSigla();
+	        
+	        if (!sigla.isEmpty() && !sigla.startsWith("H")) {
+	            throw new MotricenonInTestaException("La motrice deve essere in testa alla sigla.");
+	        }
+	        
+	        // Controllo: Non ci devono essere altre motrici oltre la prima
+	        boolean motriceTrovata = false;
+	        for (int i = 1; i < sigla.length(); i++) { // Parte dall'indice 1 per saltare la prima posizione
+	            if (sigla.charAt(i) == 'H') {
+	                motriceTrovata = true;
+	                break;
+	            }
+	            if (motriceTrovata) {
+		            throw new MotriceInMezzoException("Non possono esserci altre motrici in mezzo alla sigla.");
+		        }
+		        
+	            
+	        }
+	       
+	        if (sigla.endsWith("H")) {
+	            // Controllo: nessun vagone può essere aggiunto dopo una motrice
+	            throw new TrenoCreazioneException("Non è possibile aggiungere vagoni dopo una motrice.");
+	        }
+
+	        
+	        
+	        if (tipoVagone.equals("R")) {
+	            long countR = sigla.chars().filter(ch -> ch == 'R').count();
+	            if (countR >= 2) {
+	                throw new TrenoCreazioneException("Troppi ristoranti.");
+	            }
+	        }
+
+	        
+
+	        // Crea il vagone basato sul tipo
+	        Vagone vagone;
+	        switch (tipoVagone) {
+	            case "P":
+	                vagone = factory.creaPasseggeri() ; // Supponendo che Passeggero sia una classe che estende Vagone
+	                break;
+	            case "R":
+	                vagone = factory.creaRistorante(); // Supponendo che Ristorante sia una classe che estende Vagone
+	                break;
+	            case "C":
+	                vagone = factory.creaCargo(); // Supponendo che Cargo sia una classe che estende Vagone
+	                break;
+	            case "H":
+	                vagone = factory.creaMotrice(); // Supponendo che Motrice sia una classe che estende Vagone
+	                break;
+	            default:
+	                throw new TrenoCreazioneException("Tipo di vagone non valido: " + tipoVagone);
+	        }
+            treno.setSigla(sigla.concat(tipoVagone));
+	        treno.add(vagone); // Assumendo che Treno abbia un metodo aggiungiVagone
+
+	        // Salva il treno aggiornato nel database
+	        trenoDao.update(treno);
+	        
+	        return convertToTrenoDTO(treno);
+	    }
+
+
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+
+	    
+	    
+	    @Transactional
+	    public TrenoDTO rimuoviVagone(Long trenoId, long vagoneId) {
 	        Treno treno = trenoDao.findById(trenoId);
 	        if (treno == null) {
 	            throw new TrenoCreazioneException("Treno non trovato con ID: " + trenoId);
 	        }
 
 	        List<Vagone> vagoni = treno.getVagoni();
-	        vagoni.addAll(Arrays.asList(nuoviVagoni)); // Aggiunge i nuovi vagoni
-	        treno.setVagoni(vagoni);
-	        trenoDao.update(treno);
-	    }
-
-	    // Metodo per rimuovere un vagone da un treno
-	    @Transactional
-	    public void rimuoviVagone(Long trenoId, long vagoneId) {
-	        Treno treno = trenoDao.findById(trenoId);
-	        if (treno == null) {
-	            throw new TrenoCreazioneException("Treno non trovato con ID: " + trenoId);
+	        
+	        // Trova l'indice del vagone da rimuovere
+	        int indiceVagone = -1;
+	        for (int i = 0; i < vagoni.size(); i++) {
+	            if ((vagoni.get(i).getIdVagone())==vagoneId) {
+	                indiceVagone = i;
+	                break;
+	            }
+	        }
+	        
+	        if (indiceVagone == -1) {
+	            throw new TrenoCreazioneException("Vagone non trovato con ID: " + vagoneId);
 	        }
 
-	        List<Vagone> vagoni = treno.getVagoni();
-	        vagoni.removeIf(vagone ->Long.valueOf((vagone.getIdVagone())).equals(vagoneId)); // Rimuove il vagone specifico
+	        // Rimuovi il vagone dalla lista
+	        vagoni.remove(indiceVagone);
 	        treno.setVagoni(vagoni);
+
+	        // Aggiorna la sigla rimuovendo il carattere corrispondente
+	        String sigla = treno.getSigla();
+	        if (indiceVagone >= 0 && indiceVagone < sigla.length()) {
+	            sigla = sigla.substring(0, indiceVagone) + sigla.substring(indiceVagone + 1);
+	        }
+	        
+	        
+	        
+	        if (sigla.isEmpty()) {
+	            trenoDao.delete(treno); // Elimina il treno dal database
+	            throw new TrenoCreazioneException("L'ultimo vagone è stato rimosso. Treno cancellato.");
+	        }
+	        
+	        
+	        treno.setSigla(sigla);
+
+	        // Salva il treno aggiornato nel database
 	        trenoDao.update(treno);
+	        
+	        return convertToTrenoDTO(treno);
 	    }
+
+	    
+	    
+	    
+	    
+	    
 	    
 	    
 	    
@@ -317,6 +443,64 @@ public class TrenoService {
 	    public List<Vagone> findVagoniByTreno(Long idTreno) {
 	        return trenoDao.findVagonibyTreno(idTreno);
 	    }
+	    
+	    
+	    
+	    public List<Treno> filtraTreniConServizio(TrenoFilter filtro) {
+	        List<Treno> treniFiltrati = trenoDao.filtraTreni(filtro);
+
+	        // Filtraggio per lunghezza, peso e costo
+	        return treniFiltrati.stream()
+	            .filter(treno -> filtro.getLunghezzaMin() == null || treno.getLunghezza() >= filtro.getLunghezzaMin())
+	            .filter(treno -> filtro.getLunghezzaMax() == null || treno.getLunghezza() <= filtro.getLunghezzaMax())
+	            .filter(treno -> filtro.getPesoMin() == null || treno.getPeso() >= filtro.getPesoMin())
+	            .filter(treno -> filtro.getPesoMax() == null || treno.getPeso() <= filtro.getPesoMax())
+	            .filter(treno -> filtro.getCostoTotaleMin() == null || treno.getPrezzoVendita() >= filtro.getCostoTotaleMin())
+	            .filter(treno -> filtro.getCostoTotaleMax() == null || treno.getPrezzoVendita() <= filtro.getCostoTotaleMax())
+	            .sorted((t1, t2) -> {
+	                if (filtro.getOrdine() == null) return 0;
+	                int result;
+	                switch (filtro.getOrdine()) {
+	                    case "sigla":
+	                        result = t1.getSigla().compareTo(t2.getSigla());
+	                        break;
+	                    case "prezzo":
+	                        result = Double.compare(t1.getPrezzoVendita(), t2.getPrezzoVendita());
+	                        break;
+	                    case "lunghezza":
+	                        result = Double.compare(t1.getLunghezza(), t2.getLunghezza());
+	                        break;
+	                    case "peso":
+	                        result = Double.compare(t1.getPeso(), t2.getPeso());
+	                        break;
+	                    default:
+	                        result = t1.getIdTreno().compareTo(t2.getIdTreno());
+	                        break;
+	                }
+	                return filtro.getDirezione() != null && filtro.getDirezione().equalsIgnoreCase("DESC") ? -result : result;
+	            })
+	            .collect(Collectors.toList());
+	    }
+	    
+	    
+//	    public List<Treno> filtraTreniConServizio(TrenoFilter filtro) {
+//	        List<Treno> treniFiltrati = trenoDao.filtraTreni(filtro);
+//
+//	        // Filtraggio per lunghezza, peso e costo
+//	        return treniFiltrati.stream()
+//	            .filter(treno -> filtro.getLunghezzaMin() == null || treno.getLunghezza() >= filtro.getLunghezzaMin())
+//	            .filter(treno -> filtro.getLunghezzaMax() == null || treno.getLunghezza() <= filtro.getLunghezzaMax())
+//	            .filter(treno -> filtro.getPesoMin() == null || treno.getPeso() >= filtro.getPesoMin())
+//	            .filter(treno -> filtro.getPesoMax() == null || treno.getPeso() <= filtro.getPesoMax())
+//	            .filter(treno -> filtro.getCostoTotaleMin() == null || treno.getPrezzoVendita() >= filtro.getCostoTotaleMin())
+//	            .filter(treno -> filtro.getCostoTotaleMax() == null || treno.getPrezzoVendita() <= filtro.getCostoTotaleMax())
+//	            .collect(Collectors.toList());
+//	    }
+	    
+	    
+	    
+//
+
 
 
 
