@@ -122,7 +122,7 @@ public class MarketController {
 		List<TrenoDTO> treniFiltratiSet = trenoService.findTreniByFilter(trenoFilter);
 		List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
 		// Aggiungi la lista dei treni filtrati al modello
-		model.addAttribute("treni", treniFiltrati);
+		model.addAttribute("treniInVendita", treniFiltrati);
 		model.addAttribute("utenteLoggato", utenteLoggato);
 		model.addAttribute("trenoFilter", trenoFilter);
 		// Restituisci la vista del catalogo

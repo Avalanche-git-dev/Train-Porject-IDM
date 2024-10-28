@@ -2,7 +2,6 @@ package com.treno.application.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.treno.application.model.Vagone;
 
 public class TrenoDTO {
@@ -22,7 +21,7 @@ public class TrenoDTO {
     private double costoTotale;
 	private List<Vagone> vagoni;
 	private Double valore;
-
+	
 	public Double getValore() {
 		return valore;
 	}

@@ -38,7 +38,7 @@
     <h1>Tutti i Treni Disponibili</h1>
 
     <!-- Barra di ricerca con applica filtri -->
-    <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="input-group mt-3 mb-3">
+    <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="input-group mt-3 mb-3">
         <button type="button" class="btn btn-primary dropdown-toggle fixed-width-button" data-toggle="dropdown">Scegli un'opzione</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
@@ -55,6 +55,8 @@
     	<input type="hidden" id="lunghezzaMax" name="lunghezzaMax">
     	<input type="hidden" id="valutazioneMin" name="valutazioneMin">
     	<input type="hidden" id="valutazioneMax" name="valutazioneMax">
+    	<input type="hidden" id="prezzoMin" name="prezzoMin">
+    	<input type="hidden" id="prezzoMax" name="prezzoMax">
     	
     	<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
     	<input type="hidden" id="ascendente" name="ascendente" value="false">
@@ -71,11 +73,11 @@
             <form class="custom-form">
                 <select name="peso" class="custom-select" id="pesoFilter">
                     <option value="">Peso</option>
-                    <option value="0-10000">Da 0 a 10.000</option>
-                    <option value="10000-20000">Da 10.000 a 20.000</option>
-                    <option value="20000-30000">Da 20.000 a 30.000</option>
-                    <option value="30000-40000">Da 30.000 a 40.000</option>
-                    <option value="40000-50000">Da 40.000 a 50.000</option>
+                    <option value="0-50">Da 0 a 50</option>
+                    <option value="50-100">Da 50 a 100</option>
+                    <option value="100-200">Da 100 a 200</option>
+                    <option value="200-500">Da 200 a 500</option>
+                    <option value="500-1000">Da 500 a 1.000</option>
                 </select>
             </form>
 
@@ -83,11 +85,11 @@
             <form class="custom-form">
                 <select name="lunghezza" class="custom-select" id="lunghezzaFilter">
                     <option value="">Lunghezza</option>
-                    <option value="0-10000">Da 0 a 10.000</option>
-                    <option value="10000-20000">Da 10.000 a 20.000</option>
-                    <option value="20000-30000">Da 20.000 a 30.000</option>
-                    <option value="30000-40000">Da 30.000 a 40.000</option>
-                    <option value="40000-50000">Da 40.000 a 50.000</option>
+                    <option value="0-50">Da 0 a 50</option>
+                    <option value="50-100">Da 50 a 100</option>
+                    <option value="100-200">Da 100 a 200</option>
+                    <option value="200-500">Da 200 a 500</option>
+                    <option value="500-1000">Da 500 a 1.000</option>
                 </select>
             </form>
 
@@ -98,6 +100,18 @@
                     <option value="1-3">Da 1 a 3 stelle</option>
                     <option value="2-4">Da 2 a 4 stelle</option>
                     <option value="3-5">Da 3 a 5 stelle</option>
+                </select>
+            </form>
+            
+            <!-- Filtro Prezzo -->
+            <form class="custom-form">
+                <select name="prezzo" class="custom-select" id="prezzoFilter">
+                    <option value="">Prezzo</option>
+                    <option value="0-50">Da 0 a 50</option>
+                    <option value="50-100">Da 50 a 100</option>
+                    <option value="100-200">Da 100 a 200</option>
+                    <option value="200-500">Da 200 a 500</option>
+                    <option value="500-1000">Da 500 a 1.000</option>
                 </select>
             </form>
         </div>
@@ -118,7 +132,7 @@
 
     <!-- Sezione per visualizzare i treni aggiornati -->
     <div id="elencoTreni">
-        <c:forEach var="treno" items="${treni}" varStatus="status">
+        <c:forEach var="treno" items="${treniInVendita}" varStatus="status">
             <div class="card mb-3 treno" 
                  data-nome="${treno.nome}" 
                  data-sigla="${treno.sigla}" 
@@ -255,6 +269,20 @@
         }
     });
     
+    document.getElementById('prezzoFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            var range = selectedValue.split("-");
+            document.getElementById('prezzoMin').value = range[0];
+            document.getElementById('prezzoMax').value = range[1];
+            console.log("prezzoMin:", document.getElementById('prezzoMin').value);
+            console.log("prezzoMax:", document.getElementById('prezzoMax').value);
+        } else {
+            document.getElementById('prezzoMin').value = "";
+            document.getElementById('prezzoMax').value = "";
+        }
+    });
+    
     document.getElementById('valutazioniFilter').addEventListener('change', function() {
         var selectedValue = this.value;
         if (selectedValue) {
@@ -291,6 +319,12 @@
     document.getElementById('valutazioniFilter').addEventListener('change', function() {
         var selectedValue = this.value;
         console.log("Valutazioni selezionate:", selectedValue);
+    });
+    
+ 	// Listener per loggare il valore selezionato per Valutazioni
+    document.getElementById('prezzoFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        console.log("Prezzo selezionato:", selectedValue);
     });
     
  	// Listener per loggare il valore selezionato per Ordinamento

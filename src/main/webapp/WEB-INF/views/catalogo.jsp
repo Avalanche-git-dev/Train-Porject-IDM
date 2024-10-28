@@ -66,11 +66,11 @@
             <form class="custom-form">
                 <select name="peso" class="custom-select" id="pesoFilter">
                     <option value="">Peso</option>
-                    <option value="0-10000">Da 0 a 10.000</option>
-                    <option value="10000-20000">Da 10.000 a 20.000</option>
-                    <option value="20000-30000">Da 20.000 a 30.000</option>
-                    <option value="30000-40000">Da 30.000 a 40.000</option>
-                    <option value="40000-50000">Da 40.000 a 50.000</option>
+                    <option value="0-50">Da 0 a 50</option>
+                    <option value="50-100">Da 50 a 100</option>
+                    <option value="100-200">Da 100 a 200</option>
+                    <option value="200-500">Da 200 a 500</option>
+                    <option value="500-1000">Da 500 a 1.000</option>
                 </select>
                 <input type="hidden" id="pesoMin" name="pesoMin" value="">
     			<input type="hidden" id="pesoMax" name="pesoMax" value="">
@@ -80,11 +80,11 @@
             <form class="custom-form">
                 <select name="lunghezza" class="custom-select" id="lunghezzaFilter">
                     <option value="">Lunghezza</option>
-                    <option value="0-10000">Da 0 a 10.000</option>
-                    <option value="10000-20000">Da 10.000 a 20.000</option>
-                    <option value="20000-30000">Da 20.000 a 30.000</option>
-                    <option value="30000-40000">Da 30.000 a 40.000</option>
-                    <option value="40000-50000">Da 40.000 a 50.000</option>
+                    <option value="0-50">Da 0 a 50</option>
+                    <option value="50-100">Da 50 a 100</option>
+                    <option value="100-200">Da 100 a 200</option>
+                    <option value="200-500">Da 200 a 500</option>
+                    <option value="500-1000">Da 500 a 1.000</option>
                 </select>
             </form>
 

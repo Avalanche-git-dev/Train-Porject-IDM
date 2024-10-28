@@ -72,26 +72,6 @@ public class TrenoFilter {
 	}
 
 
-	public TrenoFilter(Double prezzoMin, Double prezzoMax, Double pesoMin, Double pesoMax, Double lunghezzaMin,
-			Double lunghezzaMax, String sigla, String marca, Double valutazioneMin, Double valutazioneMax, Double prezzoVendita,
-			Double ammontareTotale, boolean inVendita, String nome, Long idOwner) {
-		super();
-		this.prezzoMin = prezzoMin;
-		this.prezzoMax = prezzoMax;
-		this.pesoMin = pesoMin;
-		this.pesoMax = pesoMax;
-		this.lunghezzaMin = lunghezzaMin;
-		this.lunghezzaMax = lunghezzaMax;
-		this.sigla = sigla;
-		this.marca = marca;
-		this.valutazioneMin = valutazioneMin;
-		this.valutazioneMax = valutazioneMax;
-		this.prezzoVendita = prezzoVendita;
-		this.ammontareTotale = ammontareTotale;
-		this.inVendita = inVendita;
-		this.nome = nome;
-		this.idOwner = idOwner;
-	}
 
 
 
