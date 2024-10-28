@@ -189,6 +189,9 @@ public class UserController {
             
 
             if (utenteLoggato instanceof AdminDTO) {
+            	
+            	boolean privilegio = ((AdminDTO) utenteLoggato).isPrivilegio();
+            	session.setAttribute("privilegio", privilegio);
             	session.setAttribute("admin", utenteLoggato);
                 return "redirect:/admin";
                 

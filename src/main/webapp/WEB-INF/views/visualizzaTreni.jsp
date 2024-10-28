@@ -32,7 +32,6 @@ body, html {
 .train-card-details {
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: none; /* Rimosso il bordo */
     border-radius: 5px; /* Arrotondamento leggero */
     overflow: hidden;
     height: 230px;
@@ -42,15 +41,15 @@ body, html {
 
 
 
-
 /* Immagine della card, a schermo pieno */
-.train-card-details img {
-    width: 100%;
-    height: 100%;
+.container-card-detail img {
+    width:100%;
+    height:100%;
 }
 
 /* Titolo del treno, stile più accattivante */
 .train-card-details .title {
+    text-shadow: 2px 2px 4px #000000;
     position: absolute;
     top: 10px;
     left: 50%;
@@ -90,15 +89,12 @@ body, html {
 
 .train-card-details .btn-dettagli {
     font-size: 0.9em;
-    color: white;
-    background-color: transparent;
-    border: 1px solid white; /* Bordo bianco per maggiore visibilità */
-    padding: 5px 15px;
+     /* Bordo bianco per maggiore visibilità */
     border-radius: 5px;
 }
 
 .train-card-details .card-img-overlay:hover {
-    background: rgba(0, 0, 0, 0.8); /* Sfondo leggermente più scuro al passaggio del mouse */
+    background: rgba(0, 0, 0, 0.4); /* Sfondo leggermente più scuro al passaggio del mouse */
 }
 
 
@@ -123,6 +119,14 @@ body, html {
     margin-top: 20px;
     display: flex;
     justify-content: center;
+}
+
+
+#immagineTreno{
+
+
+
+
 }
 </style>
 
@@ -229,13 +233,15 @@ body, html {
         <div class="train-grid" id="trainGrid">
             <c:forEach var="treno" items="${treniDto}">
                 <div class="train-card-details">
-                    <div class="container container-card-detail">
+                    <div class="container-card-detail">
                         <div class="title">${treno.nome}</div>
-                        <img src="${treno.immagine}" alt="Immagine del Treno">
+                        
+                        <img src="${treno.immagine}" alt="Immagine del Treno" id="immagineTreno">
+                        
                         <div class="rating">&#9733; ${treno.mediaValutazioni}</div>
                         <div class="card-img-overlay">
                             <!-- Pulsante che apre il modale -->
-                            <button type="button" class="btn btn-primary btn-dettagli" 
+                            <button type="button" class="btn btn-secondary btn-dettagli" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#modal-${treno.idTreno}">
                                 Vedi Dettagli

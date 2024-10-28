@@ -167,7 +167,7 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-light">
 <div class="container">
     <h1>Tutti i Treni Disponibili</h1>
 
