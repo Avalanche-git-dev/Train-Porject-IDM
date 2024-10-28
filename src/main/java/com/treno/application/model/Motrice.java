@@ -17,7 +17,6 @@ public class Motrice extends Vagone {
 
 
 	public Motrice() {
-		super();
 	}
 
 

@@ -13,4 +13,5 @@ public interface Dao <T> {
     void update(T entity);
     @Transactional
     void delete(T entity);
+
 }

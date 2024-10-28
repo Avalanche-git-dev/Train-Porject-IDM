@@ -1,5 +1,5 @@
 package com.treno.application.exception;
-public class VagoniIncompatibiliException extends RuntimeException {
+public class VagoniIncompatibiliException extends TrenoCreazioneException {
     /**
 	 * 
 	 */

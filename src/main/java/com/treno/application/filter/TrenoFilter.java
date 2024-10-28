@@ -1,17 +1,24 @@
 package com.treno.application.filter;
 
 public class TrenoFilter {
-
+    private String nome;
+    private String sigla;
+    private String marca;
+    private String usernameProprietario;
+    private Double pesoMin;
+    private Double pesoMax;
+    private Double lunghezzaMin;
+    private Double lunghezzaMax;
+    private Double mediaValutazioniMin;
+    private Double costoTotaleMin;
+    private Double costoTotaleMax;
+    private String ordine; // Campo per specificare il criterio di ordinamento
+    private String direzione ;
 	private Double prezzoMin, prezzoMax;
-	private Double pesoMin, pesoMax;
-	private Double lunghezzaMin, lunghezzaMax;
-	private String sigla;
-	private String marca;
 	private Double valutazioneMin, valutazioneMax;
 	private Double prezzoVendita;//inteso come Max
 	private Double ammontareTotale;
 	private boolean inVendita;
-	private String nome;
 	private Long idOwner;
 	private Long idTreno;
 	private String ordinamento;
@@ -52,16 +59,17 @@ public class TrenoFilter {
 	public void setIdOwner(Long idOwner) {
 		this.idOwner = idOwner;
 	}
-
-
-
-	public TrenoFilter() {
-		super();
+    public String getOrdine() {
+		return ordine;
 	}
 
+	public void setOrdine(String ordine) {
+		this.ordine = ordine;
+	}
 
-
-
+	public String getDirezione() {
+		return direzione;
+	}
 
 
 	public TrenoFilter(Double prezzoMin, Double prezzoMax, Double pesoMin, Double pesoMax, Double lunghezzaMin,
@@ -217,18 +225,17 @@ public class TrenoFilter {
 		this.inVendita = inVendita;
 	}
 
-
+	public void setDirezione(String direzione) {
+		this.direzione = direzione;
+	}
 
 	public String getNome() {
-		return nome;
-	}
+        return nome;
+    }
 
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
 
 	public Long getIdTreno() {
@@ -267,10 +274,36 @@ public class TrenoFilter {
 
 
 
+    public String getUsernameProprietario() {
+        return usernameProprietario;
+    }
+
+    public void setUsernameProprietario(String usernameProprietario) {
+        this.usernameProprietario = usernameProprietario;
+    }
 
 
-	
-	
-	
-	
+    public Double getMediaValutazioniMin() {
+        return mediaValutazioniMin;
+    }
+
+    public void setMediaValutazioniMin(Double mediaValutazioniMin) {
+        this.mediaValutazioniMin = mediaValutazioniMin;
+    }
+
+    public Double getCostoTotaleMin() {
+        return costoTotaleMin;
+    }
+
+    public void setCostoTotaleMin(Double costoTotaleMin) {
+        this.costoTotaleMin = costoTotaleMin;
+    }
+
+    public Double getCostoTotaleMax() {
+        return costoTotaleMax;
+    }
+
+    public void setCostoTotaleMax(Double costoTotaleMax) {
+        this.costoTotaleMax = costoTotaleMax;
+    }
 }

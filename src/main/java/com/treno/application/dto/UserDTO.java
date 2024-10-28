@@ -1,9 +1,5 @@
 package com.treno.application.dto;
 
-import java.util.List;
-
-import com.treno.application.model.Ruolo;
-import com.treno.application.model.Treno;
 import com.treno.application.model.User.Stato;
 
 public class UserDTO {
@@ -17,28 +13,33 @@ public class UserDTO {
     private String telefono;
     private Stato stato;
     private double portafoglio;
-    private Ruolo ruolo; // Aggiunta
-	public UserDTO(long userId, String username, String password, String email, String nome, String cognome,
-			String telefono, Stato stato, double portafoglio, Ruolo ruolo, List<Treno> treni) {
-		super();
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.telefono = telefono;
-		this.stato = stato;
-		this.portafoglio = portafoglio;
-		this.ruolo = ruolo;
-	}
+
+
 	public UserDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
+	
+	
+	public UserDTO(long userId, String username, String password, String email, String nome, String cognome,
+		String telefono, Stato stato, double portafoglio) {
+	super();
+	this.userId = userId;
+	this.username = username;
+	this.password = password;
+	this.email = email;
+	this.nome = nome;
+	this.cognome = cognome;
+	this.telefono = telefono;
+	this.stato = stato;
+	this.portafoglio = portafoglio;
+}
+
+
 	public long getUserId() {
 		return userId;
 	}
+	
+	
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
@@ -90,19 +91,16 @@ public class UserDTO {
 	public void setPortafoglio(double portafoglio) {
 		this.portafoglio = portafoglio;
 	}
-	public Ruolo getRuolo() {
-		return ruolo;
-	}
-	public void setRuolo(Ruolo ruolo) {
-		this.ruolo = ruolo;
-	}
+
+
 	@Override
 	public String toString() {
 		return "UserDTO [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", nome=" + nome + ", cognome=" + cognome + ", telefono=" + telefono + ", stato=" + stato
-				+ ", portafoglio=" + portafoglio + ", ruolo=" + ruolo + "]";
+				+ ", portafoglio=" + portafoglio + "]";
 	}
-    
+
+
 
     // Getters e Setters
 	

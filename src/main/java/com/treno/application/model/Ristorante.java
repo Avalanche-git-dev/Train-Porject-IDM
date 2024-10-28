@@ -20,7 +20,6 @@ public class Ristorante extends Vagone {
 	}
 
 	public Ristorante() {
-		super();
 	}
 
 	public int getNumeroPostiRistorante() {

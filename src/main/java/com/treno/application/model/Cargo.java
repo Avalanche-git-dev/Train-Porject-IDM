@@ -13,7 +13,6 @@ public class Cargo extends Vagone {
 	private double volumeCargo;
 
 	public Cargo() {
-		super();
 	}
 
 	public Cargo(int idVagone, double peso, double costo, double lunghezza, String marca, Treno treno,

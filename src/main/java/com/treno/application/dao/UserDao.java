@@ -3,12 +3,23 @@ package com.treno.application.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.treno.application.dto.UserDTO;
 import com.treno.application.filter.UtenteFilter;
+import com.treno.application.model.Admin;
 import com.treno.application.model.User;
+import com.treno.application.model.User.Stato;
 import com.treno.application.utility.UserUtility;
 
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 
 
 public class UserDao extends ProxyDao<User> implements UserUtility {
@@ -31,7 +42,6 @@ public class UserDao extends ProxyDao<User> implements UserUtility {
             dto.setTelefono(user.getTelefono());
             dto.setStato(user.getStato());
             dto.setPortafoglio(user.getPortafoglio());
-            dto.setRuolo(user.getRuolo());
             userDTOs.add(dto);
         }
         return userDTOs;
@@ -62,74 +72,191 @@ public class UserDao extends ProxyDao<User> implements UserUtility {
         return results.isEmpty() ? null : results.get(0);
     }
 
+
+	
+	
+	
+//	// Filtro admin
+//	@Override
+//	public List<User> filtraUtenti(UtenteFilter filtro) {
+//	    CriteriaBuilder cb = em.getCriteriaBuilder();
+//	    CriteriaQuery<User> cq = cb.createQuery(User.class);
+//	    Root<User> userRoot = cq.from(User.class);
+//
+//	    userRoot.fetch("stato", JoinType.LEFT);
+//	    userRoot.fetch("treni", JoinType.LEFT);
+//	    userRoot.fetch("valutazioni", JoinType.LEFT);
+//	    userRoot.fetch("transazioni", JoinType.LEFT);
+//
+//	    cq.select(userRoot).distinct(true);
+//
+//	    List<Predicate> predicates = new ArrayList<>();
+//
+//	    if (filtro.getUsername() != null) {
+//	        predicates.add(cb.equal(userRoot.get("username"), filtro.getUsername()));
+//	    }
+//	    if (filtro.getNome() != null) {
+//	        predicates.add(cb.equal(userRoot.get("nome"), filtro.getNome()));
+//	    }
+//	    if (filtro.getStato() != null) {
+//	        predicates.add(cb.equal(userRoot.get("stato"), filtro.getStato()));
+//	    }
+//	    
+//	    if (filtro.getPortafoglio() != 0) {
+//	        predicates.add(cb.equal(userRoot.get("portafoglio"), filtro.getPortafoglio()));
+//	    }
+//	    if (filtro.getNumeroTreni() != 0) {
+//	        predicates.add(cb.greaterThanOrEqualTo(cb.size(userRoot.get("treni")), filtro.getNumeroTreni()));
+//	    }
+//	    if (filtro.getNumeroValutazioni() != 0) {
+//	        predicates.add(cb.greaterThanOrEqualTo(cb.size(userRoot.get("valutazioni")), filtro.getNumeroValutazioni()));
+//	    }
+//	    if (filtro.getNumeroTransazioni() != 0) {
+//	        predicates.add(cb.greaterThanOrEqualTo(cb.size(userRoot.get("transazioni")), filtro.getNumeroTransazioni()));
+//	    }
+//
+//	    // Applica i predicati alla query
+//	    if (!predicates.isEmpty()) {
+//	        cq.where(predicates.toArray(new Predicate[0]));
+//	    }
+//
+//	    TypedQuery<User> query = em.createQuery(cq);
+//	    return query.getResultList();
+//	}
+    
+    
     
     @Override
-    public List<User> filtraUtenti(UtenteFilter filtro, long userId) {
-        StringBuilder queryString = new StringBuilder("SELECT u FROM User u WHERE u.id <> :userId");
+    public List<User> filtraUtenti(UtenteFilter filtro) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> userRoot = cq.from(User.class);
 
+        // Esegui fetch join per le relazioni
+        userRoot.fetch("stato", JoinType.LEFT);
+        userRoot.fetch("treni", JoinType.LEFT);
+        userRoot.fetch("valutazioni", JoinType.LEFT);
+        userRoot.fetch("transazioni", JoinType.LEFT);
+
+        cq.select(userRoot).distinct(true);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        // Condizioni sui campi semplici
         if (filtro.getUsername() != null) {
-            queryString.append(" AND u.username LIKE :username");
-        }
-        if (filtro.getEmail() != null) {
-            queryString.append(" AND u.email LIKE :email");
+            predicates.add(cb.equal(userRoot.get("username"), filtro.getUsername()));
         }
         if (filtro.getNome() != null) {
-            queryString.append(" AND u.nome LIKE :nome");
+            predicates.add(cb.equal(userRoot.get("nome"), filtro.getNome()));
         }
         if (filtro.getCognome() != null) {
-            queryString.append(" AND u.cognome LIKE :cognome");
-        }
-        if (filtro.getEtà() != null) {
-            queryString.append(" AND u.età = :età");
-        }
-        if (filtro.getStato() != null) {
-            queryString.append(" AND u.stato = :stato");
-        }
-        if (filtro.getTelefono() != null) {
-            queryString.append(" AND u.telefono LIKE :telefono");
-        }
-        if (filtro.getPassword() != null) {
-            queryString.append(" AND u.password = :password");
-        }
-        if (filtro.getNuovaPassword() != null) {
-            queryString.append(" AND u.nuovaPassword = :nuovaPassword");
-        }
-
-        TypedQuery<User> query = em.createQuery(queryString.toString(), User.class);
-        query.setParameter("userId", userId);
-
-        if (filtro.getUsername() != null) {
-            query.setParameter("username", "%" + filtro.getUsername() + "%");
+            predicates.add(cb.equal(userRoot.get("cognome"), filtro.getCognome()));
         }
         if (filtro.getEmail() != null) {
-            query.setParameter("email", "%" + filtro.getEmail() + "%");
-        }
-        if (filtro.getNome() != null) {
-            query.setParameter("nome", "%" + filtro.getNome() + "%");
-        }
-        if (filtro.getCognome() != null) {
-            query.setParameter("cognome", "%" + filtro.getCognome() + "%");
-        }
-        if (filtro.getEtà() != null) {
-            query.setParameter("età", filtro.getEtà());
-        }
-        if (filtro.getStato() != null) {
-            query.setParameter("stato", filtro.getStato());
-        }
-        if (filtro.getTelefono() != null) {
-            query.setParameter("telefono", "%" + filtro.getTelefono() + "%");
+            predicates.add(cb.equal(userRoot.get("email"), filtro.getEmail()));
         }
         if (filtro.getPassword() != null) {
-            query.setParameter("password", filtro.getPassword());
+            predicates.add(cb.equal(userRoot.get("password"), filtro.getPassword()));
         }
-        if (filtro.getNuovaPassword() != null) {
-            query.setParameter("nuovaPassword", filtro.getNuovaPassword());
+        if (filtro.getStato() != null) {
+            predicates.add(cb.equal(userRoot.get("stato"), filtro.getStato()));
+        }
+        if (filtro.getPortafoglio() != 0) {
+            predicates.add(cb.equal(userRoot.get("portafoglio"), filtro.getPortafoglio()));
         }
 
+        // Subquery per conteggio dei treni
+        if (filtro.getNumeroTreni() > 0) {
+            Subquery<Long> treniCount = cq.subquery(Long.class);
+            Root<User> subUser = treniCount.from(User.class);
+            Join<Object, Object> treni = subUser.join("treni");
+            treniCount.select(cb.count(treni)).where(cb.equal(subUser, userRoot));
+            predicates.add(cb.greaterThanOrEqualTo(treniCount, (long) filtro.getNumeroTreni()));
+        }
+
+        // Subquery per conteggio delle valutazioni
+        if (filtro.getNumeroValutazioni() > 0) {
+            Subquery<Long> valutazioniCount = cq.subquery(Long.class);
+            Root<User> subUser = valutazioniCount.from(User.class);
+            Join<Object, Object> valutazioni = subUser.join("valutazioni");
+            valutazioniCount.select(cb.count(valutazioni)).where(cb.equal(subUser, userRoot));
+            predicates.add(cb.greaterThanOrEqualTo(valutazioniCount, (long) filtro.getNumeroValutazioni()));
+        }
+
+        // Subquery per conteggio delle transazioni
+        if (filtro.getNumeroTransazioni() > 0) {
+            Subquery<Long> transazioniCount = cq.subquery(Long.class);
+            Root<User> subUser = transazioniCount.from(User.class);
+            Join<Object, Object> transazioni = subUser.join("transazioni");
+            transazioniCount.select(cb.count(transazioni)).where(cb.equal(subUser, userRoot));
+            predicates.add(cb.greaterThanOrEqualTo(transazioniCount, (long) filtro.getNumeroTransazioni()));
+        }
+
+        // Applica i predicati alla query
+        if (!predicates.isEmpty()) {
+            cq.where(predicates.toArray(new Predicate[0]));
+        }
+
+        TypedQuery<User> query = em.createQuery(cq);
         return query.getResultList();
     }
 
-    
-    
+
+	
+	
+	
+	// findAllAdmin
+	@Transactional
+	public List<Admin> findAllAdminWithPrivileges() {
+	    String hql = "SELECT DISTINCT a FROM Admin a " +
+	                 "LEFT JOIN FETCH a.treni t " +
+	                 "LEFT JOIN FETCH t.valutazioni " +
+	                 "LEFT JOIN FETCH t.transazioni " +
+	                 "WHERE a.privilegio = true";
+	    
+	    return super.em.createQuery(hql, Admin.class).getResultList();
+	}
+
+	
+	@Transactional
+	public List<User> findAllLockedUsers() {
+	    String hql = "SELECT u FROM User u WHERE u.stato = :stato";
+	    return em.createQuery(hql, User.class)
+	             .setParameter("stato", Stato.locked)
+	             .getResultList();
+	}
+	
+	// findAllAttivi
+	@Transactional
+	public List<User> findAllActiveUsers() {
+	    // HQL per trovare tutti gli utenti attivi (stato unlocked) e caricare le relazioni
+	    String hql = "SELECT DISTINCT u FROM User u " +
+	                 "LEFT JOIN FETCH u.treni t " +
+	                 "LEFT JOIN FETCH t.valutazioni " +
+	                 "LEFT JOIN FETCH t.transazioni " +
+	                 "WHERE u.stato = :stato";
+	    
+	    return super.em.createQuery(hql, User.class)
+	                   .setParameter("stato", Stato.unlocked)  // Passiamo l'enum Stato.unlocked come parametro
+	                   .getResultList();
+	}
+
+	
+	
+	@Override
+	public Admin findAdminByUserId(Long userId) {
+	    String hql = "SELECT a FROM Admin a WHERE a.userId = :userId";
+	    List<Admin> result = em.createQuery(hql, Admin.class)
+	                           .setParameter("userId", userId)
+	                           .getResultList();
+	    
+	    if (result.isEmpty()) {
+	        return null;  
+	    }
+	    
+	    return result.get(0);  
+	}
+
+
 
 }

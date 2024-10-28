@@ -6,14 +6,14 @@ public class TransazioneFilter {
 	private double importoMassimo;
 	private double importoMinimo;
 	private LocalDateTime ultimaTransazione;
-	public TransazioneFilter(double importoMassimo, double importoMinimo, LocalDateTime ultimaTransazione) {
+	private LocalDateTime primaTransazione;
+	public TransazioneFilter(double importoMassimo, double importoMinimo, LocalDateTime ultimaTransazione,
+			LocalDateTime primaTransazione) {
 		super();
 		this.importoMassimo = importoMassimo;
 		this.importoMinimo = importoMinimo;
 		this.ultimaTransazione = ultimaTransazione;
-	}
-	public TransazioneFilter() {
-		super();
+		this.primaTransazione = primaTransazione;
 	}
 	public double getImportoMassimo() {
 		return importoMassimo;
@@ -33,10 +33,16 @@ public class TransazioneFilter {
 	public void setUltimaTransazione(LocalDateTime ultimaTransazione) {
 		this.ultimaTransazione = ultimaTransazione;
 	}
+	public LocalDateTime getPrimaTransazione() {
+		return primaTransazione;
+	}
+	public void setPrimaTransazione(LocalDateTime primaTransazione) {
+		this.primaTransazione = primaTransazione;
+	}
 	@Override
 	public String toString() {
 		return "TransazioneFilter [importoMassimo=" + importoMassimo + ", importoMinimo=" + importoMinimo
-				+ ", ultimaTransazione=" + ultimaTransazione + "]";
+				+ ", ultimaTransazione=" + ultimaTransazione + ", primaTransazione=" + primaTransazione + "]";
 	}
 	
 

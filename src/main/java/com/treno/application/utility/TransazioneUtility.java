@@ -14,4 +14,16 @@ public interface TransazioneUtility extends Dao <Transazione> {
 
 	public List<TransazioneDTO> findTreniByTotalTransactionValueDesc();
 
+	public List<Transazione> findAllTransazioniOrdinatePerImporto();
+
+	public List<Transazione> findAllTransazioni();
+
+	public List<Transazione> findTransazioniOrdinatePerDataRecente();
+
+	public List<Transazione> findTransazioniByVenditore(long venditoreId);
+
+	public List<Transazione> findTransazioniByAcquirente(long acquirenteId);
+	
+	
+
 }

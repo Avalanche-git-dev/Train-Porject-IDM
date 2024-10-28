@@ -15,5 +15,8 @@ public interface Factory {
 	abstract public Ristorante creaRistorante();
 
 	abstract public Motrice creaMotrice();
+	
+
+	abstract String creaImmagine(String treno, String marca);
 
 }

@@ -1,17 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ include file="navbar.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="navbar.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Treni</title>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<style>
+    <meta charset="UTF-8">
+    <title>Tutti i Treni Disponibili</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
         .fixed-width-button {
             width: 180px;
         }
@@ -35,12 +32,13 @@
             margin-left: 30px; 
         }
     </style>
+</head>
 <body>
+<div class="container">
+    <h1>Tutti i Treni Disponibili</h1>
 
-	<div class="container">
-    <h1>Tutti i treni in vendita</h1>
-    
-    <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="input-group mt-3 mb-3">
+    <!-- Barra di ricerca con applica filtri -->
+    <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="input-group mt-3 mb-3">
         <button type="button" class="btn btn-primary dropdown-toggle fixed-width-button" data-toggle="dropdown">Scegli un'opzione</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
@@ -50,18 +48,16 @@
 
         <input type="text" id="selectedOption" class="form-control" placeholder="Seleziona un'opzione" name="filtroOpzione">
         <input type="hidden" id="hiddenSelectedOption" name="selectedOptionValue">
+        
         <input type="hidden" id="pesoMin" name="pesoMin">
     	<input type="hidden" id="pesoMax" name="pesoMax">
     	<input type="hidden" id="lunghezzaMin" name="lunghezzaMin">
     	<input type="hidden" id="lunghezzaMax" name="lunghezzaMax">
     	<input type="hidden" id="valutazioneMin" name="valutazioneMin">
     	<input type="hidden" id="valutazioneMax" name="valutazioneMax">
-    	<input type="hidden" id="prezzoMin" name="prezzoMin">
-		<input type="hidden" id="prezzoMax" name="prezzoMax">
-		
-		<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
-    	<input type="hidden" id="ascendente" name="ascendente" value="false">
     	
+    	<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
+    	<input type="hidden" id="ascendente" name="ascendente" value="false">
 
         <!-- Pulsante per applicare i filtri -->
         <div class="input-group-append">
@@ -104,39 +100,25 @@
                     <option value="3-5">Da 3 a 5 stelle</option>
                 </select>
             </form>
-        
-        	<!-- Prezzo -->
-        	<form class="custom-form">
-                <select name="prezzo" class="custom-select" id="prezzoFilter">
-                    <option value="">Prezzo</option>
-                    <option value="0-10000">Da 0 a 10.000</option>
-                    <option value="10000-20000">Da 10.000 a 20.000</option>
-                    <option value="20000-30000">Da 20.000 a 30.000</option>
-                    <option value="30000-40000">Da 30.000 a 40.000</option>
-                    <option value="40000-50000">Da 40.000 a 50.000</option>
-                </select>
-            </form>
         </div>
-        
+
         <!-- Ordinamento -->
         <form class="separated-form">
             <select name="ordinamento" class="custom-select" id="ordinamentoFilter">
                 <option value="">Filtra per ordinamento</option>
-                <option value="piuPesante-true">Più pesante</option>
-                <option value="menoPesante-false">Meno pesante</option>
-                <option value="piuLungo-true">Più lungo</option>
-                <option value="menoLungo-false">Meno lungo</option>
-                <option value="piuVotato-true">Più votato</option>
-                <option value="menoVotato-false">Meno votato</option>
-                <option value="piuCostoso-true">Più costoso</option>
-                <option value="menoCostoso-false">Meno costoso</option>
+                <option value="pesoTotale-true">Più pesante</option>
+                <option value="pesoTotale-false">Meno pesante</option>
+                <option value="lunghezzaTotale-true">Più lungo</option>
+                <option value="lunghezzaTotale-false">Meno lungo</option>
+                <option value="valutazioneMedia-true">Più votato</option>
+                <option value="valutazioneMedia-false">Meno votato</option>
             </select>
         </form>
     </div>
-    
+
     <!-- Sezione per visualizzare i treni aggiornati -->
     <div id="elencoTreni">
-        <c:forEach var="treno" items="${treniInVendita}" varStatus="status">
+        <c:forEach var="treno" items="${treni}" varStatus="status">
             <div class="card mb-3 treno" 
                  data-nome="${treno.nome}" 
                  data-sigla="${treno.sigla}" 
@@ -159,26 +141,46 @@
                                 <input type="hidden" name="idTreno" value="${treno.idTreno}" />
                                 <button type="submit" class="btn btn-primary">Vedi Dettagli</button>
                             </form>
-                            <form action="${pageContext.request.contextPath}/market/acquista" method="post" class="d-inline">
-                            	<input type="hidden" name="idTreno" value="${treno.idTreno}"/>
-                            	<button type="submit" class="btn btn-success ml-2">Acquista Treno</button>
-                            </form>
+
+                            <button class="btn btn-success ml-2" onclick="toggleValutaForm(${treno.idTreno})">Valuta</button>
+
+                            <div id="valutaForm${treno.idTreno}" style="display: none; margin-top: 10px;">
+                                <form action="${pageContext.request.contextPath}/catalogo/valutaTreno" method="post">
+                                    <input type="hidden" name="trenoId" value="${treno.idTreno}">
+                                    <label for="voto${treno.idTreno}">Inserisci la tua valutazione (1-5):</label>
+                                    <input type="number" id="voto${treno.idTreno}" name="voto" min="1" max="5" class="form-control" required>
+                                    <button type="submit" class="btn btn-primary mt-2">Invia Valutazione</button>
+                                </form>
+
+                                <c:if test="${not empty successMessage}">
+                                    <div class="alert alert-success mt-2">${successMessage}</div>
+                                </c:if>
+                                <c:if test="${not empty errorMessage}">
+                                    <div class="alert alert-danger mt-2">${errorMessage}</div>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </c:forEach>
     </div>
-</div>
-
-	<!-- Footer -->
+    
+    <!-- Footer -->
 	<footer class="text-center">
 		<p>&copy; 2024 YourWebsite. All rights reserved.</p>
 	</footer>
+    
 </div>
 
 <script>
- 	// Aggiungiamo l'event listener per gli elementi del dropdown
+    // Funzione per mostrare/nascondere il form di valutazione
+    function toggleValutaForm(trenoId) {
+        var form = document.getElementById("valutaForm" + trenoId);
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    // Aggiungiamo l'event listener per gli elementi del dropdown
     document.querySelectorAll('.dropdown-item').forEach(function(item) {
         item.addEventListener('click', function() {
             var selectedValue = this.getAttribute('data-value');
@@ -200,7 +202,7 @@
     	}
     })
     
-    document.querySelectorAll('#pesoFilter, #lunghezzaFilter, #valutazioniFilter, #ordinamentoFilter, #prezzoFilter').forEach(function(select) {
+    document.querySelectorAll('#pesoFilter, #lunghezzaFilter, #valutazioniFilter, #ordinamentoFilter').forEach(function(select) {
         select.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -221,6 +223,7 @@
             
             // Imposta anche il valore nascosto per poterlo usare nel controller se necessario
             document.getElementById('hiddenSelectedOption').value = selectedValue;
+            console.log("hiddenSelectedOption impostato a:", selectedValue); 
         });
     });
     
@@ -266,20 +269,6 @@
         }
     });
     
-    document.getElementById('prezzoFilter').addEventListener('change', function() {
-        var selectedValue = this.value;
-        if (selectedValue) {
-            var range = selectedValue.split("-");
-            document.getElementById('prezzoMin').value = range[0];
-            document.getElementById('prezzoMax').value = range[1];
-            console.log("prezzoMin:", document.getElementById('prezzoMin').value);
-            console.log("prezzoMax:", document.getElementById('prezzoMax').value);
-        } else {
-            document.getElementById('prezzoMin').value = "";
-            document.getElementById('prezzoMax').value = "";
-        }
-    });
-    
  	// Listener per loggare il valore dell'input nella console
     document.getElementById('selectedOption').addEventListener('input', function() {
         var currentValue = this.value;
@@ -303,16 +292,11 @@
         var selectedValue = this.value;
         console.log("Valutazioni selezionate:", selectedValue);
     });
-
-    // Listener per loggare il valore selezionato per Ordinamento
+    
+ 	// Listener per loggare il valore selezionato per Ordinamento
     document.getElementById('ordinamentoFilter').addEventListener('change', function() {
         var selectedValue = this.value;
-        console.log("Ordinamento selezionato:", selectedValue);
-    });
-    
-    document.getElementById('prezzoFilter').addEventListener('change', function() {
-    	var selectedValue = this.value;
-    	console.log("Prezzo selezionato:", selectedValue);
+        console.log("Valutazioni selezionate:", selectedValue);
     });
     
  	// Event listener per il filtro ordinamento
@@ -324,12 +308,11 @@
         console.log("Ordinamento selezionato:", selectedValue[0]);
         console.log("Direzione ascendente:", selectedValue[1]);
     });
- 	
 </script>
 
-	<!-- Inclusione di jQuery e Bootstrap JavaScript per far funzionare il menu a tendina -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Inclusione di jQuery e Bootstrap JavaScript per far funzionare il menu a tendina -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

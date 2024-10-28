@@ -16,7 +16,6 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.treno.application.FactoryConfiguration;
 import com.treno.application.dao.TransazioneDao;
@@ -31,14 +30,9 @@ import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.service.ValutazioneService;
 
-
-
-
-
-
 @Configuration
 @EnableTransactionManagement
-@EnableWebMvc//Questo maledetto mi è costato una figura del cazzo
+//Questo maledetto mi è costato una figura del cazzo
 @ImportResource("classpath:/BeansConfiguration.xml")
 @ComponentScan("com.treno.application")
 public class AppConfiguration {
@@ -49,8 +43,8 @@ public class AppConfiguration {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 		ds.setUsername("root");
-		ds.setPassword("Giorick1997.");
-		ds.setUrl("jdbc:mysql://localhost:3306/trainproject");
+		ds.setPassword("momo");
+		ds.setUrl("jdbc:mysql://localhost:3307/hibernate_db");
 		return ds;
 	}
 
@@ -95,15 +89,13 @@ public class AppConfiguration {
 //		// transactionManager.setNestedTransactionAllowed(false);
 //		return transactionManager;
 //	}
-	
-	
+
 	@Bean
 	public PlatformTransactionManager getTransactionManager() {
-	    JpaTransactionManager transactionManager = new JpaTransactionManager();
-	    transactionManager.setEntityManagerFactory(getEntityManager().getObject());
-	    return transactionManager;
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(getEntityManager().getObject());
+		return transactionManager;
 	}
-
 
 	// Configurazione della Factory
 
@@ -112,13 +104,8 @@ public class AppConfiguration {
 		return new FactoryConfiguration();
 	}
 
-	
-	
-	
-	//<Application>
-	
-	
-	
+	// <Application>
+
 	// Configurazione del builder
 
 	@Bean(name = "Builder")
@@ -184,6 +171,7 @@ public class AppConfiguration {
 
 	}
 
+
 	// Bean Component
 
 	@Bean("Transazione")
@@ -191,19 +179,7 @@ public class AppConfiguration {
 	public Transazione getTransazione() {
 		return new Transazione();
 	}
-	
-	//</Application>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	}
 
+	// </Application>
 
+}

@@ -1,6 +1,7 @@
+
 package com.treno.application.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.treno.application.dto.TransazioneDTO;
+import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.InvalidCredentialsException;
 import com.treno.application.exception.UserNotFoundException;
+import com.treno.application.service.TransazioneService;
+import com.treno.application.service.TrenoService;
 import com.treno.application.service.UserService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -32,24 +38,29 @@ public class ProfiloController {
 	@Qualifier("Sessione")
 	private SessioneUtility sessione;
 
-	// Mostra la vista del profilo utente
+	@Autowired
+	@Qualifier("TrenoService")
+	private TrenoService trenoService;
+	
+	@Autowired
+	@Qualifier("TransazioneService")
+	private TransazioneService transazioneService;
+
 	@GetMapping
 	public String mostraProfilo(HttpSession session, Model model) {
 
-		UserDTO userInfo = sessione.getUtenteLoggato(session);
-		
-		if(!sessione.isUtenteLoggato(session)) {
-			return sessione.redirectTologin();
-		}
-		try {
-			sessione.setUtenteLoggato(session, userInfo);
-			userInfo = userService.findByUsername(userInfo.getUsername());
-			session.setAttribute("utente", userInfo);
-			model.addAttribute("userInfo", userInfo);
-		} catch (UserNotFoundException e) {
-			model.addAttribute("error", e.getMessage());
-			return sessione.redirectTologin();
-		}
+		UserDTO utenteLoggato = sessione.getUtenteLoggato(session); 
+		UserDTO userInfo = userService.findByUsername(utenteLoggato.getUsername()); 
+		  List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(userInfo.getUsername());
+		  List<TransazioneDTO> transazioniVenditaDTO = transazioneService.getTransazioniByUtenteVenditore(userInfo.getUserId());
+		  List<TransazioneDTO> transazioniAcquistoDTO = transazioneService.getTransazioniByUtenteAcquirente(userInfo.getUserId());
+		  model.addAttribute("transazioniAcquisto", transazioniAcquistoDTO);
+		  model.addAttribute("transazioniVendita", transazioniVenditaDTO);
+		  model.addAttribute("numeroTreni", treniUtente.size());
+		  model.addAttribute("userInfo", userInfo);
+		  model.addAttribute("numeroTreni", treniUtente.size());
+		  model.addAttribute("listaTreni", treniUtente);
+
 		return "profilo";
 	}
 
@@ -66,173 +77,172 @@ public class ProfiloController {
 		return sessione.redirectTologin();
 	}
 
-    // /portafoglio/aggiungi flessiblità per /portafoglio un giorno 
+	// /portafoglio/aggiungi flessiblità per /portafoglio un giorno
 	@PostMapping("/portafoglio/aggiungi")
 	public String aggiungiDenaro(@RequestParam("importo") double importo, HttpSession session, Model model) {
-	    UserDTO user = sessione.getUtenteLoggato(session);
-	    if (user == null) {
-	        model.addAttribute("error", "Utente non trovato. Per favore, prova ad effettuare nuovamente il login.");
-	        return sessione.redirectTologin();
-	    }
+		UserDTO user = sessione.getUtenteLoggato(session);
+		if (user == null) {
+			model.addAttribute("errorMessage", "Utente non trovato. Per favore, prova ad effettuare nuovamente il login.");
+			return sessione.redirectTologin();
+		}
 
-	    if (importo <= 0) {
-	        model.addAttribute("error", "L'importo deve essere maggiore di zero.");
-	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per la vista
-	        return "profilo";
-	    }
+		if (importo <= 0) {
+			model.addAttribute("errorMessage", "L'importo deve essere maggiore di zero.");
+			model.addAttribute("userInfo", user); 
+			return "profilo";
+		}
 
-	    try {
-	        user.setPortafoglio(user.getPortafoglio() + importo);
-	        userService.update(user); // Questo chiamerà il metodo `update()` con la logica aggiornata
-	        session.setAttribute("utente", user); // Aggiorna la sessione
-	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per aggiornare la vista immediatamente
-	    } catch (UserNotFoundException e) {
-	        model.addAttribute("error", "Utente non trovato durante l'aggiornamento del portafoglio. Per favore, prova ad effettuare nuovamente il login.");
-	        model.addAttribute("userInfo", user); // Aggiungi l'utente al modello per la vista
-	        return "profilo";
-	    }
+		try {
+			user.setPortafoglio(user.getPortafoglio() + importo);
+			userService.update(user); 
+			session.setAttribute("utente", user); 
+			model.addAttribute("userInfo", user); 
+		} catch (UserNotFoundException e) {
+			model.addAttribute("errorMessage",
+					"Utente non trovato durante l'aggiornamento del portafoglio. Per favore, prova ad effettuare nuovamente il login.");
+			model.addAttribute("userInfo", user); 
+			return "profilo";
+		}
 
-	    // Aggiungi messaggio di successo e ritorna la vista del profilo direttamente
-	    model.addAttribute("successMessage", "Denaro aggiunto con successo al portafoglio.");
-	    return "profilo";
+		model.addAttribute("successMessage", "Denaro aggiunto con successo al portafoglio.");
+		return "profilo";
 	}
 
-
-	
-	//Troppo blindato
-//	
-//	@PostMapping("/modifica")
-//	public String modificaProfilo(@RequestParam(value = "passwordVecchia", required = false) String passwordVecchia,
-//	                              @RequestParam(value = "passwordNuova", required = false) String passwordNuova,
-//	                              @RequestParam(value = "email", required = false) String email,
-//	                              @RequestParam(value = "telefono", required = false) String telefono, 
-//	                              HttpSession session, Model model) throws Exception {
-//
-//	    // Verifica se l'utente è loggato
-//	    if (!sessione.isUtenteLoggato(session)) {
-//	        return sessione.redirectTologin();
-//	    }
-//
-//	    UserDTO currentUser = sessione.getUtenteLoggato(session);
-//	    boolean hasErrors = false;
-//	    StringBuilder errorMessage = new StringBuilder();
-//
-//	    // Validazione della nuova password (solo se fornita)
-//	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
-//	        if (passwordNuova.length() < 6) {
-//	            hasErrors = true;
-//	            errorMessage.append("La nuova password deve avere almeno 6 caratteri.<br/>");
-//	        }
-//	    }
-//
-//	    // Validazione dell'email (solo se fornita)
-//	    if (email != null && !email.isEmpty()) {
-//	        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-//	            hasErrors = true;
-//	            errorMessage.append("L'email inserita non è valida.<br/>");
-//	        }
-//	    }
-//
-//	    // Validazione del telefono (solo se fornito)
-//	    if (telefono != null && !telefono.isEmpty()) {
-//	        if (!telefono.matches("\\d{10}")) { // Controllo telefono per 10 cifre
-//	            hasErrors = true;
-//	            errorMessage.append("Il numero di telefono inserito non è valido.<br/>");
-//	        }
-//	    }
-//
-//	    // Se ci sono errori, restituisci la pagina del profilo con i messaggi di errore
-//	    if (hasErrors) {
-//	        model.addAttribute("error", errorMessage.toString());
-//	        model.addAttribute("userInfo", currentUser); // Riporta i dati correnti
-//	        return "profilo"; // Nome della vista del profilo
-//	    }
-//
-//	    try {
-//	        // Aggiorna l'utente con i parametri forniti
-//	        UserDTO updatedUser = userService.updateUserWithParams(currentUser.getUserId(), passwordVecchia, passwordNuova, email, telefono);
-//	        // Aggiorna l'utente nella sessione
-//	        sessione.setUtenteLoggato(session, updatedUser);
-//
-//	        // Aggiungi messaggio di successo
-//	        model.addAttribute("succes", " Profilo aggiornato con successo ! Controlla i tuoi nuovi dati. ");
-//	    } catch (UserNotFoundException e) {
-//	        // Gestisci l'eccezione se l'utente non viene trovato
-//	        model.addAttribute("error", "Aggiornamento fallito: " + e.getMessage());
-//	        model.addAttribute("userInfo", currentUser);
-//	        return "profilo";
-//	    } catch (InvalidPasswordException e) {
-//	        // Gestisci il caso di password vecchia errata
-//	        model.addAttribute("error", "Aggiornamento fallito: " + e.getMessage());
-//	        model.addAttribute("userInfo", currentUser);
-//	        return "profilo";
-//	    }
-//
-//	    // Reindirizza alla pagina del profilo con il messaggio di successo
-//	    return "redirect:/profilo";
-//	}
+	// modifica Profilo
 	@PostMapping("/modifica")
 	public String modificaProfilo(@RequestParam(value = "passwordVecchia", required = false) String passwordVecchia,
 	                              @RequestParam(value = "passwordNuova", required = false) String passwordNuova,
 	                              @RequestParam(value = "email", required = false) String email,
 	                              @RequestParam(value = "telefono", required = false) String telefono,
-	                              HttpSession session, Model model) {
+	                              HttpSession session, RedirectAttributes redirectAttributes) {
 
 	    // Verifica se l'utente è loggato
 	    if (!sessione.isUtenteLoggato(session)) {
 	        return sessione.redirectTologin();
 	    }
+	    
 
 	    UserDTO currentUser = sessione.getUtenteLoggato(session);
-	    List<String> errorMessages = new ArrayList<>();
+
+	    // Variabile che indica se ci sono modifiche
+	    boolean isModified = false;
 
 	    // Validazione della nuova password (solo se fornita)
 	    if (passwordNuova != null && !passwordNuova.isEmpty()) {
 	        if (passwordNuova.length() < 6) {
-	            errorMessages.add("La nuova password deve avere almeno 6 caratteri.");
+	            redirectAttributes.addFlashAttribute("errorMessage", "La nuova password deve avere almeno 6 caratteri.");
+	            return "redirect:/profilo";
+	        } else {
+	            isModified = true; // La password è cambiata
 	        }
 	    }
 
 	    // Validazione dell'email (solo se fornita)
-	    if (email != null && !email.isEmpty()) {
+	    if (email != null && !email.isEmpty() && !email.equals(currentUser.getEmail())) {
 	        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-	            errorMessages.add("L'email inserita non è valida.");
+	            redirectAttributes.addFlashAttribute("errorMessage", "L'email inserita non è valida.");
+	            return "redirect:/profilo";
+	        } else {
+	            isModified = true; // L'email è cambiata
 	        }
 	    }
 
 	    // Validazione del telefono (solo se fornito)
-	    if (telefono != null && !telefono.isEmpty()) {
+	    if (telefono != null && !telefono.isEmpty() && !telefono.equals(currentUser.getTelefono())) {
 	        if (!telefono.matches("\\d{10}")) {
-	            errorMessages.add("Il numero di telefono inserito non è valido.");
+	            redirectAttributes.addFlashAttribute("errorMessage", "Il numero di telefono inserito non è valido.");
+	            return "redirect:/profilo";
+	        } else {
+	            isModified = true; // Il telefono è cambiato
 	        }
 	    }
 
-	    // Se ci sono errori di validazione, restituisci la pagina del profilo con i messaggi di errore
-	    if (!errorMessages.isEmpty()) {
-	        model.addAttribute("errorMessages", errorMessages);
-	        model.addAttribute("userInfo", currentUser);
-	        return "profilo";
+	    // Se non ci sono modifiche, invia un messaggio che indica che nessuna modifica è stata apportata
+	    if (!isModified) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Nessuna modifica apportata.");
+	        return "redirect:/profilo";
 	    }
 
 	    try {
 	        // Aggiorna l'utente con i parametri forniti
 	        UserDTO updatedUser = userService.updateUserWithParams(currentUser.getUserId(), passwordVecchia, passwordNuova, email, telefono);
+	        
 	        // Aggiorna l'utente nella sessione
 	        sessione.setUtenteLoggato(session, updatedUser);
 
 	        // Aggiungi messaggio di successo
-	        model.addAttribute("successMessage", "Profilo aggiornato con successo! Controlla i tuoi nuovi dati.");
+	        redirectAttributes.addFlashAttribute("successMessage", "Profilo aggiornato con successo! Controlla i tuoi nuovi dati.");
 	    } catch (InvalidCredentialsException e) {
-	        // Gestisci tutte le eccezioni derivate da InvalidCredentialException
-	        errorMessages.add("Aggiornamento fallito: " + e.getMessage());
-	        model.addAttribute("errorMessages", errorMessages);
-	        model.addAttribute("userInfo", currentUser);
-	        return "profilo";
+	        // Gestisci tutte le eccezioni derivanti da credenziali non valide
+	        redirectAttributes.addFlashAttribute("errorMessage", "Aggiornamento fallito: " + e.getMessage());
+	        return "redirect:/profilo";
 	    }
 
 	    // Reindirizza alla pagina del profilo con il messaggio di successo
 	    return "redirect:/profilo";
 	}
 
+	
+
+	
+	
+	
+	
+	@PostMapping("/mostra/utente")
+	public String mostraProfiloUtente(HttpSession session, Model model, @RequestParam("username") String username, RedirectAttributes redirectAttributes) {
+	    // Verifica se lo username è nullo o vuoto e reindirizza al form di inserimento con un messaggio di errore
+	    if (username == null || username.trim().isEmpty()) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Inserisci uno username!");
+	        return "redirect:/profilo"; // Redirect al form di inserimento username
+	    }
+
+	    
+	    try {
+	        // Recupera la lista dei treni dell'utente
+	    	
+	    	
+	    	 UserDTO utenteView = userService.findByUsername(username);
+			    if (utenteView == null||utenteView.getUsername()==null) {
+			        redirectAttributes.addFlashAttribute("errorMessage", "L'utente da te cercato non esiste.");
+			        return "redirect:/profilo"; // Redirect al form con messaggio di errore
+			    }
+			    
+			    
+	        List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(username);
+	        
+	        
+
+		    // Recupera l'utente tramite username dal servizio
+		   
+	        
+	        
+	        
+	        
+	     // Memorizza i dati utente nella sessione per l'uso nella vista profiloUtente
+	        session.setAttribute("utenteView", utenteView);
+	        session.setAttribute("treniDto", treniUtente);
+
+	        // Aggiunge al modello i dati necessari per la vista profiloUtente
+	        model.addAttribute("username", utenteView.getUsername());
+	        model.addAttribute("nome", utenteView.getNome());
+	        model.addAttribute("numeroTreni", treniUtente.size());
+	        model.addAttribute("listaTreni", treniUtente);
+
+	    	
+	        
+	    } catch (UserNotFoundException e) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Utente non trovato: " + e.getMessage());
+	        return "redirect:/profilo"; // Redirect al form con messaggio di errore
+	    }
+
+	    return "profiloUtente"; // Ritorna direttamente alla vista del profilo utente
+	}
+	
+	
+	
+	
+	
+	
+	
 
 }

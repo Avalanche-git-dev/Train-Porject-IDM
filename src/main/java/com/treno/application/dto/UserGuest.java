@@ -1,28 +1,37 @@
 package com.treno.application.dto;
 
-import com.treno.application.model.Ruolo;
+import java.util.UUID;
 
 public class UserGuest extends UserDTO {
-	private Ruolo ruolo;
-	private boolean permessi;
-    // Costruttore e funzionalità specifiche per l'utente guest
+
+    private UUID id ;
+    private String guest ;
+
+    // Costruttore
     public UserGuest() {
-        // Imposta eventuali valori di default, ad esempio nome o permessi limitati
-        this.setNome("Guest");
-        this.setRuolo(Ruolo.GUEST);
-        this.setPermessi(true);  // Un esempio di permesso
+        this.id = UUID.randomUUID(); 
+        this.guest="Guest";
     }
-	public Ruolo getRuolo() {
-		return ruolo;
+
+	public UUID getId() {
+		return id;
 	}
-	public void setRuolo(Ruolo ruolo) {
-		this.ruolo = ruolo;
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
-	public boolean isPermessi() {
-		return permessi;
+
+	public String getGuest() {
+		return guest;
 	}
-	public void setPermessi(boolean permessi) {
-		this.permessi = permessi;
+
+
+	public void setGuest(String guest) {
+		this.guest = guest;
+
+
+
+   
+		
 	}
-    
 }

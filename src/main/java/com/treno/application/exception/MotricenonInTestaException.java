@@ -1,6 +1,6 @@
 package com.treno.application.exception;
 
-public class MotricenonInTestaException extends RuntimeException {
+public class MotricenonInTestaException extends TrenoCreazioneException {
     /**
 	 * 
 	 */

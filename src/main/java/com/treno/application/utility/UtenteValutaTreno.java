@@ -11,5 +11,6 @@ public interface UtenteValutaTreno extends Dao<Valutazione> {
 	public void inserisciValutazione(Valutazione valutazione);
 	Double findMediaValutazioniByTreno(Long trenoId);
 	List<Valutazione> findValutazioniByTreno(Long longValue);
+	List<Valutazione> findValutazioniByTrenoAndUser(long trenoId, long userId);
 	
 }

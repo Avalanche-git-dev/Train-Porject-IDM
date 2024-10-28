@@ -16,7 +16,6 @@ public class Passeggero extends Vagone {
     
 
 	public Passeggero() {
-		super();
 	}
 
 

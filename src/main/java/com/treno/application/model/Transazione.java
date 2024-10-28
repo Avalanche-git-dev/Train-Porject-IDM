@@ -26,6 +26,10 @@ public class Transazione {
 
 	@Column(name = "transazione_data", nullable = false)
 	private LocalDateTime data;
+	
+	
+	@Column(name="nome_treno",nullable=false)
+	private String nomeTreno;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "id_treno", nullable = false)
@@ -38,6 +42,8 @@ public class Transazione {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "seller_id", nullable = false)
 	private User venditore;
+	
+	
 
 	// Costruttore vuoto
 
@@ -93,11 +99,15 @@ public class Transazione {
 		this.venditore = venditore;
 	}
 
-	@Override
-	public String toString() {
-		return "Transazione [idTransazione=" + idTransazione + ", importo=" + importo + ", data=" + data + ", treno="
-				+ treno.getIdTreno() + ", acquirente=" + acquirente.getUserId() + ", venditore=" + venditore.getUserId()
-				+ "]";
+	
+	public String getNomeTreno() {
+		return nomeTreno;
 	}
+
+	public void setNomeTreno(String nomeTreno) {
+		this.nomeTreno = nomeTreno;
+	}
+	
+	
 
 }

@@ -6,8 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tutti i Treni Disponibili</title>
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
     <style>
         .fixed-width-button {
             width: 180px;
@@ -44,20 +43,16 @@
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
             <li><a class="dropdown-item" href="#" data-value="Sigla">Sigla</a></li>
             <li><a class="dropdown-item" href="#" data-value="Marca">Marca</a></li>
+            <li><a class="dropdown-item" href="#" data-value="Utente">Utente</a></li>
         </ul>
 
         <input type="text" id="selectedOption" class="form-control" placeholder="Seleziona un'opzione" name="filtroOpzione">
         <input type="hidden" id="hiddenSelectedOption" name="selectedOptionValue">
-        
         <input type="hidden" id="pesoMin" name="pesoMin">
     	<input type="hidden" id="pesoMax" name="pesoMax">
     	<input type="hidden" id="lunghezzaMin" name="lunghezzaMin">
     	<input type="hidden" id="lunghezzaMax" name="lunghezzaMax">
-    	<input type="hidden" id="valutazioneMin" name="valutazioneMin">
-    	<input type="hidden" id="valutazioneMax" name="valutazioneMax">
-    	
-    	<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
-    	<input type="hidden" id="ascendente" name="ascendente" value="false">
+    	<input type="hidden" id="mediaValutazioni" name="mediaValutazioni">
 
         <!-- Pulsante per applicare i filtri -->
         <div class="input-group-append">
@@ -77,6 +72,8 @@
                     <option value="30000-40000">Da 30.000 a 40.000</option>
                     <option value="40000-50000">Da 40.000 a 50.000</option>
                 </select>
+                <input type="hidden" id="pesoMin" name="pesoMin" value="">
+    			<input type="hidden" id="pesoMax" name="pesoMax" value="">
             </form>
 
             <!-- Filtro Lunghezza -->
@@ -106,12 +103,12 @@
         <form class="separated-form">
             <select name="ordinamento" class="custom-select" id="ordinamentoFilter">
                 <option value="">Filtra per ordinamento</option>
-                <option value="pesoTotale-true">Più pesante</option>
-                <option value="pesoTotale-false">Meno pesante</option>
-                <option value="lunghezzaTotale-true">Più lungo</option>
-                <option value="lunghezzaTotale-false">Meno lungo</option>
-                <option value="valutazioneMedia-true">Più votato</option>
-                <option value="valutazioneMedia-false">Meno votato</option>
+                <option value="piuPesante">Più pesante</option>
+                <option value="menoPesante">Meno pesante</option>
+                <option value="piuLungo">Più lungo</option>
+                <option value="menoLungo">Meno lungo</option>
+                <option value="piuVotato">Più votato</option>
+                <option value="menoVotato">Meno votato</option>
             </select>
         </form>
     </div>
@@ -165,12 +162,6 @@
             </div>
         </c:forEach>
     </div>
-    
-    <!-- Footer -->
-	<footer class="text-center">
-		<p>&copy; 2024 YourWebsite. All rights reserved.</p>
-	</footer>
-    
 </div>
 
 <script>
@@ -223,7 +214,6 @@
             
             // Imposta anche il valore nascosto per poterlo usare nel controller se necessario
             document.getElementById('hiddenSelectedOption').value = selectedValue;
-            console.log("hiddenSelectedOption impostato a:", selectedValue); 
         });
     });
     
@@ -255,20 +245,6 @@
         }
     });
     
-    document.getElementById('valutazioniFilter').addEventListener('change', function() {
-        var selectedValue = this.value;
-        if (selectedValue) {
-            var range = selectedValue.split("-");
-            document.getElementById('valutazioneMin').value = range[0];
-            document.getElementById('valutazioneMax').value = range[1];
-            console.log("valutazioneMin:", document.getElementById('valutazioneMin').value);
-            console.log("valutazioneMax:", document.getElementById('valutazioneMax').value);
-        } else {
-            document.getElementById('valutazioneMin').value = "";
-            document.getElementById('valutazioneMax').value = "";
-        }
-    });
-    
  	// Listener per loggare il valore dell'input nella console
     document.getElementById('selectedOption').addEventListener('input', function() {
         var currentValue = this.value;
@@ -292,22 +268,13 @@
         var selectedValue = this.value;
         console.log("Valutazioni selezionate:", selectedValue);
     });
-    
- 	// Listener per loggare il valore selezionato per Ordinamento
+
+    // Listener per loggare il valore selezionato per Ordinamento
     document.getElementById('ordinamentoFilter').addEventListener('change', function() {
         var selectedValue = this.value;
-        console.log("Valutazioni selezionate:", selectedValue);
+        console.log("Ordinamento selezionato:", selectedValue);
     });
-    
- 	// Event listener per il filtro ordinamento
-    document.getElementById('ordinamentoFilter').addEventListener('change', function() {
-    	var selectedValue = this.value.split('-');
-        document.getElementById('ordinamento').value = selectedValue[0];
-        document.getElementById('ascendente').value = selectedValue[1];
-        
-        console.log("Ordinamento selezionato:", selectedValue[0]);
-        console.log("Direzione ascendente:", selectedValue[1]);
-    });
+ 	
 </script>
 
 <!-- Inclusione di jQuery e Bootstrap JavaScript per far funzionare il menu a tendina -->

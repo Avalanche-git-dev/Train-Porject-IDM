@@ -1,4 +1,5 @@
 package com.treno.application.utility;
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.UserDTO;
 import jakarta.servlet.http.HttpSession;
 
@@ -13,4 +14,10 @@ public interface SessioneUtility {
 	void setUtenteLoggato(HttpSession session, UserDTO updatedUser);
 
 	String redirectTologin();
+
+	boolean isUtenteGuest(HttpSession session);
+
+	AdminDTO getAdminLoggato(HttpSession session);
+
+	boolean isAdminLoggato(HttpSession session);
 }

@@ -96,7 +96,7 @@ footer p {
 			<!-- Pulsante "Vedi i treni di tutti gli utenti" -->
 			<div class="spacer"></div>
 			<button class="cta-btn"
-				onclick="window.location.href='${pageContext.request.contextPath}/treni/catalogo'">Vedi
+				onclick="window.location.href='${pageContext.request.contextPath}/catalogo'">Vedi
 				 Catalogo </button>
 		</div>
 	</div>
