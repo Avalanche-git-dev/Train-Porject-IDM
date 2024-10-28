@@ -152,10 +152,59 @@ public class TransazioneService {
     
     
     
+  //  @Transactional
+//    public void annullaTransazione(long idTransazione) throws TransazioneNonTrovataException, FondiInsufficientiException {
+//        Transazione transazione = transazioneDao.findById(idTransazione);
+//
+//        if (transazione == null) {
+//            throw new TransazioneNonTrovataException("La transazione non è stata trovata.");
+//        }
+//
+//        User venditore = transazione.getVenditore();
+//        User acquirente = transazione.getAcquirente();
+//        Treno treno = transazione.getTreno();
+//        Double importo = transazione.getImporto();
+//
+//        if (!treno.getOwner().equals(acquirente)) {
+//            throw new IllegalStateException("L'acquirente non possiede più il treno. L'annullamento non può essere effettuato.");
+//        }
+//
+//        if (acquirente.getPortafoglio() < importo) {
+//            throw new FondiInsufficientiException("L'acquirente non ha abbastanza fondi per restituire l'importo. Procedere con sollecito.");
+//        }
+//
+//        
+//        acquirente.setPortafoglio(acquirente.getPortafoglio() - importo); 
+//        venditore.setPortafoglio(venditore.getPortafoglio() + importo);    
+//
+//        
+//        treno.setOwner(venditore);
+//        treno.setInVendita(true);  
+//        treno.setPrezzoVendita(importo);  
+//
+//        Transazione annullamento = new Transazione();
+//        annullamento.setAcquirente(acquirente);
+//        annullamento.setVenditore(venditore);
+//        annullamento.setTreno(treno);
+//        annullamento.setImporto(-importo);  
+//        annullamento.setData(LocalDateTime.now());  
+//        
+//        
+//
+//        
+//        transazioneDao.save(annullamento);  
+//        trenoDao.update(treno);             
+//        userDao.update(acquirente);         
+//        userDao.update(venditore);  
+//        
+//        
+//    }
+    
+    
     @Transactional
     public void annullaTransazione(long idTransazione) throws TransazioneNonTrovataException, FondiInsufficientiException {
+        // Recupera la transazione e controlla la sua esistenza
         Transazione transazione = transazioneDao.findById(idTransazione);
-
         if (transazione == null) {
             throw new TransazioneNonTrovataException("La transazione non è stata trovata.");
         }
@@ -165,40 +214,45 @@ public class TransazioneService {
         Treno treno = transazione.getTreno();
         Double importo = transazione.getImporto();
 
+        // Verifica che l'acquirente possieda ancora il treno
         if (!treno.getOwner().equals(acquirente)) {
             throw new IllegalStateException("L'acquirente non possiede più il treno. L'annullamento non può essere effettuato.");
         }
 
+        // Verifica che l'acquirente abbia abbastanza fondi
         if (acquirente.getPortafoglio() < importo) {
             throw new FondiInsufficientiException("L'acquirente non ha abbastanza fondi per restituire l'importo. Procedere con sollecito.");
         }
 
-        
-        acquirente.setPortafoglio(acquirente.getPortafoglio() - importo); 
-        venditore.setPortafoglio(venditore.getPortafoglio() + importo);    
+        // Aggiorna i portafogli
+        acquirente.setPortafoglio(acquirente.getPortafoglio() - importo);
+        venditore.setPortafoglio(venditore.getPortafoglio() + importo);
 
-        
+        // Riassegna il treno al venditore
         treno.setOwner(venditore);
-        treno.setInVendita(true);  
-        treno.setPrezzoVendita(importo);  
+        treno.setInVendita(true);
+        treno.setPrezzoVendita(importo);
 
+        // Registra la transazione di annullamento
         Transazione annullamento = new Transazione();
         annullamento.setAcquirente(acquirente);
         annullamento.setVenditore(venditore);
         annullamento.setTreno(treno);
-        annullamento.setImporto(-importo);  
-        annullamento.setData(LocalDateTime.now());  
-        
-        
+        annullamento.setImporto(-importo);
+        annullamento.setData(LocalDateTime.now());
+        annullamento.setNomeTreno(treno.getNome());
 
-        
-        transazioneDao.save(annullamento);  
-        trenoDao.update(treno);             
-        userDao.update(acquirente);         
-        userDao.update(venditore);  
-        
-        
+        // Salva la nuova transazione di annullamento e aggiorna entità
+        transazioneDao.save(annullamento);
+        trenoDao.update(treno);
+        userDao.update(acquirente);
+        userDao.update(venditore);
     }
+    
+    
+    
+    
+    
     
     
     public List<TransazioneDTO> getAllTransazioniByUser(long userId) {

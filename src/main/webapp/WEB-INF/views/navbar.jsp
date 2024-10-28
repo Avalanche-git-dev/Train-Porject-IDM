@@ -1,8 +1,18 @@
 
  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<c:choose>
+    <c:when test="${sessionScope.privilegio == true}">
+        <c:set var="homeUrl" value="${pageContext.request.contextPath}/admin" />
+    </c:when>
+    <c:otherwise>
+        <c:set var="homeUrl" value="${pageContext.request.contextPath}/dashboard" />
+    </c:otherwise>
+</c:choose>
 
 <nav class="navbar navbar-expand-lg navbar-primary bg-primary text-white custom-navbar">
-    <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard">
+    <a class="navbar-brand" href="${homeUrl}">
         <img src="${pageContext.request.contextPath}/resources/images/train-svgrepo-com.svg" alt="logo" id="logo" class="logo">
     </a>
     

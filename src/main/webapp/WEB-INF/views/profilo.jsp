@@ -247,7 +247,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Profilo Utente</title>
+<title>Profilo</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
 
 <style>
@@ -381,9 +381,9 @@
         <div class="profile-container">
         
         
-         <div class="transazioni-container">
+         <div class="container bg-primary text-white p-4">
         <h4 class="text-center mb-4">Storico Transazioni</h4>
-        <div class="nav nav-tabs" id="transazioni-tab" role="tablist">
+        <div class="nav nav-tabs " id="transazioni-tab" role="tablist">
             <a class="nav-item nav-link active" id="transazioni-vendita-tab" data-toggle="tab" href="#transazioni-vendita" role="tab" aria-controls="transazioni-vendita" aria-selected="true">Vendite</a>
             <a class="nav-item nav-link" id="transazioni-acquisto-tab" data-toggle="tab" href="#transazioni-acquisto" role="tab" aria-controls="transazioni-acquisto" aria-selected="false">Acquisti</a>
         </div>

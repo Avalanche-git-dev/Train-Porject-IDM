@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.dto.UserDTO;
+import com.treno.application.exception.AdminNotFoundException;
+import com.treno.application.exception.FondiInsufficientiException;
+import com.treno.application.exception.TransazioneNonTrovataException;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
@@ -85,19 +88,19 @@ public class AdminController {
     
     
     
-    @PostMapping("/bloccaUtente")
-    @ResponseBody
-    public ResponseEntity<String> bloccaUtente(@RequestParam("userId") long userId) {
-        userService.bloccaUser(userId);
-        return ResponseEntity.ok("Utente bloccato con successo");
-    }
-    
-    @PostMapping("/sbloccaUtente")
-    @ResponseBody
-    public ResponseEntity<String> sbloccaUtente(@RequestParam("userId") long userId) {
-    	userService.sbloccaUser(userId);
-    	return ResponseEntity.ok("Utente sbloccato con successo!");
-    }	
+//    @PostMapping("/bloccaUtente")
+//    @ResponseBody
+//    public ResponseEntity<String> bloccaUtente(@RequestParam("userId") long userId) {
+//        userService.bloccaUser(userId);
+//        return ResponseEntity.ok("Utente bloccato con successo");
+//    }
+//    
+//    @PostMapping("/sbloccaUtente")
+//    @ResponseBody
+//    public ResponseEntity<String> sbloccaUtente(@RequestParam("userId") long userId) {
+//    	userService.sbloccaUser(userId);
+//    	return ResponseEntity.ok("Utente sbloccato con successo!");
+//    }	
     
     @GetMapping("/mostra/utente")
     public String mostraProfiloUtente(@PathVariable("userId") long userId, HttpSession session, Model model) {
@@ -123,5 +126,81 @@ public class AdminController {
         return "admin";
     }
 
-	
+    
+
+    
+    @PostMapping("/blocca")
+    public ModelAndView bloccaUser(@RequestParam("userId") long userId, RedirectAttributes redirectAttributes) {
+        userService.bloccaUser(userId);
+        redirectAttributes.addFlashAttribute("message", "L'utente è stato bloccato con successo.");
+        redirectAttributes.addFlashAttribute("messageType", "success");
+        return new ModelAndView("redirect:/admin"); // Reindirizza alla lista utenti dopo il blocco
+    }
+
+    @PostMapping("/sblocca")
+    public ModelAndView sbloccaUser(@RequestParam("userId") long userId, RedirectAttributes redirectAttributes) {
+        userService.sbloccaUser(userId);
+        redirectAttributes.addFlashAttribute("message", "L'utente è stato sbloccato con successo.");
+        redirectAttributes.addFlashAttribute("messageType", "success");
+        return new ModelAndView("redirect:/admin"); // Reindirizza alla lista utenti dopo lo sblocco
+    }
+    
+    
+    
+    
+    
+//    @PostMapping("/nominaAdmin")
+//    public ModelAndView nominaAdmin(@RequestParam("userId") long userId) {
+//        userService.nominaAdmin(userService.findById(userId));
+//        return new ModelAndView("redirect:/admin"); // Reindirizza alla lista utenti dopo la nomina
+//    }
+//    
+    
+    @PostMapping("/annulla")
+    public ModelAndView annullaTransazione(@RequestParam("idTransazione") long idTransazione, RedirectAttributes redirectAttributes) {
+        try {
+            transazioneService.annullaTransazione(idTransazione);
+            redirectAttributes.addFlashAttribute("message", "Transazione annullata con successo.");
+            redirectAttributes.addFlashAttribute("messageType", "success");
+        } catch (TransazioneNonTrovataException e) {
+            redirectAttributes.addFlashAttribute("message", "Errore: transazione non trovata."+ e.getMessage());
+            redirectAttributes.addFlashAttribute("messageType", "error");
+            e.printStackTrace();
+        } catch (FondiInsufficientiException e) {
+            redirectAttributes.addFlashAttribute("message", "Errore: fondi insufficienti per annullare la transazione."+ e.getMessage());
+            redirectAttributes.addFlashAttribute("messageType", "error");
+            e.printStackTrace();
+        }
+        return new ModelAndView("redirect:/admin");
+    }
+    
+    
+    @PostMapping("/nominaAdmin")
+    public ModelAndView nominaAdmin(@RequestParam("userId") long userId, RedirectAttributes redirectAttributes) {
+    	
+    	try {
+        UserDTO user = userService.findById(userId);
+        
+        // Controlla se l'utente è già un admin
+        if (user instanceof AdminDTO) {
+            redirectAttributes.addFlashAttribute("message", "Errore: l'utente è già un amministratore.");
+            redirectAttributes.addFlashAttribute("messageType", "error");
+        } else {
+            // Nomina l'utente come admin
+            userService.nominaAdmin(user);
+            redirectAttributes.addFlashAttribute("message", "L'utente è stato nominato amministratore con successo.");
+            redirectAttributes.addFlashAttribute("messageType", "success");
+        }
+    	}
+       catch (AdminNotFoundException e) {
+            // Gestisce l'eccezione e aggiunge il messaggio di errore come attributo flash
+            redirectAttributes.addFlashAttribute("message", "Errore durante la nomina dell'utente a amministratore: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("messageType", "error");
+        }
+
+        // Reindirizza alla lista utenti dopo la nomina
+        return new ModelAndView("redirect:/admin");
+    }
+    
+    
 }
