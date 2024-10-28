@@ -13,7 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* Layout della pagina */
         .page-content-crea {
             display: flex;
             padding: 10px;
@@ -21,7 +20,6 @@
              /* Nasconde il contenuto che esce dai limiti del contenitore */
         }
 
-        /* Container Creazione Treno */
         .form-section-container {
             width: 32%;
             margin-right: 20px;
@@ -32,26 +30,7 @@
     margin-bottom: 20px; /* Assicura spaziatura uniforme sotto la navbar */
 }
 
-        /* Container Lista Treni */
-        .train-grid-container {
-            width: 40%;
-            height: auto;
-            margin-left: auto;
-            margin-right: 30px;
-            margin-bottom: 0;
-            
-        }
-
       
-
-        /* Modal styling */
-      
-        .train-image {
-            display: block; /* Assicura che l'immagine sia un blocco */
-            margin: 0 auto; /* Centra l'immagine */
-            max-width: 100%; /* Mantiene l'immagine responsiva */
-            height: auto; /* Mantiene le proporzioni */
-        }
         
      body, html {
     height: 100%;
@@ -59,14 +38,6 @@
      /* Imposta l'altezza al 100% */
 }
 
-
-
-
-
-      
-        
-        
-     
     </style>
 </head>
 <body>
@@ -98,19 +69,19 @@
 
                 <!-- Dettagli del treno appena creato -->
                 <c:if test="${not empty nuovoTreno}">
-                    <div class="train-details-card">
+                    <div class="train-details-card-crea">
                         <h4>Dettagli del Treno Creato</h4>
                         <p><strong>Nome:</strong> ${nuovoTreno.nome}</p>
                         <p><strong>Sigla:</strong> ${nuovoTreno.sigla}</p>
                         <p><strong>Marca:</strong> ${nuovoTreno.marca}</ p>
-                        <img src="${nuovoTreno.immagine}" alt="Immagine del Treno" class="train-image">
+                        <img src="${nuovoTreno.immagine}" alt="Immagine del Treno" style="width: 275px; height: 250px;object-fit: cover; border-radius: 4px;">
                     </div>
                 </c:if>
                 <!-- Dettagli del treno appena modificato -->
                 <c:if test="${not empty modificaTreno}">
-                    <div class="train-details-card">
+                    <div class="train-details-card-crea">
                         <h4>Dettagli del Treno Modificato</h4>
-                        <img src="${nuovoTreno.immagine}" alt="Immagine del Treno" class="train-image">
+                        <img src="${modificaTreno.immagine}" alt="Immagine del Treno" style="width: 275px; height: 250px;object-fit: cover; border-radius: 4px;">
                         <p><strong>Nome:</strong> ${modificaTreno.nome}</p>
                         <p><strong>Sigla:</strong> ${modificaTreno.sigla}</p>
                         <p><strong>Valutazioni:</strong> ${modificaTreno.mediaValutazioni}</p>
@@ -120,7 +91,7 @@
             </div>
         </div>
         <c:if test="${not empty errorMessage}">
-            <div class="text-danger mt-3">${errorMessage}</div>
+            <div class="text-danger mt-3  text-align:center">${errorMessage}</div>
         </c:if>
         <c:if test="${not empty successMessage}">
             <div class="text-success mt-3">${successMessage}</div>
@@ -144,7 +115,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="optionsModalLabel-${treno.idTreno}">Operazioni per ${treno.nome}</h5>
-                                    <img src="${treno.immagine}" alt="Immagine del Treno" class="train-image" style="max-width: 100%; height: auto; border-radius: 5px;">
+                                    <img src="${treno.immagine}" alt="Immagine del Treno" style="width: 275px; height: 250px;object-fit: cover; border-radius: 4px;">
                                     <p><strong>Sigla:</strong> ${treno.sigla}</p>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>

@@ -134,4 +134,40 @@
     <property name="lunghezza" value="19.2" />
 </bean>
 
+
+
+
+
+
+
+
+
+
+
+<!-- Immagini per il treno passeggeri (P) e cargo (C) -->
+<!-- Marca: Tedesco -->
+<bean name="Ptedesco" class="java.lang.String" scope="prototype">
+    <constructor-arg value="/images/tedesco_passeggeri.jpg"/>
+</bean>
+<bean name="Ctedesco" class="java.lang.String" scope="prototype">
+    <constructor-arg value="/images/tedesco_cargo.jpg"/>
+</bean>
+
+<!-- Marca: Francese -->
+<bean name="Pfrancese" class="java.lang.String" scope="prototype">
+    <constructor-arg value="/images/francese_passeggeri.jpg"/>
+</bean>
+<bean name="Cfrancese" class="java.lang.String" scope="prototype">
+    <constructor-arg value="/images/francese_cargo.jpg"/>
+</bean>
+
+<!-- Marca: Italiano -->
+<bean name="Pitaliano" class="java.lang.String" scope="prototype" lazy-init="true">
+    <constructor-arg value="/ProgettoTreno/resources/images/treni/tedescopass.jpg"/>
+</bean>
+<bean name="Citaliano" class="java.lang.String" scope="prototype" lazy-init="true">
+    <constructor-arg value="/ProgettoTreno/resources/images/treni/tedescocargo.jpg"/>
+</bean>
+
+
 </beans>

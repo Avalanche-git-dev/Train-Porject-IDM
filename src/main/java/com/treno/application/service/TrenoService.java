@@ -53,16 +53,15 @@ public class TrenoService {
 	public TrenoDTO creaTreno(TrenoDTO trenoDto, UserDTO utenteDto) {
 		TBuilder builder2 = (TBuilder) builder;
 		builder2.getFactory().setMarca(trenoDto.getMarca());
-		
-
+		String immagine = builder2.getFactory().creaImmagine(trenoDto.getSigla(),trenoDto.getMarca());
 		Treno treno = builder.creaTrenoDaStringa(trenoDto.getSigla());
-
 		User owner = new User();
 		owner.setUserId(utenteDto.getUserId());
 		treno.setOwner(owner);
 		treno.setMarca(trenoDto.getMarca());
 		treno.setNome(trenoDto.getNome());
 		treno.setValore(treno.getCosto());
+		treno.setImmagine(immagine);
 		
 		TrenoDTO trenoR = convertToTrenoDTO(treno);
 		

@@ -220,8 +220,8 @@ public class TrenoController {
 		String usernameOwner = utenteLoggato.getUsername();
 
 		// Aggiunge un percorso di immagine predefinito per i treni
-		String immagineTreno = "/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
-		session.setAttribute("immagineTreno", immagineTreno);
+		//String immagineTreno = "/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
+		//session.setAttribute("immagineTreno", immagineTreno);
 
 		List<TrenoDTO> treniDto = trenoService.findAllTreniByUser(ownerId);
 
@@ -293,6 +293,7 @@ public class TrenoController {
 	    try {
 	        // Passa il tipo di vagone al livello di servizio
 	        TrenoDTO modificaTreno = trenoService.aggiungiVagone(idTreno, tipoVagone);
+	       // modificaTreno.setImmagine(trenoService.findByid(idTreno).getImmagine());
 	        redirectAttributes.addFlashAttribute("modificaTreno", modificaTreno);
 	        redirectAttributes.addFlashAttribute("successMessage", "Vagone aggiunto con successo al treno.");
 	    } catch (TrenoCreazioneException e) {

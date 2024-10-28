@@ -447,6 +447,32 @@ pre {
     text-align: center; /* Centra il testo */
 }
 
+.train-card-view {
+	margin-bottom: 15px;
+    padding: 35px; /* Aumentato il padding per una migliore spaziatura */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: absolute;
+    flex-direction: column; /* Cambiato per disporre gli elementi in colonna */
+    align-items: center; /* Centrato gli elementi orizzontalmente */
+    justify-content: center; /* Centrato gli elementi verticalmente */
+    border: 1px solid #ccc; /* Aggiunto un bordo per definire meglio la card */
+    border-radius: 5px; /* Arrotondato gli angoli */
+    height: 250px;
+    width: 200px; /* Altezza fissa per le card */
+    text-align: center;
+	
+}
+
+
+ .train-grid-container {
+            width: 40%;
+            height: auto;
+            margin-left: auto;
+            margin-right: 30px;
+            margin-bottom: 0;
+            
+        }
+
    .form-section-crea {
     width: 100%; /* Imposta la larghezza al 100% del contenitore genitore */
     max-width: 1200px; /* Imposta una larghezza massima se necessario */
@@ -461,17 +487,19 @@ pre {
 }
 
 
+
 .train-details-card-crea {
     position: relative;
     margin-top: -5px; /* Solleva la card verso l'alto */
-    padding: 20px;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 8px; /* Arrotonda gli angoli */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombreggiatura per effetto sopraelevato */
     background-color: #fff;
     overflow: hidden; /* Nasconde il contenuto fuori dai bordi */
     text-align: center;
-    z-index: 1; /* Assicura che la card sia sopra altri elementi */
+    z-index: 1;
+    box-sizing: border-box;
 }
 
 /* Contorno con effetto "nascosto" sopra */
