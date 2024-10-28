@@ -62,45 +62,6 @@ public class CatalogoController {
 	    
 	    
 	    
-	    
-//	    // Applica il filtro sui treni
-//	    @GetMapping("/filtro")
-//	    public String filtraTreni(@ModelAttribute("filtro") TrenoFilter filtro, Model model, HttpSession session) {
-//	        sessione.getUtenteLoggato(session);
-//	        List<TrenoDTO> treniDto = trenoService.filtraTreni(filtro);
-//	        model.addAttribute("treniDto", treniDto);
-//	        model.addAttribute("filtro", filtro);
-//	        return "visualizzaTreni";
-//	    }
-//	    
-	    
-	    
-
-//	    @PostMapping("/filtra")
-//	    public String filtraTreniPost(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
-//	        // Verifica che l'utente sia loggato
-//	        if (!sessione.isUtenteLoggato(session)) {
-//	            return sessione.redirectTologin();
-//	        }
-//
-//	        // Recupera l'utente loggato
-//	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//
-//	        // Filtra i treni utilizzando il TrenoFilter
-//	        List<TrenoDTO> treniFiltrati = trenoService.filtraTreni(trenoFilter);
-//
-//	        // Aggiungi la lista dei treni filtrati al modello
-//	        model.addAttribute("treni", treniFiltrati);
-//	        model.addAttribute("utenteLoggato", utenteLoggato);
-//	        model.addAttribute("trenoFilter", trenoFilter);
-//
-//	        // Restituisci la vista del catalogo
-//	        return "catalogo";
-//	    }
-//
-//	    
-	    
-	    
 	    @GetMapping("/filtro")
 	    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
 	        // Verifica che l'utente sia loggato
@@ -114,7 +75,6 @@ public class CatalogoController {
 	        // Filtra i treni utilizzando il TrenoFilter
 	        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
 	        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
-	  
 	        // Aggiungi la lista dei treni filtrati al modello
 	        model.addAttribute("treni", treniFiltrati);
 	        model.addAttribute("utenteLoggato", utenteLoggato);

@@ -7,7 +7,7 @@ public class TrenoDTO {
     private boolean inVendita;
     private double prezzoVendita;
     private String marca;
-    private double mediaValutazioni;
+    private double valutazioneMedia;
     private double pesoTotale;
     private double lunghezzaTotale;
     private double postiTotali;
@@ -15,7 +15,7 @@ public class TrenoDTO {
     private long idOwner;
     private double costoTotale;
 	public TrenoDTO(long idTreno, String sigla, String immagine, boolean inVendita, double prezzoVendita, String marca,
-			double mediaValutazioni, double pesoTotale, double lunghezzaTotale, double postiTotali, String nome, long idOwner,
+			double valutazioneMedia, double pesoTotale, double lunghezzaTotale, double postiTotali, String nome, long idOwner,
 			double costoTotale) {
 		super();
 		this.idTreno = idTreno;
@@ -24,7 +24,7 @@ public class TrenoDTO {
 		this.inVendita = inVendita;
 		this.prezzoVendita = prezzoVendita;
 		this.marca = marca;
-		this.mediaValutazioni = mediaValutazioni;
+		this.valutazioneMedia = valutazioneMedia;
 		this.pesoTotale = pesoTotale;
 		this.lunghezzaTotale = lunghezzaTotale;
 		this.postiTotali = postiTotali;
@@ -73,10 +73,10 @@ public class TrenoDTO {
 		this.marca = marca;
 	}
 	public double getMediaValutazioni() {
-		return mediaValutazioni;
+		return valutazioneMedia;
 	}
-	public void setMediaValutazioni(double mediaValutazioni) {
-		this.mediaValutazioni = mediaValutazioni;
+	public void setMediaValutazioni(double valutazioneMedia) {
+		this.valutazioneMedia = valutazioneMedia;
 	}
 	public double getPesoTotale() {
 		return pesoTotale;
@@ -118,7 +118,7 @@ public class TrenoDTO {
 	public String toString() {
 		return "TrenoDTO [idTreno=" + idTreno + ", sigla=" + sigla + ", immagine=" + immagine + ", inVendita="
 				+ inVendita + ", prezzoVendita=" + prezzoVendita + ", marca=" + marca + ", mediaValutazioni="
-				+ mediaValutazioni + ", pesoTotale=" + pesoTotale + ", lunghezzaTotale=" + lunghezzaTotale 
+				+ valutazioneMedia + ", pesoTotale=" + pesoTotale + ", lunghezzaTotale=" + lunghezzaTotale 
 				+ ", postiTotali=" + postiTotali + ", nome=" + nome + ", idOwner=" + idOwner + ", costoTotale=" 
 				+ costoTotale + "]";
 	}

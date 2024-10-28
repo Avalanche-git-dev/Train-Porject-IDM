@@ -38,17 +38,26 @@
     <h1>Tutti i Treni Disponibili</h1>
 
     <!-- Barra di ricerca con applica filtri -->
-    <form action="${pageContext.request.contextPath}/filtro" method="get" class="input-group mt-3 mb-3">
+    <form action="${pageContext.request.contextPath}/catalogo/filtro" method="get" class="input-group mt-3 mb-3">
         <button type="button" class="btn btn-primary dropdown-toggle fixed-width-button" data-toggle="dropdown">Scegli un'opzione</button>
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
             <li><a class="dropdown-item" href="#" data-value="Sigla">Sigla</a></li>
             <li><a class="dropdown-item" href="#" data-value="Marca">Marca</a></li>
-            <li><a class="dropdown-item" href="#" data-value="Utente">Utente</a></li>
         </ul>
 
         <input type="text" id="selectedOption" class="form-control" placeholder="Seleziona un'opzione" name="filtroOpzione">
         <input type="hidden" id="hiddenSelectedOption" name="selectedOptionValue">
+        
+        <input type="hidden" id="pesoMin" name="pesoMin">
+    	<input type="hidden" id="pesoMax" name="pesoMax">
+    	<input type="hidden" id="lunghezzaMin" name="lunghezzaMin">
+    	<input type="hidden" id="lunghezzaMax" name="lunghezzaMax">
+    	<input type="hidden" id="valutazioneMin" name="valutazioneMin">
+    	<input type="hidden" id="valutazioneMax" name="valutazioneMax">
+    	
+    	<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
+    	<input type="hidden" id="ascendente" name="ascendente" value="false">
 
         <!-- Pulsante per applicare i filtri -->
         <div class="input-group-append">
@@ -97,12 +106,12 @@
         <form class="separated-form">
             <select name="ordinamento" class="custom-select" id="ordinamentoFilter">
                 <option value="">Filtra per ordinamento</option>
-                <option value="piuPesante">Più pesante</option>
-                <option value="menoPesante">Meno pesante</option>
-                <option value="piuLungo">Più lungo</option>
-                <option value="menoLungo">Meno lungo</option>
-                <option value="piuVotato">Più votato</option>
-                <option value="menoVotato">Meno votato</option>
+                <option value="pesoTotale-true">Più pesante</option>
+                <option value="pesoTotale-false">Meno pesante</option>
+                <option value="lunghezzaTotale-true">Più lungo</option>
+                <option value="lunghezzaTotale-false">Meno lungo</option>
+                <option value="valutazioneMedia-true">Più votato</option>
+                <option value="valutazioneMedia-false">Meno votato</option>
             </select>
         </form>
     </div>
@@ -156,6 +165,12 @@
             </div>
         </c:forEach>
     </div>
+    
+    <!-- Footer -->
+	<footer class="text-center">
+		<p>&copy; 2024 YourWebsite. All rights reserved.</p>
+	</footer>
+    
 </div>
 
 <script>
@@ -187,32 +202,111 @@
     	}
     })
     
-    document.getElementById('pesoFilter').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Previene l'azione di default per evitare refresh o altre azioni
-            document.querySelector('.input-group-append button').click();
-        }
+    document.querySelectorAll('#pesoFilter, #lunghezzaFilter, #valutazioniFilter, #ordinamentoFilter').forEach(function(select) {
+        select.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.querySelector('.input-group-append button').click(); // Submit the form
+            }
+        });
     });
     
-    document.getElementById('lunghezzaFilter').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Previene l'azione di default per evitare refresh o altre azioni
-            document.querySelector('.input-group-append button').click();
-        }
-    });
-    
-    document.getElementById('valutazioniFilter').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
+    document.querySelectorAll('.dropdown-item').forEach(function (item) {
+        item.addEventListener('click', function (event) {
             event.preventDefault();
-            document.querySelector('.input-group-append button').click();
+            var selectedValue = this.getAttribute('data-value');
+            var input = document.getElementById('selectedOption');
+            
+            // Imposta il placeholder e il name corretto per l'input in base all'opzione selezionata
+            input.placeholder = "Inserisci " + this.textContent;
+            input.name = selectedValue;  // Imposta il name su "nome", "sigla", ecc.
+            
+            // Imposta anche il valore nascosto per poterlo usare nel controller se necessario
+            document.getElementById('hiddenSelectedOption').value = selectedValue;
+            console.log("hiddenSelectedOption impostato a:", selectedValue); 
+        });
+    });
+    
+    document.getElementById('pesoFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            var range = selectedValue.split("-");
+            document.getElementById('pesoMin').value = range[0];
+            document.getElementById('pesoMax').value = range[1];
+            console.log("pesoMin:", document.getElementById('pesoMin').value);
+            console.log("pesoMax:", document.getElementById('pesoMax').value);
+        } else {
+            document.getElementById('pesoMin').value = "";
+            document.getElementById('pesoMax').value = "";
         }
     });
     
-    document.getElementById('ordinamentoFilter').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            document.querySelector('.input-group-append button').click();
+    document.getElementById('lunghezzaFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            var range = selectedValue.split("-");
+            document.getElementById('lunghezzaMin').value = range[0];
+            document.getElementById('lunghezzaMax').value = range[1];
+            console.log("lunghezzaMin:", document.getElementById('lunghezzaMin').value);
+            console.log("lunghezzaMax:", document.getElementById('lunghezzaMax').value);
+        } else {
+            document.getElementById('lunghezzaMin').value = "";
+            document.getElementById('lunghezzaMax').value = "";
         }
+    });
+    
+    document.getElementById('valutazioniFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            var range = selectedValue.split("-");
+            document.getElementById('valutazioneMin').value = range[0];
+            document.getElementById('valutazioneMax').value = range[1];
+            console.log("valutazioneMin:", document.getElementById('valutazioneMin').value);
+            console.log("valutazioneMax:", document.getElementById('valutazioneMax').value);
+        } else {
+            document.getElementById('valutazioneMin').value = "";
+            document.getElementById('valutazioneMax').value = "";
+        }
+    });
+    
+ 	// Listener per loggare il valore dell'input nella console
+    document.getElementById('selectedOption').addEventListener('input', function() {
+        var currentValue = this.value;
+        console.log("Valore inserito:", currentValue);
+    });
+ 	
+ 	// Listener per loggare il valore selezionato per Peso
+    document.getElementById('pesoFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        console.log("Peso selezionato:", selectedValue);
+    });
+
+    // Listener per loggare il valore selezionato per Lunghezza
+    document.getElementById('lunghezzaFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        console.log("Lunghezza selezionata:", selectedValue);
+    });
+
+    // Listener per loggare il valore selezionato per Valutazioni
+    document.getElementById('valutazioniFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        console.log("Valutazioni selezionate:", selectedValue);
+    });
+    
+ 	// Listener per loggare il valore selezionato per Ordinamento
+    document.getElementById('ordinamentoFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        console.log("Valutazioni selezionate:", selectedValue);
+    });
+    
+ 	// Event listener per il filtro ordinamento
+    document.getElementById('ordinamentoFilter').addEventListener('change', function() {
+    	var selectedValue = this.value.split('-');
+        document.getElementById('ordinamento').value = selectedValue[0];
+        document.getElementById('ascendente').value = selectedValue[1];
+        
+        console.log("Ordinamento selezionato:", selectedValue[0]);
+        console.log("Direzione ascendente:", selectedValue[1]);
     });
 </script>
 

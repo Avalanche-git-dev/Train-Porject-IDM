@@ -1,5 +1,7 @@
 package com.treno.application.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -105,13 +107,81 @@ public class TrenoService {
 	
 	// Proviamo con hasset
 	public Set<TrenoDTO> filtraTreni(TrenoFilter filtro) {
-	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreniCriteria(filtro);
-
-	    // Convertire la lista in un set per evitare duplicati
+	    List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreni(filtro);
+	    // Ordinamento in base al valore di filtro.getOrdinamento()
+	    if (filtro.getOrdinamento() != null) {
+	        Comparator<Treno> comparator;
+	        switch (filtro.getOrdinamento()) {
+	            case "sigla":
+	                comparator = Comparator.comparing(Treno::getSigla);
+	                break;
+	            case "pesoTotale":
+	                comparator = Comparator.comparing(Treno::getPesoTotale);
+	                break;
+	            case "lunghezzaTotale":
+	                comparator = Comparator.comparing(Treno::getLunghezzaTotale);
+	                break;
+	            case "valutazioneMedia":
+	                comparator = Comparator.comparing(Treno::getValutazioneMedia);
+	                break;
+	            // Aggiungi altri campi con comparatori specifici
+	            default:
+	                throw new IllegalArgumentException("Campo di ordinamento non valido: " + filtro.getOrdinamento());
+	        }
+	        // Ordinamento decrescente se filtro.isAscendente è false
+	        if (filtro.isAscendente()) {
+	            comparator = comparator.reversed();
+	        }
+	        treniFiltrati.sort(comparator);
+	        System.out.println(treniFiltrati);
+	    }
+	    // Convertire la lista ordinata in un set per evitare duplicati
 	    return treniFiltrati.stream()
 	                        .map(this::convertToTrenoDTO)
 	                        .collect(Collectors.toSet());
 	}
+
+	
+	public Set<TrenoDTO> filtraTreniInVendita(TrenoFilter filtro) {
+		List<Treno> treniFiltrati = ((TrenoUtility) trenoDao).filtraTreniInVendita(filtro);
+		List<Treno> inVendita = new ArrayList<>();
+		for (Treno t: treniFiltrati) {
+			if(t.isInVendita())
+				inVendita.add(t);
+		}
+		if (filtro.getOrdinamento() != null) {
+	        Comparator<Treno> comparator;
+	        switch (filtro.getOrdinamento()) {
+	            case "sigla":
+	                comparator = Comparator.comparing(Treno::getSigla);
+	                break;
+	            case "pesoTotale":
+	                comparator = Comparator.comparing(Treno::getPesoTotale);
+	                break;
+	            case "lunghezzaTotale":
+	                comparator = Comparator.comparing(Treno::getLunghezzaTotale);
+	                break;
+	            case "valutazioneMedia":
+	                comparator = Comparator.comparing(Treno::getValutazioneMedia);
+	                break;
+	            case "prezzoVendita":
+	            	comparator = Comparator.comparing(Treno::getPrezzoVendita);
+	            	break;
+	            // Aggiungi altri campi con comparatori specifici
+	            default:
+	                throw new IllegalArgumentException("Campo di ordinamento non valido: " + filtro.getOrdinamento());
+	        }
+	        // Ordinamento decrescente se filtro.isAscendente è false
+	        if (filtro.isAscendente()) {
+	            comparator = comparator.reversed();
+	        }
+	        inVendita.sort(comparator);
+	    }
+		return inVendita.stream()
+                .map(this::convertToTrenoDTO)
+                .collect(Collectors.toSet());
+	}
+
 
 	
     //Classico da override di Interfacia
@@ -199,7 +269,9 @@ public class TrenoService {
 	        trenoDTO.setPostiTotali(treno.getPostiTotali());
 	        trenoDTO.setCostoTotale(treno.getCosto());
 	        trenoDTO.setLunghezzaTotale(treno.getLunghezza());
-	        trenoDTO.setIdOwner(treno.getOwner().getUserId());
+	        if (treno.getOwner() != null) {
+		        trenoDTO.setIdOwner(treno.getOwner().getUserId());
+	        }
 
 	        return trenoDTO;
 	    }
@@ -218,8 +290,8 @@ public class TrenoService {
 		    treno.setMarca(trenoDTO.getMarca());
 		    if ((Long) ( trenoDTO.getIdOwner()) != null) {
 		    //Conversione dell'utente e assegnazione.
-		    UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
-		    treno.setOwner(userService.convertToUserEntity(Owner));
+		    	UserDTO Owner = userService.findById(trenoDTO.getIdOwner());
+		    	treno.setOwner(userService.convertToUserEntity(Owner));
 		    }
 		    // Valutazioni e transazioni di solito non vengono mappate direttamente al DTO
 		    // a meno che non le passi esplicitamente.

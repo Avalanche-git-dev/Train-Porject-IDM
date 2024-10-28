@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.filter.TrenoFilter;
 import com.treno.application.model.Treno;
+import com.treno.application.model.User;
 import com.treno.application.model.Vagone;
 import com.treno.application.utility.TrenoUtility;
 
@@ -15,6 +16,8 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
@@ -88,95 +91,8 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
                      .setParameter("userId", userId)
                      .getResultList();
     }
-
-//    @SuppressWarnings("unchecked")
-//	@Transactional
-//    public List<Treno> filtraTreni(TrenoFilter filtro) {
-//        StringBuilder hql = new StringBuilder("FROM Treno t WHERE 1=1");
-//
-//        // Aggiunta dinamica delle condizioni di filtro
-//        if (filtro.getPrezzoMin() != null) {
-//            hql.append(" AND t.prezzoVendita >= :prezzoMin");
-//        }
-//        if (filtro.getPrezzoMax() != null) {
-//            hql.append(" AND t.prezzoVendita <= :prezzoMax");
-//        }
-//        if (filtro.getPesoMin() != null) {
-//            hql.append(" AND t.peso >= :pesoMin");
-//        }
-//        if (filtro.getPesoMax() != null) {
-//            hql.append(" AND t.peso <= :pesoMax");
-//        }
-//        if (filtro.getLunghezzaMin() != null) {
-//            hql.append(" AND t.lunghezza >= :lunghezzaMin");
-//        }
-//        if (filtro.getLunghezzaMax() != null) {
-//            hql.append(" AND t.lunghezza <= :lunghezzaMax");
-//        }
-//        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-//            hql.append(" AND t.sigla = :sigla");
-//        }
-//        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
-//            hql.append(" AND t.marca = :marca");
-//        }
-//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
-//            hql.append(" AND t.valutazioneTotale >= :valutazioni");
-//        }
-//        if (filtro.getPrezzoVendita() != null) {
-//            hql.append(" AND t.prezzoVendita = :prezzoVendita");
-//        }
-//        if (filtro.getAmmontareTotale() != null) {
-//            hql.append(" AND t.ammontareTotale = :ammontareTotale");
-//        }
-//        if (Boolean.TRUE.equals(filtro.isInVendita())) {
-//            hql.append(" AND t.inVendita = true");
-//        } else if (Boolean.FALSE.equals(filtro.isInVendita())) {
-//            hql.append(" AND t.inVendita = false");
-//        }
-//
-//        Query query = em.createQuery(hql.toString());
-//
-//        // Impostazione dei parametri
-//        if (filtro.getPrezzoMin() != null) {
-//            query.setParameter("prezzoMin", filtro.getPrezzoMin());
-//        }
-//        if (filtro.getPrezzoMax() != null) {
-//            query.setParameter("prezzoMax", filtro.getPrezzoMax());
-//        }
-//        if (filtro.getPesoMin() != null) {
-//            query.setParameter("pesoMin", filtro.getPesoMin());
-//        }
-//        if (filtro.getPesoMax() != null) {
-//            query.setParameter("pesoMax", filtro.getPesoMax());
-//        }
-//        if (filtro.getLunghezzaMin() != null) {
-//            query.setParameter("lunghezzaMin", filtro.getLunghezzaMin());
-//        }
-//        if (filtro.getLunghezzaMax() != null) {
-//            query.setParameter("lunghezzaMax", filtro.getLunghezzaMax());
-//        }
-//        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
-//            query.setParameter("sigla", filtro.getSigla());
-//        }
-//        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
-//            query.setParameter("marca", filtro.getMarca());
-//        }
-//        if (filtro.getValutazioni() != null && filtro.getValutazioni() > 0) {
-//            query.setParameter("valutazioni", filtro.getValutazioni());
-//        }
-//        if (filtro.getPrezzoVendita() != null) {
-//            query.setParameter("prezzoVendita", filtro.getPrezzoVendita());
-//        }
-//        if (filtro.getAmmontareTotale() != null) {
-//            query.setParameter("ammontareTotale", filtro.getAmmontareTotale());
-//        }
-//
-//        return query.getResultList();
-//    }
     
-    
-    
-    
+    /*
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Treno> filtraTreni(TrenoFilter filtro) {
@@ -263,12 +179,15 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 
         return query.getResultList();
     }
+    */
     
     @Transactional
-    public List<Treno> filtraTreniCriteria(TrenoFilter filtro) {
+    public List<Treno> filtraTreni(TrenoFilter filtro) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Treno> cq = cb.createQuery(Treno.class);
         Root<Treno> treno = cq.from(Treno.class);
+        treno.fetch("valutazioni", JoinType.LEFT);
+        treno.fetch("transazioni", JoinType.LEFT);
         List<Predicate> predicates = new ArrayList<>();
         // Filtro per nome
         if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
@@ -282,41 +201,31 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
         if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
         	predicates.add(cb.equal(treno.get("marca"), filtro.getMarca()));
         }
-        // Filtro per utente
-        if (filtro.getNomeOwner() != null && !filtro.getNomeOwner().isEmpty()) {
-        	predicates.add(cb.equal(treno.get("idOwner"), filtro.getNomeOwner()));
-        }
-        // Filtro per peso
-        if (filtro.getPesoMin() != null && filtro.getPesoMax() != null) {
-            predicates.add(cb.between(treno.get("pesoTotale"), filtro.getPesoMin(), filtro.getPesoMax()));
-        } else if (filtro.getPesoMin() != null) {
-            predicates.add(cb.ge(treno.get("pesoTotale"), filtro.getPesoMin()));
-        } else if (filtro.getPesoMax() != null) {
-            predicates.add(cb.le(treno.get("pesoTotale"), filtro.getPesoMax()));
-        }
-        // Filtro per Lunghezza
+		// Filtro per peso 
+        if (filtro.getPesoMin() != null && filtro.getPesoMax() !=null) { 
+        	predicates.add(cb.between(treno.get("pesoTotale"), filtro.getPesoMin(), filtro.getPesoMax())); 
+        } else if (filtro.getPesoMin() != null) { 
+        	predicates.add(cb.ge(treno.get("pesoTotale"), filtro.getPesoMin()));
+		} else if (filtro.getPesoMax() != null) {
+			predicates.add(cb.le(treno.get("pesoTotale"), filtro.getPesoMax())); 
+		}
+	    // Filtro per Lunghezza 
         if (filtro.getLunghezzaMin() != null && filtro.getLunghezzaMax() != null) {
-            predicates.add(cb.between(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin(), filtro.getLunghezzaMax()));
-        } else if (filtro.getPesoMin() != null) {
-            predicates.add(cb.ge(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin()));
-        } else if (filtro.getPesoMax() != null) {
-            predicates.add(cb.le(treno.get("lunghezzaTotale"), filtro.getLunghezzaMax()));
-        }
+		  predicates.add(cb.between(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin(), filtro.getLunghezzaMax())); 
+		} else if (filtro.getLunghezzaMin() != null) {
+		  predicates.add(cb.ge(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin())); 
+		} else if (filtro.getLunghezzaMax() != null) {
+		  predicates.add(cb.le(treno.get("lunghezzaTotale"), filtro.getLunghezzaMax())); 
+		} 
         // Filtro per Valutazioni
-        if (filtro.getValutazioni() != 0) {
-        	String valutazioni = filtro.getValutazioni() + "";
-            String[] valutazioniRange = valutazioni.split("-");
-            if (valutazioniRange.length == 2) {
-                try {
-                    int valutazioniMin = Integer.parseInt(valutazioniRange[0]);
-                    int valutazioniMax = Integer.parseInt(valutazioniRange[1]);
-                    predicates.add(cb.between(treno.get("mediaValutazioni"), valutazioniMin, valutazioniMax));
-                } catch (NumberFormatException e) {
-                    // Gestisci eccezione, logga o ignora filtro
-                    System.out.println("Formato non valido per il range di valutazioni: " + e.getMessage());
-                }
-            }
-        }
+        if (filtro.getValutazioneMin() != null && filtro.getValutazioneMax() != null) {
+        	predicates.add(cb.between(treno.get("valutazioneMedia"), filtro.getValutazioneMin(), filtro.getValutazioneMax()));
+        } else if (filtro.getValutazioneMin() != null) {
+        	predicates.add(cb.ge(treno.get("valutazioneMedia"), filtro.getValutazioneMin()));
+    	} else if (filtro.getValutazioneMax() != null) {
+    		predicates.add(cb.le(treno.get("valutazioneMedia"), filtro.getValutazioneMax()));
+    	}
+        
         cq.select(treno).distinct(true).where(predicates.toArray(new Predicate[0]));
         TypedQuery<Treno> query = em.createQuery(cq);
         return query.getResultList();
@@ -353,5 +262,61 @@ public class TrenoDao extends ProxyDao<Treno> implements TrenoUtility {
 	    return (List<Vagone>)query.getResultList();
 	}
 
+	@Transactional
+    public List<Treno> filtraTreniInVendita(TrenoFilter filtro) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Treno> cq = cb.createQuery(Treno.class);
+        Root<Treno> treno = cq.from(Treno.class);
+        treno.fetch("valutazioni", JoinType.LEFT);
+        treno.fetch("transazioni", JoinType.LEFT);
+        List<Predicate> predicates = new ArrayList<>();
+        // Filtro per nome
+        if (filtro.getNome() != null && !filtro.getNome().isEmpty()) {
+        	predicates.add(cb.like(treno.get("nome"), "%" + filtro.getNome() + "%"));
+        }
+        // Filtro per sigla
+        if (filtro.getSigla() != null && !filtro.getSigla().isEmpty()) {
+            predicates.add(cb.like(treno.get("sigla"), "%" + filtro.getSigla() + "%"));
+        }
+        // Filtro per marca
+        if (filtro.getMarca() != null && !filtro.getMarca().isEmpty()) {
+        	predicates.add(cb.equal(treno.get("marca"), filtro.getMarca()));
+        }
+		// Filtro per peso 
+        if (filtro.getPesoMin() != null && filtro.getPesoMax() !=null) { 
+        	predicates.add(cb.between(treno.get("pesoTotale"), filtro.getPesoMin(), filtro.getPesoMax())); 
+        } else if (filtro.getPesoMin() != null) { 
+        	predicates.add(cb.ge(treno.get("pesoTotale"), filtro.getPesoMin()));
+		} else if (filtro.getPesoMax() != null) {
+			predicates.add(cb.le(treno.get("pesoTotale"), filtro.getPesoMax())); 
+		}
+	    // Filtro per Lunghezza 
+        if (filtro.getLunghezzaMin() != null && filtro.getLunghezzaMax() != null) {
+		  predicates.add(cb.between(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin(), filtro.getLunghezzaMax())); 
+		} else if (filtro.getLunghezzaMin() != null) {
+		  predicates.add(cb.ge(treno.get("lunghezzaTotale"), filtro.getLunghezzaMin())); 
+		} else if (filtro.getLunghezzaMax() != null) {
+		  predicates.add(cb.le(treno.get("lunghezzaTotale"), filtro.getLunghezzaMax())); 
+		} 
+        // Filtro per Valutazioni
+        if (filtro.getValutazioneMin() != null && filtro.getValutazioneMax() != null) {
+        	predicates.add(cb.between(treno.get("valutazioneMedia"), filtro.getValutazioneMin(), filtro.getValutazioneMax()));
+        } else if (filtro.getValutazioneMin() != null) {
+        	predicates.add(cb.ge(treno.get("valutazioneMedia"), filtro.getValutazioneMin()));
+    	} else if (filtro.getValutazioneMax() != null) {
+    		predicates.add(cb.le(treno.get("valutazioneMedia"), filtro.getValutazioneMax()));
+    	}
+        // Filtro per Costo
+        if (filtro.getPrezzoMin() != null && filtro.getPrezzoMax() != null) {
+        	predicates.add(cb.between(treno.get("prezzoVendita"), filtro.getPrezzoMin(), filtro.getPrezzoMax()));
+        } else if (filtro.getPrezzoMin() != null) {
+        	predicates.add(cb.ge(treno.get("prezzoVendita"), filtro.getPrezzoMax()));
+        } else if (filtro.getPrezzoMax() != null) {
+        	predicates.add(cb.ge(treno.get("prezzoVendita"), filtro.getPesoMin()));
+        }
+        cq.select(treno).distinct(true).where(predicates.toArray(new Predicate[0]));
+        TypedQuery<Treno> query = em.createQuery(cq);
+        return query.getResultList();
+    }
 
 }

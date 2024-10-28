@@ -68,7 +68,7 @@ public class MarketController {
     }
 	
 	@GetMapping("/filtro")
-    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
+    public String filtraTreniInVendita(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
         // Verifica che l'utente sia loggato
         if (!sessioneUtility.isUtenteLoggato(session)) {
             return sessioneUtility.redirectTologin();
@@ -76,10 +76,10 @@ public class MarketController {
         // Recupera l'utente loggato
         UserDTO utenteLoggato = sessioneUtility.getUtenteLoggato(session);
         // Filtra i treni utilizzando il TrenoFilter
-        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
+        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreniInVendita(trenoFilter);
         List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
         // Aggiungi la lista dei treni filtrati al modello
-        model.addAttribute("treni", treniFiltrati);
+        model.addAttribute("treniInVendita", treniFiltrati);
         model.addAttribute("utenteLoggato", utenteLoggato);
         model.addAttribute("trenoFilter", trenoFilter);
         // Restituisci la vista del catalogo

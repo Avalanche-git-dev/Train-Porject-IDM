@@ -72,6 +72,48 @@ public class Treno {
 	@Column(name = "marca")
 	private String marca;
 	
+	@Column(name = "lunghezzaTotale")
+	private double lunghezzaTotale;
+	
+	@Column(name = "pesoTotale")
+	private double pesoTotale;
+	
+	@Column(name = "valutazioneMedia")
+	private double valutazioneMedia;
+	
+	
+	
+	
+	public double getValutazioneMedia() {
+		return valutazioneMedia;
+	}
+
+
+	public void setValutazioneMedia(double valutazioneMedia) {
+		this.valutazioneMedia = valutazioneMedia;
+	}
+
+
+	public double getLunghezzaTotale() {
+		return lunghezzaTotale;
+	}
+
+
+	public void setLunghezzaTotale(double lunghezzaTotale) {
+		this.lunghezzaTotale = lunghezzaTotale;
+	}
+
+
+	public double getPesoTotale() {
+		return pesoTotale;
+	}
+
+
+	public void setPesoTotale(double pesoTotale) {
+		this.pesoTotale = pesoTotale;
+	}
+
+
 	public String getMarca() {
 		return marca;
 	}
@@ -177,11 +219,13 @@ public class Treno {
 	public void add(Vagone vagone) {
 		vagoni.add(vagone);
 		vagone.setTreno(this);// antilogica oop
+		aggiornaPesoELunghezza();
 	}
 
 	public void remove(Vagone vagone) {
 		vagoni.remove(vagone);
 		vagone.setTreno(null);// antilogica oop
+		aggiornaPesoELunghezza();
 	}
 
 	// Valutazioni
@@ -190,6 +234,7 @@ public class Treno {
 	public final void addValutazione(Valutazione valutazione) {
 		valutazioni.add(valutazione);
 		valutazione.setTreno(this);
+		this.valutazioneMedia = getMediaValutazioni();
 	}
 
 	public Set<Valutazione> getValutazioni() {
@@ -365,10 +410,9 @@ public class Treno {
 	}
 
 
-
-
-	public double setLunghezza() {
-		return this.getLunghezza();
+	public void aggiornaPesoELunghezza() {
+	    this.pesoTotale = getPeso();
+	    this.lunghezzaTotale = getLunghezza();
 	}
 	
 
