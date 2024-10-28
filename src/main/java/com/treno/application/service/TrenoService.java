@@ -444,61 +444,7 @@ public class TrenoService {
 	    }
 	    
 	    
-	    
-	    public List<Treno> filtraTreniConServizio(TrenoFilter filtro) {
-	        List<Treno> treniFiltrati = trenoDao.filtraTreni(filtro);
-
-	        // Filtraggio per lunghezza, peso e costo
-	        return treniFiltrati.stream()
-	            .filter(treno -> filtro.getLunghezzaMin() == null || treno.getLunghezza() >= filtro.getLunghezzaMin())
-	            .filter(treno -> filtro.getLunghezzaMax() == null || treno.getLunghezza() <= filtro.getLunghezzaMax())
-	            .filter(treno -> filtro.getPesoMin() == null || treno.getPeso() >= filtro.getPesoMin())
-	            .filter(treno -> filtro.getPesoMax() == null || treno.getPeso() <= filtro.getPesoMax())
-	            .filter(treno -> filtro.getCostoTotaleMin() == null || treno.getPrezzoVendita() >= filtro.getCostoTotaleMin())
-	            .filter(treno -> filtro.getCostoTotaleMax() == null || treno.getPrezzoVendita() <= filtro.getCostoTotaleMax())
-	            .sorted((t1, t2) -> {
-	                if (filtro.getOrdine() == null) return 0;
-	                int result;
-	                switch (filtro.getOrdine()) {
-	                    case "sigla":
-	                        result = t1.getSigla().compareTo(t2.getSigla());
-	                        break;
-	                    case "prezzo":
-	                        result = Double.compare(t1.getPrezzoVendita(), t2.getPrezzoVendita());
-	                        break;
-	                    case "lunghezza":
-	                        result = Double.compare(t1.getLunghezza(), t2.getLunghezza());
-	                        break;
-	                    case "peso":
-	                        result = Double.compare(t1.getPeso(), t2.getPeso());
-	                        break;
-	                    default:
-	                        result = t1.getIdTreno().compareTo(t2.getIdTreno());
-	                        break;
-	                }
-	                return filtro.getDirezione() != null && filtro.getDirezione().equalsIgnoreCase("DESC") ? -result : result;
-	            })
-	            .collect(Collectors.toList());
-	    }
-	    
-	    
-//	    public List<Treno> filtraTreniConServizio(TrenoFilter filtro) {
-//	        List<Treno> treniFiltrati = trenoDao.filtraTreni(filtro);
-//
-//	        // Filtraggio per lunghezza, peso e costo
-//	        return treniFiltrati.stream()
-//	            .filter(treno -> filtro.getLunghezzaMin() == null || treno.getLunghezza() >= filtro.getLunghezzaMin())
-//	            .filter(treno -> filtro.getLunghezzaMax() == null || treno.getLunghezza() <= filtro.getLunghezzaMax())
-//	            .filter(treno -> filtro.getPesoMin() == null || treno.getPeso() >= filtro.getPesoMin())
-//	            .filter(treno -> filtro.getPesoMax() == null || treno.getPeso() <= filtro.getPesoMax())
-//	            .filter(treno -> filtro.getCostoTotaleMin() == null || treno.getPrezzoVendita() >= filtro.getCostoTotaleMin())
-//	            .filter(treno -> filtro.getCostoTotaleMax() == null || treno.getPrezzoVendita() <= filtro.getCostoTotaleMax())
-//	            .collect(Collectors.toList());
-//	    }
-	    
-	    
-	    
-//
+	  
 
 
 

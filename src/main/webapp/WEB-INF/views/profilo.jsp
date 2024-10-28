@@ -343,21 +343,36 @@
         width: 100%;
     }
     
-   .transazioni-tabs {
-    position: absolute;
-    top: 20px; /* Distanza dall'alto */
-    right: -650px; /* Distanza dal lato destro */
-    width: 700px; /* Larghezza della tab */
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1););
-}
- 
+    
+    /* Posiziona la sezione delle transazioni in alto a destra */
+    .transazioni-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 35%;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.transazioni-tabs  {
-    width: 100%; /* Adatta alla larghezza del contenitore */
-}
+    .nav-tabs .nav-link {
+        border: none;
+    }
+
+    .tab-content .tab-pane {
+        margin-top: 15px;
+    }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    
+    
+    
 </style>
 </head>
 <body>
@@ -366,43 +381,32 @@
         <div class="profile-container">
         
         
-        <div class="transazioni-tabs mt-5 d-flex">
-    <div class="nav flex-column nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-link active" id="transazioni-vendita-tab" data-toggle="tab" href="#transazioni-vendita" role="tab">Transazioni Vendita</a>
-        <a class="nav-link" id="transazioni-acquisto-tab" data-toggle="tab" href="#transazioni-acquisto" role="tab">Transazioni Acquisto</a>
-    </div>
-
-    <!-- Contenuto delle Tab -->
-    <div class="tab-content ml-3" id="nav-tabContent">
-        <!-- Tab Transazioni Vendita -->
-        <div class="tab-pane fade show active" id="transazioni-vendita" role="tabpanel">
-            <h4>Transazioni di Vendita</h4>
-            <ul>
-                <c:forEach var="transazione" items="${transazioniVendita}">
-                    <li>ID: ${transazione.idTransazione}, Prezzo: ${transazione.importo}€, Data: ${transazione.data}, Treno: ${transazione.trenoNome}, Venditore: ${transazione.venditoreUsername}, Acquirente: ${transazione.acquirenteUsername}</li>
-                </c:forEach>
-            </ul>
+         <div class="transazioni-container">
+        <h4 class="text-center mb-4">Storico Transazioni</h4>
+        <div class="nav nav-tabs" id="transazioni-tab" role="tablist">
+            <a class="nav-item nav-link active" id="transazioni-vendita-tab" data-toggle="tab" href="#transazioni-vendita" role="tab" aria-controls="transazioni-vendita" aria-selected="true">Vendite</a>
+            <a class="nav-item nav-link" id="transazioni-acquisto-tab" data-toggle="tab" href="#transazioni-acquisto" role="tab" aria-controls="transazioni-acquisto" aria-selected="false">Acquisti</a>
         </div>
 
-        <!-- Tab Transazioni Acquisto -->
-        <div class="tab-pane fade" id="transazioni-acquisto" role="tabpanel">
-            <h4>Transazioni di Acquisto</h4>
-            <ul>
-                <c:forEach var="transazione" items="${transazioniAcquisto}">
-                    <li>ID: ${transazione.idTransazione}, Prezzo: ${transazione.importo}€, Data: ${transazione.data}, Treno: ${transazione.trenoNome}, Venditore: ${transazione.venditoreUsername}, Acquirente: ${transazione.acquirenteUsername}</li>
-                </c:forEach>
-            </ul>
+        <div class="tab-content" id="transazioni-tabContent">
+            <!-- Contenuto della tab Vendite -->
+            <div class="tab-pane fade show active" id="transazioni-vendita" role="tabpanel" aria-labelledby="transazioni-vendita-tab">
+                <h5 class="mt-3">Transazioni di Vendita</h5>
+                <ul class="list-group">
+                    <!-- Ciclo delle transazioni di vendita -->
+                </ul>
+            </div>
+
+            <!-- Contenuto della tab Acquisti -->
+            <div class="tab-pane fade" id="transazioni-acquisto" role="tabpanel" aria-labelledby="transazioni-acquisto-tab">
+                <h5 class="mt-3">Transazioni di Acquisto</h5>
+                <ul class="list-group">
+                    <!-- Ciclo delle transazioni di acquisto -->
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-
-
-<!-- Fine Transazioni -->
-
-
-
-
-
+   
 
             <!-- Profilo utente -->
             <div class="profile-section bg-primary">

@@ -112,16 +112,17 @@ public class TransazioneService {
 
         // Inizializzazione di lazy collections
         Hibernate.initialize(treno.getVagoni());
+        
+        if (treno.isInVendita()) {
+            return " Non puoi mettere un treno in vendita perchè è gia in vendita.";
+        }
 
         // Verifica che l'utente sia il proprietario del treno
         if (!treno.getOwner().equals(proprietario)) {
-            return "L'utente non è il proprietario di questo treno!";
+            return " L'utente non è il proprietario di questo treno!";
         }
         
-        
-        if (treno.isInVendita()){
-            return "Il treno è già in vendita!";
-        }
+       
 
         // Verifica che il prezzo sia valido
         if (prezzoVendita == null || prezzoVendita <= 0) {
@@ -133,7 +134,7 @@ public class TransazioneService {
 
         // Imposta il treno come in vendita e assegna il prezzo
         treno.setInVendita(true);
-        treno.setPrezzoVendita(prezzoVendita + treno.getCosto()); // Aggiunge il costo del treno
+        treno.setPrezzoVendita(prezzoVendita); // Aggiunge il costo del treno
 
         // Aggiorna il treno nel database
         trenoDao.update(treno);

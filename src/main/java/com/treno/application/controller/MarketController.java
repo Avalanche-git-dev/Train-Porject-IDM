@@ -63,15 +63,32 @@ public class MarketController {
 		model.addAttribute("message", "Acquisto in corso");
 		return "transazione";
 	}
+//
+//	@PostMapping("/vendi")
+//	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
+//			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
+//		long idUtente = sessione.getUtenteLoggato(session).getUserId();
+//		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
+//		model.addAttribute("message", risultatoVendita);
+//		return "redirect:/market";
+//	}
+	
+	
+	
+	
 
-	@PostMapping("/vendi")
-	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
-			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
-		long idUtente = sessione.getUtenteLoggato(session).getUserId();
-		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
-		model.addAttribute("message", risultatoVendita);
-		return "redirect:/market";
-	}
+//	@PostMapping("/vendi")
+//	public String mettiTrenoInVendita(
+//			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
+//		long idUtente = sessione.getUtenteLoggato(session).getUserId();
+//		Long idTreno =  (Long) session.getAttribute("idTreno");
+//		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
+//		model.addAttribute("message", risultatoVendita);
+//		return "redirect:/market";
+//	}
+//	
+	
+	
 
 	@GetMapping("/filtro")
 	public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model,

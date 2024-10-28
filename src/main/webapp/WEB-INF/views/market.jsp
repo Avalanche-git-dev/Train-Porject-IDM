@@ -22,6 +22,8 @@
 	<div class="container">
     <h1>Tutti i treni in vendita</h1>
     
+    
+    
     <!-- Form di Filtro per il Catalogo dei Treni -->
         <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="mb-4">
             <div class="form-row">
@@ -58,7 +60,6 @@
                 <p class="card-text">Prezzo di Vendita: ${treno.prezzoVendita}€</p>
                 <!-- Contenitore per i pulsanti -->
                 <div>
-                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
                     <form action="${pageContext.request.contextPath}/market/acquista" method="post" style="display: inline;">
                         <input type="hidden" name="idTreno" value="${treno.idTreno}" />
                         <button type="submit" class="btn btn-success ml-2">Acquista Treno</button>

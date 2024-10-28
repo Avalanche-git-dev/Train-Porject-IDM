@@ -26,6 +26,7 @@ import com.treno.application.model.Motrice;
 import com.treno.application.model.Passeggero;
 import com.treno.application.model.Ristorante;
 import com.treno.application.model.Vagone;
+import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
 import com.treno.application.utility.SessioneUtility;
 
@@ -42,6 +43,11 @@ public class TrenoController {
 	@Autowired
 	@Qualifier("Sessione")
 	private SessioneUtility sessione;
+	
+	
+	@Autowired
+	@Qualifier("TransazioneService")
+	private TransazioneService transazioneService;
 
 //	@GetMapping
 //	public String mostraTreni(HttpSession session, Model model) {
@@ -144,45 +150,7 @@ public class TrenoController {
 	}
 	
 	
-//	
-////	
-//	@GetMapping("/crea")
-//	public String mostraFormCreazioneTreno(HttpSession session, Model model) {
-//	    UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//	    model.addAttribute("utenteLoggato", utenteLoggato);
-//	    model.addAttribute("treno", new TrenoDTO());
-//
-//	    List<TrenoDTO> listaTreni = trenoService.findAllTreniByUser(utenteLoggato.getUserId());
-//	    for (TrenoDTO treno : listaTreni) {
-//	        List<Vagone> listaVagoni = trenoService.findVagoniByTreno(treno.getIdTreno());
-//	        treno.setVagoni(listaVagoni);
-//	        
-//	    }
-//
-//	    model.addAttribute("listaTreniUtente", listaTreni);
-//	    return "crea";
-//	}
 
-	// DoCrea
-//	@PostMapping("/crea")
-//	public String creaTreno(@RequestParam("nomeTreno") String nomeTreno, @RequestParam("input") String input,
-//			@RequestParam("marca") String marca, HttpSession session, Model model) {
-//		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-//		try {
-//			TrenoDTO trenoCreato = new TrenoDTO();
-//			trenoCreato.setNome(nomeTreno);
-//			trenoCreato.setSigla(input);
-//			trenoCreato.setMarca(marca);
-//			TrenoDTO nuovoTreno = trenoService.creaTreno(trenoCreato, utenteLoggato);
-//			model.addAttribute("nuovoTreno", nuovoTreno);
-//		} catch (TrenoCreazioneException e) {
-//			model.addAttribute("errorMessage", e.getMessage());
-//			return "crea";
-//
-//		}
-//
-//		return "redirect:/treni/crea";
-//	}
 	
 	
 	@PostMapping("/crea")
@@ -231,7 +199,10 @@ public class TrenoController {
 
 		return "visualizzaTreni";
 	}
-
+	
+	
+	
+	/////Filtro non funzionante
 	@GetMapping("/filtro")
 	public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
 
@@ -244,39 +215,7 @@ public class TrenoController {
 		return "visualizzaTreni";
 	}
 
-	// O post con il dto o get con id tramite post nascosto .
-	@GetMapping("/visualizza/treno")
-	public String visualizzaTreno(HttpSession session, Model model) {
-		// Recupera l'ID del treno dalla sessione
-		Long idTreno = (Long) session.getAttribute("trenoSelezionato");
 
-		if (idTreno == null) {
-			model.addAttribute("errorMessage", "Seleziona un treno dalla collezione.");
-			return "redirect:/catalogo";
-		}
-
-		// Recupera i dettagli del treno tramite il servizio
-		TrenoDTO trenoSelezionato = trenoService.findById(idTreno);
-		if (trenoSelezionato == null) {
-			model.addAttribute("errorMessage", "Il treno non è più disponibile.");
-			return "redirect:/catalogo";
-		}
-
-		// Aggiungi i dettagli del treno al modello
-		model.addAttribute("treno", trenoSelezionato);
-		model.addAttribute("ownerId", trenoSelezionato.getIdOwner());
-
-		return "dettagliTreno"; // Restituisce la vista dei dettagli del treno
-	}
-
-	@PostMapping("/visualizza/treno")
-	public String selezionaTreno(@RequestParam("idTreno") Long idTreno, HttpSession session) {
-		// Salva l'ID del treno nella sessione
-		session.setAttribute("trenoSelezionato", idTreno);
-		// Reindirizza alla pagina che mostra i dettagli del treno senza esporre l'ID
-		// nell'URL
-		return "redirect:/treni/visualizza/treno";
-	}
 
 ////////////////////////////// FUNZIONALITA IN PROVA.     
 
@@ -354,5 +293,29 @@ public class TrenoController {
 	    }
 	    return "redirect:/treni/crea";
 	}
+	
+	
+	
+	
+	@PostMapping("/vendi")
+	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
+			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
+		long idUtente = sessione.getUtenteLoggato(session).getUserId();
+		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
+		model.addAttribute("message", risultatoVendita);
+		return "redirect:/market";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
 
 }
