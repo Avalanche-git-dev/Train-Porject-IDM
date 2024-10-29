@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TransazioneDTO;
+import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
 import com.treno.application.exception.AdminNotFoundException;
 import com.treno.application.exception.FondiInsufficientiException;
 import com.treno.application.exception.TransazioneNonTrovataException;
+import com.treno.application.exception.UserNotFoundException;
 import com.treno.application.filter.UtenteFilter;
 import com.treno.application.service.TransazioneService;
 import com.treno.application.service.TrenoService;
@@ -88,31 +89,37 @@ public class AdminController {
     
     
     
-//    @PostMapping("/bloccaUtente")
-//    @ResponseBody
-//    public ResponseEntity<String> bloccaUtente(@RequestParam("userId") long userId) {
-//        userService.bloccaUser(userId);
-//        return ResponseEntity.ok("Utente bloccato con successo");
-//    }
-//    
-//    @PostMapping("/sbloccaUtente")
-//    @ResponseBody
-//    public ResponseEntity<String> sbloccaUtente(@RequestParam("userId") long userId) {
-//    	userService.sbloccaUser(userId);
-//    	return ResponseEntity.ok("Utente sbloccato con successo!");
-//    }	
-    
+
     @GetMapping("/mostra/utente")
-    public String mostraProfiloUtente(@PathVariable("userId") long userId, HttpSession session, Model model) {
-        UserDTO utenteDto = sessione.getUtenteLoggato(session);
-        if (!sessione.isUtenteLoggato(session)) {
-            return sessione.redirectTologin();
+    public String mostraProfiloUtenteAdmin(HttpSession session, Model model, @RequestParam("userId") long userId, RedirectAttributes redirectAttributes) {
+        try {
+        	
+            // Recupera l'utente tramite userId
+            UserDTO utenteView = userService.findById(userId);
+            if (utenteView == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "L'utente da te cercato non esiste.");
+                return "redirect:/admin"; // Redirect con messaggio di errore
+            }
+
+            // Recupera la lista dei treni dell'utente tramite userId
+            List<TrenoDTO> treniUtente =  trenoService.findAllTreniByUser(userId);
+
+            // Memorizza i dati utente nella sessione per l'uso nella vista profiloUtente
+            session.setAttribute("utenteView", utenteView);
+            session.setAttribute("treniDto", treniUtente);
+
+            // Aggiunge al modello i dati necessari per la vista profiloUtente
+            model.addAttribute("username", utenteView.getUsername());
+            model.addAttribute("nome", utenteView.getNome());
+            model.addAttribute("numeroTreni", treniUtente.size());
+            model.addAttribute("listaTreni", treniUtente);
+
+        } catch (UserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Utente non trovato: " + e.getMessage());
+            return "redirect:/admin"; // Redirect con messaggio di errore
         }
-        UserDTO user = userService.findById(userId); // Assicurati di avere questo metodo nel tuo UserService
-        model.addAttribute("userInfo", user);
-        // Aggiunge l'utente loggato al modello
-        model.addAttribute("utenteLoggato", utenteDto);
-        return "profiloUtente";
+
+        return "profiloUtente"; // Ritorna direttamente alla vista del profilo utente
     }
     
     
@@ -178,7 +185,7 @@ public class AdminController {
     @PostMapping("/nominaAdmin")
     public ModelAndView nominaAdmin(@RequestParam("userId") long userId, RedirectAttributes redirectAttributes) {
     	
-    	try {
+    	 try {
         UserDTO user = userService.findById(userId);
         
         // Controlla se l'utente è già un admin
@@ -186,12 +193,14 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("message", "Errore: l'utente è già un amministratore.");
             redirectAttributes.addFlashAttribute("messageType", "error");
         } else {
-            // Nomina l'utente come admin
+             
+       
             userService.nominaAdmin(user);
             redirectAttributes.addFlashAttribute("message", "L'utente è stato nominato amministratore con successo.");
             redirectAttributes.addFlashAttribute("messageType", "success");
-        }
+       // }
     	}
+    	 }
        catch (AdminNotFoundException e) {
             // Gestisce l'eccezione e aggiunge il messaggio di errore come attributo flash
             redirectAttributes.addFlashAttribute("message", "Errore durante la nomina dell'utente a amministratore: " + e.getMessage());
@@ -202,5 +211,32 @@ public class AdminController {
         return new ModelAndView("redirect:/admin");
     }
     
+    
+    
+    
+//    @GetMapping("/mostra/transazioni")
+//    public ModelAndView controllaTransazioni(@RequestParam("userId") long userId, Model model, RedirectAttributes redirectAttributes) {
+//        List<TransazioneDTO> transazioniUtente = transazioneService.getAllTransazioniByUser(userId);
+//        
+//        // Aggiungi la lista delle transazioni al modello
+//        redirectAttributes.addFlashAttribute("transazioniUtente", transazioniUtente);
+//        return new ModelAndView("admin"); // Nome della vista che contiene la modale
+//    }
+//    
+    
+    
+    
+    @GetMapping("/mostra/transazioni")
+    public String mostraTransazioniUtente(@RequestParam("userId") long userId, Model model) {
+        // Recupera le transazioni dell'utente
+        List<TransazioneDTO> transazioniUtente = transazioneService.getAllTransazioniByUser(userId);
+
+        // Aggiungi le transazioni al modello
+        model.addAttribute("transazioniUtente", transazioniUtente);
+
+        // Restituisci la vista del modale per le transazioni
+        return "fragmentsModaleTransazioni";
+    }
+
     
 }

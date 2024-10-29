@@ -216,7 +216,7 @@ public class TransazioneService {
 
         // Verifica che l'acquirente possieda ancora il treno
         if (!treno.getOwner().equals(acquirente)) {
-            throw new IllegalStateException("L'acquirente non possiede più il treno. L'annullamento non può essere effettuato.");
+            throw new FondiInsufficientiException("L'acquirente non possiede più il treno. L'annullamento non può essere effettuato. contattare sede finanziaria");
         }
 
         // Verifica che l'acquirente abbia abbastanza fondi
@@ -352,7 +352,7 @@ public class TransazioneService {
     
     
     
-    
+    @Transactional
     private TransazioneDTO convertToDTO(Transazione transazione) {
         TransazioneDTO dto = new TransazioneDTO();
         dto.setIdTransazione(transazione.getIdTransazione());
@@ -360,7 +360,19 @@ public class TransazioneService {
         dto.setData(transazione.getData());
         dto.setAcquirenteId(transazione.getAcquirente().getUserId());  // Puoi adattare i dettagli a quello che serve
         dto.setVenditoreId(transazione.getVenditore().getUserId());
-        dto.setTrenoId(transazione.getTreno().getIdTreno());
+        
+        
+        
+        Treno treno = transazione.getTreno();
+        if (!Hibernate.isInitialized(treno)) {
+            treno = trenoDao.findById(treno.getIdTreno());
+        }
+        dto.setTrenoId(treno.getIdTreno());
+
+        
+        
+        
+        
         dto.setAcquirenteUsername(transazione.getAcquirente().getUsername());
         dto.setVenditoreUsername(transazione.getVenditore().getUsername());
         dto.setTrenoNome(transazione.getNomeTreno());

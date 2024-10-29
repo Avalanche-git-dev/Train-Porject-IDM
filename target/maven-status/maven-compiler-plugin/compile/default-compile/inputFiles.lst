@@ -12,6 +12,7 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\CatalogoController.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Ristorante.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\Dao.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\TransazioneNonTrovataException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\filter\UtenteFilter.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\UserDao.java
@@ -25,6 +26,7 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\configuration\WebConfig.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\MotricenonInTestaException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\utility\TrenoUtility.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\VagoneDTO.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\TrenoController.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\ValutazioneException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\builder\package-info.java
@@ -49,7 +51,6 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\builder\TBuilder.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\builder\TrenoBuilder.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\model\Cargo.java
-C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\service\AdminService.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\FondiInsufficientiException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\package-info.java
@@ -70,6 +71,7 @@ C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dao\ProxyDao.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\TroppiRistorantiException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\HomeController.java
+C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\exception\AdminNotFoundException.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\package-info.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\controller\UserController.java
 C:\Users\momo\Documents\Eclipse-WorkSpace\ProgettoTreno\src\main\java\com\treno\application\dto\UserGuest.java

@@ -1,27 +1,27 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
 <style>
-@import
-	url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap')
-	;
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap'); 
 
 body {
 	font-family: 'Roboto', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #f9f9f9;
-	color: #333; /* Grigio scuro */
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
 	flex-direction: column;
+    background-color: #f8f8ff; 
 }
 
 /* Navbar styling */
@@ -30,16 +30,12 @@ body {
 	display: flex;
 	justify-content: center;
 	padding: 15px 0;
-	background-color: #f0f0f0; /* Grigio chiaro */
-	border-bottom: 1px solid #ddd;
 	position: absolute;
 	top: 0;
 	left: 0;
 }
 
 .home-btn {
-	background-color: #333; /* Grigio scuro */
-	color: white;
 	padding: 10px 25px;
 	border: none;
 	border-radius: 30px;
@@ -50,7 +46,6 @@ body {
 }
 
 .home-btn:hover {
-	background-color: #555; /* Hover Grigio più scuro */
 	transform: scale(1.05);
 }
 
@@ -65,7 +60,6 @@ body {
 }
 
 .login-form {
-	background-color: white;
 	padding: 40px;
 	border-radius: 15px;
 	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
@@ -78,7 +72,6 @@ body {
 
 .login-form h2 {
 	text-align: center;
-	color: #333; /* Grigio scuro */
 	font-size: 28px;
 	margin-bottom: 20px;
 	font-weight: 700;
@@ -88,7 +81,6 @@ body {
 	width: 100%;
 	padding: 12px;
 	margin: 10px 0;
-	border: 1px solid #ddd;
 	border-radius: 5px;
 	font-size: 16px;
 }
@@ -99,8 +91,6 @@ body {
 	margin-top: 20px;
 	border: none;
 	border-radius: 5px;
-	background-color: #0275d8; /* Blu */
-	color: white;
 	font-size: 16px;
 	font-weight: 500;
 	cursor: pointer;
@@ -108,19 +98,20 @@ body {
 }
 
 .login-form .login-btn:hover {
-	background-color: #025aa5; /* Hover Blu */
 	transform: scale(1.05);
 }
 
 /* Animation for input focus */
 .login-form input:focus {
-	border-color: #0275d8;
 	box-shadow: 0 0 5px rgba(2, 117, 216, 0.3);
 	outline: none;
 }
 
-@
-keyframes fadeIn {from { opacity:0;
+#logo{
+	width: 60px;
+}
+
+@keyframes fadeIn {from { opacity:0;
 	transform: translateY(10px);
 }
 
@@ -130,25 +121,26 @@ to {
 }
 
 }
-.success-message {
-    color: green;
-    text-align: center;
-    margin-top: 10px;
-}
 
-/* Error message styling */
-.error-message {
-	color: red;
-	text-align: center;
-	margin-top: 10px;
-}
 </style>
 </head>
 <body>
 
+
+<%-- <div class="navbar navbar-brand navbar-dark bg-primary py-1">
+    <!-- Logo immagine -->
+    <a href="${pageContext.request.contextPath}/" id="home-button">
+        <img src="${pageContext.request.contextPath}/resources/images/icon.jpg" alt="logo" id="logo"/>
+    </a>
+</div> --%>
+
+
+
 	<!-- Navbar -->
-	<div class="navbar">
-		<a href="${pageContext.request.contextPath}/" class="home-btn">Home</a>
+	<div class="navbar navbar-brand navbar-dark bg-primary py-1">
+		<a href="${pageContext.request.contextPath}/" >
+			<img src="${pageContext.request.contextPath}/resources/images/train-svgrepo-com.svg" alt="logo" id="logo">
+		</a>
 	</div>
 
 	<!-- Login form -->
@@ -159,22 +151,22 @@ to {
 			<input type="text" name="username" placeholder="Username" required>
 			<input type="password" name="password" placeholder="Password"
 				required>
-			<button type="submit" class="login-btn">Log In</button>
+			<button type="submit" class="login-btn btn btn-secondary">Log In</button>
 		</form>
 
 		<!-- Display errors if any -->
 		<c:if test="${not empty errorMessage}">
-			<div class="error-message">${errorMessage}</div>
+			<div class="text-danger mt-3">${errorMessage}</div>
 		</c:if>
 		
 		<c:if test="${not empty logoutMessage}">
-    <div class="success-message">${logoutMessage}</div>
+    <div class="text-success mt-3">${logoutMessage}</div>
     </c:if>
 	<%
     String sessioneScaduta = request.getParameter("sessioneScaduta");
     if ("true".equals(sessioneScaduta)) {
 %>
-    <div class="error-message">La tua sessione è scaduta. Per favore, accedi di nuovo.</div>
+    <div class="text-danger mt-3">La tua sessione è scaduta. Per favore, accedi di nuovo.</div>
 <%
     }
 %>
@@ -184,3 +176,7 @@ to {
 
 </body>
 </html>
+ 
+ 
+ 
+ 

@@ -8,14 +8,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Treni</title>
 <!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/Industrial-final.css">
+<style type="text/css">
+ body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f8ff; 
+    }
+</style>
 </head>
 <body>
 
 	<!-- Sezione per visualizzare tutti i treni disponibili -->
 	<div class="container">
     <h1>Tutti i treni in vendita</h1>
+    
+    
     
     <!-- Form di Filtro per il Catalogo dei Treni -->
         <form action="${pageContext.request.contextPath}/market/filtro" method="get" class="mb-4">
@@ -53,7 +60,6 @@
                 <p class="card-text">Prezzo di Vendita: ${treno.prezzoVendita}€</p>
                 <!-- Contenitore per i pulsanti -->
                 <div>
-                    <a href="${pageContext.request.contextPath}/treni/dettagli/${treno.idTreno}" class="btn btn-primary">Vedi Dettagli</a>
                     <form action="${pageContext.request.contextPath}/market/acquista" method="post" style="display: inline;">
                         <input type="hidden" name="idTreno" value="${treno.idTreno}" />
                         <button type="submit" class="btn btn-success ml-2">Acquista Treno</button>

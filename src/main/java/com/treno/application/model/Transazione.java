@@ -21,7 +21,7 @@ public class Transazione {
 	@Column(name = "id_transazione")
 	private long idTransazione;
 
-	@Column(name = "importo", nullable = false)
+	@Column(name = "importo")
 	private Double importo;
 
 	@Column(name = "transazione_data", nullable = false)

@@ -15,18 +15,29 @@ public class TransazioneDao extends ProxyDao<Transazione> implements Transazione
 	}
 	
 	public List<Transazione> findTransazioniByUser(long userId) {
-	    String hql = "FROM Transazione t WHERE t.acquirente.id = :userId OR t.venditore.id = :userId";
+	    String hql = "SELECT DISTINCT t FROM Transazione t " +
+	                 "JOIN FETCH t.acquirente " +
+	                 "JOIN FETCH t.venditore " +
+	                 "WHERE t.acquirente.id = :userId OR t.venditore.id = :userId";
 	    return em.createQuery(hql, Transazione.class)
 	             .setParameter("userId", userId)
 	             .getResultList();
 	}
-	//amo HQL
+
+	
+	
+	// amo HQL
 	public List<Transazione> findTransazioniByTreno(long trenoId) {
-	    String hql = "FROM Transazione t WHERE t.treno.id = :trenoId";
+	    String hql = "SELECT DISTINCT t FROM Transazione t " +
+	                 "JOIN FETCH t.acquirente " +
+	                 "JOIN FETCH t.venditore " +
+	                 "JOIN FETCH t.treno " +
+	                 "WHERE t.treno.id = :trenoId";
 	    return em.createQuery(hql, Transazione.class)
 	             .setParameter("trenoId", trenoId)
 	             .getResultList();
 	}
+
 	
 	//restituisce una lista di treni e ordinata in ordine decrescente per totale ammontare di transazioni (Tecnica DTo easy)
 	

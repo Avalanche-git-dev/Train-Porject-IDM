@@ -259,8 +259,56 @@ public class UserService {
 
 	
 //	
+	@Transactional
+	public void nominaAdmin(UserDTO user) {
+		
+		if (user == null) {
+	        throw new AdminNotFoundException("Utente non può essere nullo.");
+	    }
+		
+		    if((userDao.findAdminByUserId(user.getUserId())!=null)) {
+		    	throw new AdminNotFoundException("Non puoi nominare un utente gia Amministratore");
+		    }
+		    
+		    if (user.getStato().equals(Stato.locked)) {
+		        throw new AdminNotFoundException("Non puoi nominare un utente bloccato a ruoli di Amministrazione.");
+		    }
+		    
+		AdminDTO admin = new AdminDTO();
+	    admin.setUserId(user.getUserId());
+	    admin.setUsername(user.getUsername());
+	    admin.setPassword(user.getPassword());
+	    admin.setNome(user.getNome());
+	    admin.setCognome(user.getCognome());
+	    admin.setEmail(user.getEmail());
+	    admin.setTelefono(user.getTelefono());
+	    admin.setPortafoglio(user.getPortafoglio());
+	    admin.setPrivilegio(true);
+	    admin.setStato(user.getStato());
+	    
+	    userDao.update(convertToUserEntity(admin));
+	    
+	}
+	
+	
+	
+//	
+//	
 //	@Transactional
-//	public void nominaAdmin(UserDTO user) {
+//	public void nominaAdmin(UserDTO user) throws AdminNotFoundException {
+//	    // Controlla che il DTO user non sia nullo
+//	    if (user == null) {
+//	        throw new AdminNotFoundException("UserDTO non può essere nullo.");
+//	    }
+//
+//	    if (user.getUserId()==-1) {
+//	        throw new AdminNotFoundException("Selezion un user valido per poterlo nominare");
+//	    }
+//	    
+//	    if (user.getStato().equals(Stato.locked)) {
+//	        throw new AdminNotFoundException("Non puoi nominare un utente bloccato a ruoli di Amministrazione.");
+//	    }
+//
 //	    AdminDTO admin = new AdminDTO();
 //	    admin.setUserId(user.getUserId());
 //	    admin.setUsername(user.getUsername());
@@ -270,45 +318,14 @@ public class UserService {
 //	    admin.setEmail(user.getEmail());
 //	    admin.setTelefono(user.getTelefono());
 //	    admin.setPortafoglio(user.getPortafoglio());
-//	    admin.setPrivilegio(true);
+//	    admin.setPrivilegio(true);  // Imposta i privilegi admin
 //	    admin.setStato(user.getStato());
-//	    // Ora salva l'admin nel database tramite il DAO
-//	    userDao.update(convertToUserEntity(admin));
+//
+//	    
+//	        // Ora salva l'admin nel database tramite il DAO
+//	        userDao.update(convertToUserEntity(admin));
 //	    
 //	}
-	
-	
-	
-	
-	
-	@Transactional
-	public void nominaAdmin(UserDTO user) throws AdminNotFoundException {
-	    // Controlla che il DTO user non sia nullo
-	    if (user == null) {
-	        throw new AdminNotFoundException("UserDTO non può essere nullo.");
-	    }
-
-	    if (user.getUserId()!=-1) {
-	        throw new AdminNotFoundException("Campi userId, username e password sono obbligatori.");
-	    }
-
-	    AdminDTO admin = new AdminDTO();
-	    admin.setUserId(user.getUserId());
-	    admin.setUsername(user.getUsername());
-	    admin.setPassword(user.getPassword());
-	    admin.setNome(user.getNome());
-	    admin.setCognome(user.getCognome());
-	    admin.setEmail(user.getEmail());
-	    admin.setTelefono(user.getTelefono());
-	    admin.setPortafoglio(user.getPortafoglio());
-	    admin.setPrivilegio(true);  // Imposta i privilegi admin
-	    admin.setStato(user.getStato());
-
-	    
-	        // Ora salva l'admin nel database tramite il DAO
-	        userDao.update(convertToUserEntity(admin));
-	    
-	}
 
 	
 	

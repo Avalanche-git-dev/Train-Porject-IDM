@@ -73,7 +73,6 @@
         
         .table-responsive { max-height: 400px; overflow-y: hidden; }
         .filter-section input[type="text"] { width: 100%; margin-bottom: 10px; }
-        .modal-content { color: black; }
          body {
         font-family: 'Roboto', sans-serif;
         background-color: #f8f8ff; 
@@ -128,7 +127,7 @@
 
                         <!-- Modal Gestione -->
                         <div class="modal fade" id="gestioneModal${utente.userId}" tabindex="-1" role="dialog" aria-labelledby="gestioneModalLabel${utente.userId}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-dialog  modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="gestioneModalLabel${utente.userId}">Gestione Utente: ${utente.username}</h5>
@@ -137,13 +136,6 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <%-- <ul class="list-group">
-                                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/nominaAdmin?userId=${utente.userId}">Nomina Admin</a></li>
-                                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/bloccaUser?userId=${utente.userId}">Blocca User</a></li>
-                                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/sbloccaUser?userId=${utente.userId}">Sblocca User</a></li>
-                                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/controllaTransazioni?userId=${utente.userId}">Controlla Transazioni</a></li>
-                                            <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/cercaUtente">Cerca Utente</a></li>
-                                        </ul> --%>
                                         
                                         
                                         <ul class="list-group">
@@ -166,41 +158,75 @@
                         </form>
                     </li>
                     <!-- Altri link di gestione -->
-                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/controllaTransazioni?userId=${utente.userId}">Controlla Transazioni</a></li>
-                    <li class="list-group-item"><a href="${pageContext.request.contextPath}/admin/cercaUtente">Cerca Utente</a></li>
+                  
+                    <li class="list-group-item">
+                    
+                  <a href="${pageContext.request.contextPath}/admin/mostra/utente?userId=${utente.userId}">Cerca Utente</a>
+                    
+                    </li>
+                    
+                    
+                    
+                    
+                   <li class="list-group-item">
+    <button type="button" class="btn btn-link p-0" onclick="openTransactionModal(${utente.userId})">Controlla Transazioni</button>
+</li>
+                    
+                    
                 </ul>
             </div>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
+            
+            
+                      
                                         
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                                     </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                 </div>
-                            </div>
-                        </div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                             
+                                </div>
+                                
+                                
+                                
+                                
+                                   
+            <div class="modal fade" id="transactionModal" tabindex="-1" role="dialog" aria-labelledby="transactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transactionModalLabel">Transazioni dell'Utente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="transazioniContenuto">
+                <!-- Le transazioni verranno caricate qui tramite AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
                     </c:forEach>
                 </tbody>
             </table>
@@ -214,38 +240,29 @@
             </div>
         </div>
 
-       <%--  <!-- Lista Transazioni -->
-        <div id="transazioni" class="container bg-primary text-white p-4" style="display: none;">
-            <h2>Lista Transazioni</h2>
-            <table class="table table-responsive table-striped text-white">
-                <thead class="table-dark">
-                    <tr class="text-secondary">
-                        <th>ID Transazione</th>
-                        <th>Acquirente</th>
-                        <th>Venditore</th>
-                        <th>Importo</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="transazione" items="${listaTransazioni}">
-                        <tr>
-                            <td>${transazione.idTransazione}</td>
-                            <td>${transazione.acquirenteUsername}</td>
-                            <td>${transazione.venditoreUsername}</td>
-                            <td>${transazione.importo}</td>
-                            <td>${transazione.data}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div> --%>
-        
-        
-        
-        
-        
-        <!-- Lista Transazioni -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Lista Transazioni -->
 <div id="transazioni" class="bg-primary text-white p-4" style="display: none; width: 90%; max-width: 875px; margin: auto;">
     <h2>Lista Transazioni</h2>
@@ -373,6 +390,45 @@
         });
 
         document.addEventListener("DOMContentLoaded", () => renderPage(currentPage));
+        
+        
+        
+        
+        
+        
+        
+        
+        function openTransactionModal(userId) {
+            // Chiude il modale di gestione
+            $('#gestioneModal' + userId).modal('hide');
+            
+            // Effettua la richiesta AJAX per ottenere le transazioni
+            fetch(`${pageContext.request.contextPath}/admin/mostra/transazioni?userId=` + userId)
+                .then(response => response.text())
+                .then(data => {
+                    // Inserisce il contenuto nel modale delle transazioni
+                    document.getElementById('transazioniContenuto').innerHTML = data;
+                    
+                    // Mostra il modale delle transazioni
+                    $('#transactionModal').modal('show');
+                })
+                .catch(error => {
+                    document.getElementById('transazioniContenuto').innerHTML = '<p class="text-danger">Errore nel caricamento delle transazioni.</p>';
+                    console.error('Errore:', error);
+                });
+        }
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     </script>
 
     <!-- Inclusione di Bootstrap JavaScript -->
@@ -381,3 +437,18 @@
 </body>
 </html>
 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
