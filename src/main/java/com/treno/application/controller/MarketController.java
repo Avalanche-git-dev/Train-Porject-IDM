@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TrenoDTO;
@@ -46,47 +47,31 @@ public class MarketController {
 		sessione.getUtenteLoggato(session);
 		
 		
-		 if(sessione.isAdminLoggato(session)) {
-	        	session.removeAttribute("utenteLoggato");
-	        	AdminDTO admin = sessione.getAdminLoggato(session);
-	        	session.setAttribute("admin", admin);
-				  }
 		List<TrenoDTO> treniInVendita = trenoService.findTreniInVendita();
 		model.addAttribute("treniInVendita", treniInVendita);
 		return "market";
 	}
 
 	@PostMapping("/acquista")
-	public String acquistaTreno(@RequestParam("idTreno") Long idTreno, Model model, HttpSession session)
-			throws VenditoreAcquirenteNonTrovatoException, FondiInsufficientiException {
-		transazioneService.compraTreno(sessione.getUtenteLoggato(session).getUserId(), idTreno);
-		model.addAttribute("message", "Acquisto in corso");
-		return "transazione";
+	public String acquistaTreno(@RequestParam("idTreno") Long idTreno, RedirectAttributes redirectAttributes, HttpSession session) {
+	if(sessione.isAdminLoggato(session)) {
+		AdminDTO admin = sessione.getAdminLoggato(session);
+		sessione.setUtenteLoggato(session, admin);
 	}
-//
-//	@PostMapping("/vendi")
-//	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
-//			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
-//		long idUtente = sessione.getUtenteLoggato(session).getUserId();
-//		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
-//		model.addAttribute("message", risultatoVendita);
-//		return "redirect:/market";
-//	}
+			 
+		try {
+			transazioneService.compraTreno(sessione.getUtenteLoggato(session).getUserId(), idTreno);
+		} catch (VenditoreAcquirenteNonTrovatoException e) {
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+			e.printStackTrace();
+		} catch (FondiInsufficientiException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+		}
+		redirectAttributes.addFlashAttribute("succesMessage", "Acquisto completato");
+		return "redirect:/market";
+	}
 	
-	
-	
-	
-
-//	@PostMapping("/vendi")
-//	public String mettiTrenoInVendita(
-//			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
-//		long idUtente = sessione.getUtenteLoggato(session).getUserId();
-//		Long idTreno =  (Long) session.getAttribute("idTreno");
-//		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
-//		model.addAttribute("message", risultatoVendita);
-//		return "redirect:/market";
-//	}
-//	
 	
 	
 

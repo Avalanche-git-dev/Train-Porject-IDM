@@ -23,10 +23,10 @@
                 <td>${transazione.importo}</td>
                 <td>${transazione.data}</td>
                 <td>
-                    <form method="post" action="${pageContext.request.contextPath}/admin/annulla">
+                    <%-- <form method="post" action="${pageContext.request.contextPath}/admin/annulla">
                         <input type="hidden" name="idTransazione" value="${transazione.idTransazione}">
                         <button type="submit" class="btn btn-secondary btn-sm">Annulla</button>
-                    </form>
+                    </form> --%>
                 </td>
             </tr>
         </c:forEach>

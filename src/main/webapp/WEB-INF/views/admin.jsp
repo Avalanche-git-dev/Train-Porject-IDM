@@ -326,14 +326,24 @@
         </div>
     </div>
 
-    <!-- Colonna Filtro -->
-    <div class="filter-section">
-        <h3>Filtra Utenti</h3>
-        <input type="text" placeholder="Cerca per ID" />
-        <input type="text" placeholder="Cerca per Username" />
-        <input type="text" placeholder="Cerca per Email" />
-        <button class="btn btn-secondary btn-block mt-2">Filtra</button>
-    </div>
+  <!-- Colonna Filtro -->
+<div class="filter-section">
+    <h3>Filtra Utenti</h3>
+    <form action="${pageContext.request.contextPath}/admin/filtro" method="get">
+        <!-- Campo di input per nome -->
+        <input type="text" name="nome" placeholder="Cerca per Nome" class="form-control mb-2" />
+
+        <!-- Campo di input per username -->
+        <input type="text" name="username" placeholder="Cerca per Username" class="form-control mb-2" />
+
+        <!-- Campo di input per email -->
+        <input type="text" name="email" placeholder="Cerca per Email" class="form-control mb-2" />
+
+        <!-- Bottone per filtrare -->
+        <button type="submit" class="btn btn-secondary btn-block mt-2">Filtra</button>
+    </form>
+</div>
+
 
     <!-- JavaScript per cambiare le sezioni nella sidebar -->
     <script>

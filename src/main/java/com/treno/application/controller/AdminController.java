@@ -127,9 +127,9 @@ public class AdminController {
     @GetMapping("/filtro")
     public String getRicercaByFiltro(@ModelAttribute ("UserFilter") UtenteFilter filtro, Model model, HttpSession session) {
         Set<UserDTO> utentiFiltrati = userService.filtraUtenti(filtro);
-
+        //filtro=null;
         model.addAttribute("listaUtenti", utentiFiltrati);
-
+        model.addAttribute(filtro);
         return "admin";
     }
 

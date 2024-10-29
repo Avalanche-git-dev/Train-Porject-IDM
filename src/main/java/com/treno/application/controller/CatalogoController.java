@@ -65,21 +65,24 @@ public class CatalogoController {
 	    @GetMapping
 	    public String getAllTreni(Model model, HttpSession session) {
 	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+	        boolean permessi = true;
+		      model.addAttribute(permessi);
 	        
 //	        if(!sessione.isUtenteLoggato(session)) {
 //	        	return sessione.redirectTologin();
 //	        }
 	        
 	        if(sessione.isAdminLoggato(session)) {
-	        	session.removeAttribute("utenteLoggato");
 	        	AdminDTO admin = sessione.getAdminLoggato(session);
-	        	session.setAttribute("admin", admin);
+	        	sessione.setUtenteLoggato(session, admin);
+	        	 permessi = true;
+			      model.addAttribute(permessi);
 				  }
 	        
-	        
+	         
 			
 			  if(sessione.isUtenteGuest(session)) { 
-		      boolean permessi = false;
+		       permessi = false;
 			  model.addAttribute(permessi);
 			  }
 			 
@@ -123,6 +126,11 @@ public class CatalogoController {
 	                              @RequestParam("voto") int voto,
 	                              Model model,
 	                              RedirectAttributes redirectAttributes) {
+	    	
+	    	if(sessione.isAdminLoggato(session)) {
+	    		AdminDTO admin = sessione.getAdminLoggato(session);
+	    		sessione.setUtenteLoggato(session, admin);
+	    	}
 
 	        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
 

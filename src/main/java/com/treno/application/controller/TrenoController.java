@@ -109,6 +109,7 @@ public class TrenoController {
 		// loggato
 		UserGuest guest = (UserGuest) session.getAttribute("utenteGuest");
 		sessione.setUtenteLoggato(session, guest);
+		model.addAttribute("successMessage","il Treno è stato creato con successo");
 
 		return "creaGuest"; // Rimani sulla stessa pagina per creare altri treni
 	}
@@ -179,13 +180,29 @@ public class TrenoController {
 	public String visualizzaTreniPerUtente(Model model, HttpSession session) {
 		// Verifica se l'utente è loggato e, se non lo è, reindirizza alla pagina di
 		// login
-		if (!sessione.isUtenteLoggato(session)) {
+		if (sessione.isUtenteGuest(session)) {
 			return sessione.redirectTologin();
 		}
+		
+		UserDTO utenteLoggato=sessione.getUtenteLoggato(session);;
+		Long ownerId=utenteLoggato.getUserId();
+		String usernameOwner=utenteLoggato.getUsername();
+		
+//		if(sessione.isAdminLoggato(session)) {
+//		AdminDTO admin = sessione.getAdminLoggato(session);
+//		sessione.setUtenteLoggato(session, admin);
+//		ownerId = admin.getUserId();
+//		usernameOwner = admin.getUsername();
+//		}
+//		else {
+//		 utenteLoggato = sessione.getUtenteLoggato(session); 
+//		 ownerId = utenteLoggato.getUserId();
+//		 usernameOwner = utenteLoggato.getUsername();
+//		}
+		
+		
 
-		UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
-		Long ownerId = utenteLoggato.getUserId();
-		String usernameOwner = utenteLoggato.getUsername();
+		
 
 		// Aggiunge un percorso di immagine predefinito per i treni
 		//String immagineTreno = "/ProgettoTreno/resources/images/treni/trenoTedesco.jpg";
@@ -202,7 +219,7 @@ public class TrenoController {
 	
 	
 	
-	/////Filtro non funzionante
+	
 	@GetMapping("/filtro")
 	public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
 
@@ -212,7 +229,7 @@ public class TrenoController {
 
 		model.addAttribute("filter", filter);
 
-		return "visualizzaTreni";
+		return "redirect:/treni/visualizza";
 	}
 
 
@@ -299,11 +316,11 @@ public class TrenoController {
 	
 	@PostMapping("/vendi")
 	public String mettiTrenoInVendita(@RequestParam("idTreno") Long idTreno,
-			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session) {
+			@RequestParam("prezzoVendita") Double prezzoVendita, Model model, HttpSession session,RedirectAttributes redirectAttributes) {
 		long idUtente = sessione.getUtenteLoggato(session).getUserId();
 		String risultatoVendita = transazioneService.mettiInVendita(idUtente, idTreno, prezzoVendita);
-		model.addAttribute("message", risultatoVendita);
-		return "redirect:/market";
+		redirectAttributes.addFlashAttribute("successMessage", risultatoVendita);
+		return "redirect:/treni/crea";
 	}
 	
 	

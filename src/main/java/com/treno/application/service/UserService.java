@@ -207,6 +207,7 @@ public class UserService {
 	
 	
 	// Filtro Utenti nel Service per fare da ponte al controller.
+	@Transactional
 	public Set<UserDTO> filtraUtenti(UtenteFilter filtro) {
 		List<User> utenti = userDao.filtraUtenti(filtro);
 		if (utenti.isEmpty()) {

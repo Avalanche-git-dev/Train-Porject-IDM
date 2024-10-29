@@ -15,13 +15,14 @@ public class TransazioneDao extends ProxyDao<Transazione> implements Transazione
 	}
 	
 	public List<Transazione> findTransazioniByUser(long userId) {
-	    String hql = "SELECT DISTINCT t FROM Transazione t " +
-	                 "JOIN FETCH t.acquirente " +
-	                 "JOIN FETCH t.venditore " +
-	                 "WHERE t.acquirente.id = :userId OR t.venditore.id = :userId";
-	    return em.createQuery(hql, Transazione.class)
-	             .setParameter("userId", userId)
-	             .getResultList();
+		 String hql = "SELECT DISTINCT t FROM Transazione t " +
+                 "JOIN FETCH t.treno " +       // Aggiunge il fetch join per il treno
+                 "JOIN FETCH t.acquirente " +  // Aggiunge il fetch join per l'acquirente
+                 "JOIN FETCH t.venditore " +   // Aggiunge il fetch join per il venditore
+                 "WHERE t.acquirente.id = :userId OR t.venditore.id = :userId";
+    return em.createQuery(hql, Transazione.class)
+             .setParameter("userId", userId)
+             .getResultList();
 	}
 
 	

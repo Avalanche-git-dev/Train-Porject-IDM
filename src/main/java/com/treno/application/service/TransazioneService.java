@@ -152,53 +152,6 @@ public class TransazioneService {
     
     
     
-  //  @Transactional
-//    public void annullaTransazione(long idTransazione) throws TransazioneNonTrovataException, FondiInsufficientiException {
-//        Transazione transazione = transazioneDao.findById(idTransazione);
-//
-//        if (transazione == null) {
-//            throw new TransazioneNonTrovataException("La transazione non è stata trovata.");
-//        }
-//
-//        User venditore = transazione.getVenditore();
-//        User acquirente = transazione.getAcquirente();
-//        Treno treno = transazione.getTreno();
-//        Double importo = transazione.getImporto();
-//
-//        if (!treno.getOwner().equals(acquirente)) {
-//            throw new IllegalStateException("L'acquirente non possiede più il treno. L'annullamento non può essere effettuato.");
-//        }
-//
-//        if (acquirente.getPortafoglio() < importo) {
-//            throw new FondiInsufficientiException("L'acquirente non ha abbastanza fondi per restituire l'importo. Procedere con sollecito.");
-//        }
-//
-//        
-//        acquirente.setPortafoglio(acquirente.getPortafoglio() - importo); 
-//        venditore.setPortafoglio(venditore.getPortafoglio() + importo);    
-//
-//        
-//        treno.setOwner(venditore);
-//        treno.setInVendita(true);  
-//        treno.setPrezzoVendita(importo);  
-//
-//        Transazione annullamento = new Transazione();
-//        annullamento.setAcquirente(acquirente);
-//        annullamento.setVenditore(venditore);
-//        annullamento.setTreno(treno);
-//        annullamento.setImporto(-importo);  
-//        annullamento.setData(LocalDateTime.now());  
-//        
-//        
-//
-//        
-//        transazioneDao.save(annullamento);  
-//        trenoDao.update(treno);             
-//        userDao.update(acquirente);         
-//        userDao.update(venditore);  
-//        
-//        
-//    }
     
     
     @Transactional
@@ -254,16 +207,20 @@ public class TransazioneService {
     
     
     
-    
+    @Transactional
     public List<TransazioneDTO> getAllTransazioniByUser(long userId) {
-        // Recupera la lista di transazioni per l'utente con userId
         List<Transazione> transazioni = transazioneDao.findTransazioniByUser(userId);
-        
-        // Converte ogni entità Transazione in DTO e restituisce la lista
+        // Inizializza le proprietà LAZY
+        transazioni.forEach(transazione -> {
+            transazione.getTreno().getIdTreno(); // Forza il caricamento del treno
+            transazione.getAcquirente().getUserId(); // Forza il caricamento dell'acquirente
+            transazione.getVenditore().getUserId();  // Forza il caricamento del venditore
+        });
         return transazioni.stream()
-                          .map(this::convertToDTO)
-                          .collect(Collectors.toList());
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
+
 
     
     public List<TransazioneDTO> getTreniByTotalTransactionValueDesc() {

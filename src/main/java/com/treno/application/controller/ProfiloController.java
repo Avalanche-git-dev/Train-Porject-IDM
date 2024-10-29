@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.treno.application.dto.AdminDTO;
 import com.treno.application.dto.TransazioneDTO;
 import com.treno.application.dto.TrenoDTO;
 import com.treno.application.dto.UserDTO;
@@ -48,9 +49,18 @@ public class ProfiloController {
 
 	@GetMapping
 	public String mostraProfilo(HttpSession session, Model model) {
-
+		
+		
+		UserDTO userInfo;
+		if(sessione.isAdminLoggato(session)) {
+		AdminDTO admin = sessione.getAdminLoggato(session);
+		userInfo = userService.findByUsername(admin.getUsername()); 
+		sessione.setUtenteLoggato(session, admin);
+		}
+		else {
 		UserDTO utenteLoggato = sessione.getUtenteLoggato(session); 
-		UserDTO userInfo = userService.findByUsername(utenteLoggato.getUsername()); 
+		userInfo= userService.findByUsername(utenteLoggato.getUsername()); 
+		}
 		  List<TrenoDTO> treniUtente = trenoService.findTreniByUsername(userInfo.getUsername());
 		  List<TransazioneDTO> transazioniVenditaDTO = transazioneService.getTransazioniByUtenteVenditore(userInfo.getUserId());
 		  List<TransazioneDTO> transazioniAcquistoDTO = transazioneService.getTransazioniByUtenteAcquirente(userInfo.getUserId());
