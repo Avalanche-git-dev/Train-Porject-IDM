@@ -43,7 +43,6 @@
             <li><a class="dropdown-item" href="#" data-value="Nome">Nome</a></li>
             <li><a class="dropdown-item" href="#" data-value="Sigla">Sigla</a></li>
             <li><a class="dropdown-item" href="#" data-value="Marca">Marca</a></li>
-            <li><a class="dropdown-item" href="#" data-value="Utente">Utente</a></li>
         </ul>
 
         <input type="text" id="selectedOption" class="form-control" placeholder="Seleziona un'opzione" name="filtroOpzione">
@@ -52,7 +51,11 @@
     	<input type="hidden" id="pesoMax" name="pesoMax">
     	<input type="hidden" id="lunghezzaMin" name="lunghezzaMin">
     	<input type="hidden" id="lunghezzaMax" name="lunghezzaMax">
-    	<input type="hidden" id="mediaValutazioni" name="mediaValutazioni">
+    	<input type="hidden" id="valutazioneMin" name="valutazioneMin">
+    	<input type="hidden" id="valutazioneMax" name="valutazioneMax">
+    	
+    	<input type="hidden" id="ordinamento" name="ordinamento" value="pesoTotale">
+    	<input type="hidden" id="ascendente" name="ascendente" value="false">
 
         <!-- Pulsante per applicare i filtri -->
         <div class="input-group-append">
@@ -90,7 +93,7 @@
 
             <!-- Filtro Valutazioni -->
             <form class="custom-form">
-                <select name="valutazioni" class="custom-select" id="valutazioniFilter">
+                <select name="valutazioni" class="custom-select" id="valutazioneFilter">
                     <option value="">Valutazioni</option>
                     <option value="1-3">Da 1 a 3 stelle</option>
                     <option value="2-4">Da 2 a 4 stelle</option>
@@ -103,12 +106,12 @@
         <form class="separated-form">
             <select name="ordinamento" class="custom-select" id="ordinamentoFilter">
                 <option value="">Filtra per ordinamento</option>
-                <option value="piuPesante">Più pesante</option>
-                <option value="menoPesante">Meno pesante</option>
-                <option value="piuLungo">Più lungo</option>
-                <option value="menoLungo">Meno lungo</option>
-                <option value="piuVotato">Più votato</option>
-                <option value="menoVotato">Meno votato</option>
+                <option value="pesoTotale-true">Più pesante</option>
+                <option value="pesoTotale-false">Meno pesante</option>
+                <option value="lunghezzaTotale-true">Più lungo</option>
+                <option value="lunghezzaTotale-false">Meno lungo</option>
+                <option value="valutazioneMedia-true">Più votato</option>
+                <option value="valutazioneMedia-false">Meno votato</option>
             </select>
         </form>
     </div>
@@ -193,7 +196,7 @@
     	}
     })
     
-    document.querySelectorAll('#pesoFilter, #lunghezzaFilter, #valutazioniFilter, #ordinamentoFilter').forEach(function(select) {
+    document.querySelectorAll('#pesoFilter, #lunghezzaFilter, #valutazioneFilter, #ordinamentoFilter').forEach(function(select) {
         select.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
@@ -245,6 +248,30 @@
         }
     });
     
+    document.getElementById('valutazioneFilter').addEventListener('change', function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            var range = selectedValue.split("-");
+            document.getElementById('valutazioneMin').value = range[0];
+            document.getElementById('valutazioneMax').value = range[1];
+            console.log("valutazioneMin:", document.getElementById('valutazioneMin').value);
+            console.log("valutazioneax:", document.getElementById('valutazioneMax').value);
+        } else {
+            document.getElementById('valutazioneMin').value = "";
+            document.getElementById('valutazioneMax').value = "";
+        }
+    });
+    
+ 	// Event listener per il filtro ordinamento
+    document.getElementById('ordinamentoFilter').addEventListener('change', function() {
+    	var selectedValue = this.value.split('-');
+        document.getElementById('ordinamento').value = selectedValue[0];
+        document.getElementById('ascendente').value = selectedValue[1];
+        
+        console.log("Ordinamento selezionato:", selectedValue[0]);
+        console.log("Direzione ascendente:", selectedValue[1]);
+    });
+    
  	// Listener per loggare il valore dell'input nella console
     document.getElementById('selectedOption').addEventListener('input', function() {
         var currentValue = this.value;
@@ -264,7 +291,7 @@
     });
 
     // Listener per loggare il valore selezionato per Valutazioni
-    document.getElementById('valutazioniFilter').addEventListener('change', function() {
+    document.getElementById('valutazioneFilter').addEventListener('change', function() {
         var selectedValue = this.value;
         console.log("Valutazioni selezionate:", selectedValue);
     });

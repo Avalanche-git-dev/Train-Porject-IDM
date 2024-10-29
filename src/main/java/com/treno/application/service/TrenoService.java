@@ -140,7 +140,7 @@ public class TrenoService {
 	            comparator = comparator.reversed();
 	        }
 	        treniFiltrati.sort(comparator);
-	        System.out.println(treniFiltrati);
+	        System.out.println("TRENI" + treniFiltrati.toString());
 	    }
 	    // Convertire la lista ordinata in un set per evitare duplicati
 	    return treniFiltrati.stream()

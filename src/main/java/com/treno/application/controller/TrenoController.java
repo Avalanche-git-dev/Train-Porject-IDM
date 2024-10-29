@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -203,7 +205,7 @@ public class TrenoController {
 	
 	
 	/////Filtro non funzionante
-	@GetMapping("/filtro")
+	/* @GetMapping("/filtro")
 	public String filtroTreni(@ModelAttribute TrenoFilter filter, Model model, HttpSession session) {
 
 		List<TrenoDTO> treniFiltrati = trenoService.findTreniByFilter(filter);
@@ -213,7 +215,29 @@ public class TrenoController {
 		model.addAttribute("filter", filter);
 
 		return "visualizzaTreni";
-	}
+	} */
+	
+	@GetMapping("/filtro")
+    public String filtraTreni(@ModelAttribute("trenoFilter") TrenoFilter trenoFilter, Model model, HttpSession session) {
+        // Verifica che l'utente sia loggato
+        if (!sessione.isUtenteLoggato(session)) {
+            return sessione.redirectTologin();
+        }
+
+        // Recupera l'utente loggato
+        UserDTO utenteLoggato = sessione.getUtenteLoggato(session);
+
+        // Filtra i treni utilizzando il TrenoFilter
+        Set<TrenoDTO> treniFiltratiSet = trenoService.filtraTreni(trenoFilter);
+        List<TrenoDTO> treniFiltrati = treniFiltratiSet.stream().collect(Collectors.toList());
+        // Aggiungi la lista dei treni filtrati al modello
+        model.addAttribute("treni", treniFiltrati);
+        model.addAttribute("utenteLoggato", utenteLoggato);
+        model.addAttribute("trenoFilter", trenoFilter);
+
+        // Restituisci la vista del catalogo
+        return "treni";
+    }
 
 
 

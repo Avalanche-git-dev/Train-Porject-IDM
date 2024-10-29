@@ -135,6 +135,8 @@ body, html {
 
 <div class="page-content-details">
    <h1 class="mb-3 ml-1 p-2"style="margin-top:-8px;">Visualizza Treni</h1>
+   
+   
     <div class="main-container">
     
     
@@ -210,26 +212,7 @@ body, html {
     </div>
 </div>
     
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Griglia con le carte dei treni -->
+	 <!-- Griglia con le carte dei treni -->
         <div class="train-grid" id="trainGrid">
             <c:forEach var="treno" items="${treniDto}">
                 <div class="train-card-details">
@@ -261,12 +244,14 @@ body, html {
                 <div class="modal-body">
                     <img src="${treno.immagine}" alt="Immagine del Treno" class="img-fluid mb-3">
                     <p><strong>Nome:</strong> ${treno.nome}</p>
+                    <p><strong>Sigla:</strong> ${treno.sigla}</p>
                     <p><strong>Marca:</strong> ${treno.marca}</p>
                     <p><strong>Media Valutazioni:</strong> ${treno.mediaValutazioni} / 5</p>
-                    <p><strong>Peso Totale:</strong> ${treno.pesoTotale} kg</p>
+                    <p><strong>Peso Totale:</strong> ${treno.pesoTotale} tonnellate</p>
                     <p><strong>Costo Totale:</strong> ${treno.costoTotale} €</p>
                     <p><strong>Lunghezza:</strong> ${treno.lunghezzaTotale} m</p>
                     <p><strong>Posti:</strong> ${treno.postiTotali}</p>
+                    <p><strong>Peso Trainabile:</strong> ${treno.pesoTrainabile}</p>
                 </div>
                 <div class="modal-footer">
                     <!-- Pulsante che apre il modale per inserire il prezzo di vendita -->
@@ -309,59 +294,9 @@ body, html {
             </div>
         </div>
     </div>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-            </c:forEach>
-        </div>
-    </div>
+   </c:forEach>
+  </div>
+</div>
 
     <!-- Controlli di paginazione -->
      <div class="pagination-controls">

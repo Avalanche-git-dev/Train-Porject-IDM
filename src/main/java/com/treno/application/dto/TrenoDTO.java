@@ -1,7 +1,10 @@
 package com.treno.application.dto;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import com.treno.application.model.Motrice;
 import com.treno.application.model.Vagone;
 
 public class TrenoDTO {
@@ -21,6 +24,17 @@ public class TrenoDTO {
     private double costoTotale;
 	private List<Vagone> vagoni;
 	private Double valore;
+	private double pesoTrainabile;
+	
+	
+	
+	public double getPesoTrainabile() {
+		return this.pesoTrainabile;
+	}
+	
+	public void setPesoTrainabile(double pesoTrainabile) {
+		this.pesoTrainabile = pesoTrainabile;
+	}
 	
 	public Double getValore() {
 		return valore;
